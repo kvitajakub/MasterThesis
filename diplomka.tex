@@ -24,11 +24,13 @@
 \usepackage[latin2]{inputenc}
 \usepackage[T1, IL2]{fontenc}
 \usepackage{url}
-\usepackage{todonotes}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 %zde muzeme vlozit vlastni balicky
-
+\usepackage[shadow]{todonotes}
+\setlength{\marginparwidth}{2.9cm}
+\reversemarginpar
+\newcommand{\todof}[1]{\todo[fancyline]{#1}}
 
 % =======================================================================
 % balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
