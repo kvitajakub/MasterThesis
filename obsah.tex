@@ -25,7 +25,7 @@ There is vast amount of different kinds of neural networks, many not suitable fo
 \cite{DBLP:journals/corr/ChoMGBSB14}
 \cite{DBLP:journals/corr/GreffSKSS15}
 
-		\subsection{Processing text with RNN}
+		\subsection{Text sequences -- Word level embeddings and character level}
 \todo[inline]{Mozna trochu upravit nazev. (Character level and word level embeddings)}
 \todo[inline]{Popis toho jak se pracuje s textem v rnn, ze to je taky sekvence. Character level, word level, embeddings. Popis rozdilu toho jak funguji preklady a generovani dalsiho prvku sekvence.}
 
@@ -47,8 +47,10 @@ There is vast amount of different kinds of neural networks, many not suitable fo
 \todo[inline]{Udelat tady tabulku o ruznych balicich co torch ma}
 \todo[inline]{Jak funguji rekurentni site v Torchi.}
 \todo[inline]{Nacitani modelu z Caffe, ukladani v Torchi...}
+\cite{TorchLib}
 
 		\subsection{nn, nngraph}
+		\todo[inline]{Linky na knihovny v poznamkach pod carou.}
 		
 		\subsection{rnn}
 		
@@ -58,6 +60,7 @@ There is vast amount of different kinds of neural networks, many not suitable fo
 	\section{Predicting next character in sequence}
 \todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
 \todo[inline]{Reference na Karpathyho char-rnn}
+\cite{char-rnn}
 
 \chapter{Image caption generation}
 \todo[inline]{Znovu uvod k tomu jak je to dulezite a tentokrat jak na tom lidi pracuji, co je potreba a jak se to hodnoti.}
@@ -88,11 +91,17 @@ There is vast amount of different kinds of neural networks, many not suitable fo
 
 
 	\section{Datasets}
-\todo[inline]{COCO, Flicker, popis jake jsou.}
+\todo[inline]{COCO, Flicker, popis jake jsou. Asi zrusit sekce, udelat jen tabulku a mensi popis.}
 	
 		\subsection{MS COCO}
+		\cite{dataset-coco}
 		
 		\subsection{Flickr 30k,8k}
+		\cite{dataset-flickr30k}
+		\cite{dataset-flickr8k}
+		
+		\subsection{CIDEr datasets}
+		\cite{Vedantam_2015_CVPR}		
 
 	\section{Evaluation metrics}
 \todo[inline]{BLEU, cIDER, jak se pouzivaji, co delaji...}
@@ -100,7 +109,7 @@ There is vast amount of different kinds of neural networks, many not suitable fo
 		\cite{Papineni:2002:BMA:1073083.1073135}
 		
 		\subsection{CIDEr}
-		\cite{DBLP:journals/corr/VedantamZP14a}
+		\cite{Vedantam_2015_CVPR}
 		
 		\subsection{METEOR}
 		\cite{Lavie:2007:MAM:1626355.1626389}
