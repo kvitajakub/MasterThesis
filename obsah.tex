@@ -9,15 +9,21 @@ General idea of neural networks was slowly emerging after World War II. Perceptr
 Since then various useful architectures and algorithms are now introduced almost every month. There is vast amount of various architectures and algorithms, in this chapter, I will describe only a couple -- those, which are used in this thesis.
 
 	\section{Recurrent neural nets}
-\todo[inline]{Nekde tady nacpat rozbor clanku o rekurentnich sitich?}
+Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task.
+
+There is vast amount of different kinds of neural networks, many not suitable for sequential tasks
+
 \todo[inline]{Zduraznit problem vanishing a exploding gradientu}
 \todo[inline]{Popis toho jak umi pracovat se sekvencema, predikci dalsiho prvku, da se pouzit na spoustu veci, zvuky, ceny na burze, preklady, predikci textu.}
 
 		\subsection{LSTM -- Long Short-Term Memory}
 \todo[inline]{Jak to vyresilo problem vyse. Pridat i rovnice, ktere pouzivam ja, rozebrat dopodrobna.}
+\cite{Hochreiter:1997:LSM:1246443.1246450}
 
 		\subsection{GRU -- Gated Recurrent Unit}
 \todo[inline]{Zminit jako updatovanou verzi}
+\cite{DBLP:journals/corr/ChoMGBSB14}
+\cite{DBLP:journals/corr/GreffSKSS15}
 
 		\subsection{Processing text with RNN}
 \todo[inline]{Mozna trochu upravit nazev. (Character level and word level embeddings)}
@@ -25,7 +31,7 @@ Since then various useful architectures and algorithms are now introduced almost
 
 	\section{Convolutional neural nets}
 \todo[inline]{Kratky uvod do toho, kde se pouzivaji, jak se vyvinuly, jednoduchy popis toho jak funguji. Obrazek?}
-\todo[inline]{Asi neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek.}
+\todo[inline]{Asi neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek. V diplomce rozpracovat vic.}
 
 %		\subsection{Convolutional layer}
 %
@@ -33,31 +39,53 @@ Since then various useful architectures and algorithms are now introduced almost
 
 \chapter{Experiments}
 \todo[inline, color=magenta!60]{Kapitola jen na semestralni projekt. V diplomce ji odstranim.}
+\todo[inline]{Jak se to implementuje, jake knihovny se pouzivaji - Caffe, Theano, TensorFlow, Torch. Popsat ze Torch bude v tehle kapitole.}
+\todo[inline]{Budu popisovat veci co jsem zkousel implementovat v Torchi.}
 
-	\section{Frameworks}
-\todo[inline]{Jak se to implementuje, jake knihovny se pouzivaji.}
-\todo[inline, color=cyan!60]{Cast o Torchi se zrecykluje do diplomky.}
-\todo[inline]{Popsat ze popularni je Caffe, ukladani modelu v caffe, theano, pythoni veci zalozene na theanu, Torch, TensorFlow.}
-		
-		\subsection{Torch}
+	\section{Torch}
+\todo[inline, color=cyan!60]{Torch se zrecykluje do diplomky.}
 \todo[inline]{Udelat tady tabulku o ruznych balicich co torch ma}
+\todo[inline]{Jak funguji rekurentni site v Torchi.}
+\todo[inline]{Nacitani modelu z Caffe, ukladani v Torchi...}
+
+		\subsection{nn, nngraph}
 		
+		\subsection{rnn}
+		
+		\subsection{Other packages}
+		\todo[inline]{loadcaffe, optim,...}
 
 	\section{Predicting next character in sequence}
 \todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
 \todo[inline]{Reference na Karpathyho char-rnn}
 
-\chapter{Image captioning}
+\chapter{Image caption generation}
 \todo[inline]{Znovu uvod k tomu jak je to dulezite a tentokrat jak na tom lidi pracuji, co je potreba a jak se to hodnoti.}
 
 	\section{Related Work}
 \todo[inline]{Dat tomu nejake lepsi jmeno, clanky o popisovani obrazku ktere jsem cetl, pouzil.}
 
 		\subsection{Show and Tell}
+		\cite{DBLP:journals/corr/VinyalsTBE14}
+		\cite{DBLP:journals/corr/SutskeverVL14}
+		
+		\todo[inline]{Clanek z Coco od Googlu.}
+		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks), architektura encoder, decoder}
 		
 		\subsection{Show, Attend and Tell}
+		\cite{DBLP:journals/corr/XuBKCCSZB15}
+		
+		\todo[inline]{Clanek z Coco z Montrealu/Toronta}
 		
 		\subsection{From Captions to Visual Concepts and Back}
+		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
+		
+		\todo[inline]{Clanek z Coco od Microsoftu, mrknout se i na pokracovani v druhem clanku}
+		
+		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
+		\cite{DBLP:journals/corr/DonahueHGRVSD14}
+		\todo[inline]{Clanek z Coco z berkeley}
+
 
 	\section{Datasets}
 \todo[inline]{COCO, Flicker, popis jake jsou.}
@@ -69,14 +97,18 @@ Since then various useful architectures and algorithms are now introduced almost
 	\section{Evaluation metrics}
 \todo[inline]{BLEU, cIDER, jak se pouzivaji, co delaji...}
 		\subsection{BLEU}
+		\cite{Papineni:2002:BMA:1073083.1073135}
 		
 		\subsection{CIDEr}
+		\cite{DBLP:journals/corr/VedantamZP14a}
 		
 		\subsection{METEOR}
+		\cite{Lavie:2007:MAM:1626355.1626389}
 
 \chapter{Model}
 \todo[inline, color=cyan!60]{Do semestralniho projektu nebo az na diplomku?}
 \todo[inline]{Design modelu, co chci pouzit, jake metody chci zkusit.}
+\todo[inline]{Polozit si principialni otazku a zjistit jestli to nejak pomuze, jak to funguje.}
 
 	\section{Architecture}
 \todo[inline]{Architektura modelu, jake matematicke modely jsem pouzil, bez implementacnich detailu.}
