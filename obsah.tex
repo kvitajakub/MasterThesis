@@ -4,23 +4,23 @@
 \todo[inline]{Klasicky popis toho co se tady bude dit, jak je to dulezite, atd.}
 
 \chapter{Neural networks} 
-General idea of neural networks was slowly emerging after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\footnote{The perceptron: A probabilistic model for information storage and organization in the brain. Rosenblatt, F. Psychological Review, Vol 65(6), Nov 1958, 386--408.}, but became popular only after creation of backpropagation algorithm in 1975. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again. Mostly because researchers dealt with the problems from before and successfully applied neural nets in multiple fields like computer vision, speech recognition and natural language processing.
+General idea of neural networks was slowly emerging after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\footnote{The perceptron: A probabilistic model for information storage and organization in the brain. Rosenblatt, F. Psychological Review, Vol 65(6), Nov 1958, 386--408.}, but became popular only after creation of backpropagation algorithm in 1975. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, rebranded as \textquoteleft Deep Learning\textquoteright, because researchers realized that it is possible and very useful to stack neural nets on top of each other and create deep architectures, which are more practical than shallow ones. During this reinvention neural nets have been successfully applied in multiple fields like computer vision, speech recognition and natural language processing.
 
-Since then various useful architectures and algorithms are now introduced almost every month. There is vast amount of various architectures and algorithms, in this chapter, I will describe only a couple -- those, which are used in this thesis.
+Since then various useful architectures and algorithms are now introduced almost every month. There is vast amount of various architectures and algorithms, in this chapter, I will describe only a couple -- those used in this thesis.
 
 	\section{Recurrent neural nets}
-Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task.
+Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task. There is vast amount of recurrent neural networks, many not suitable for sequential tasks like Hopfield network, which are very successful in specific tasks, but nevertheless not useful for us now.
 
-There is vast amount of different kinds of neural networks, many not suitable for sequential tasks
+We can understand recurrent neural networks as very deep forward nets with shared weights. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem. This is a serious issue,\todof{Mam to tady rozebrat vice?} which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
 
-\todo[inline]{Zduraznit problem vanishing a exploding gradientu}
+
 \todo[inline]{Popis toho jak umi pracovat se sekvencema, predikci dalsiho prvku, da se pouzit na spoustu veci, zvuky, ceny na burze, preklady, predikci textu.}
 
-		\subsection{LSTM -- Long Short-Term Memory}
+		\subsection{LSTM -- Long Short-Term Memory}\label{subsec:lstm}
 \todo[inline]{Jak to vyresilo problem vyse. Pridat i rovnice, ktere pouzivam ja, rozebrat dopodrobna.}
 \cite{Hochreiter:1997:LSM:1246443.1246450}
 
-		\subsection{GRU -- Gated Recurrent Unit}
+		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
 \todo[inline]{Zminit jako updatovanou verzi}
 \cite{DBLP:journals/corr/ChoMGBSB14}
 \cite{DBLP:journals/corr/GreffSKSS15}
