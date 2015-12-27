@@ -11,14 +11,49 @@ Since then various useful architectures and algorithms are now introduced almost
 	\section{Recurrent neural nets}
 Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task. There is vast amount of recurrent neural networks, many not suitable for sequential tasks like Hopfield network, which are very successful in specific tasks, but nevertheless not useful for us now.
 
-We can understand recurrent neural networks as very deep forward nets with shared weights. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem. This is a serious issue,\todof{Mam to tady rozebrat vice?} which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
+Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers.
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{fig/RNN-unrolled.png}
+	\caption{Unrolling of the recurrent neural net. (C. Olah 2015)
+		\label{fig:rnn-unroll}}
+\end{figure}
+%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-\todo[inline]{Popis toho jak umi pracovat se sekvencema, predikci dalsiho prvku, da se pouzit na spoustu veci, zvuky, ceny na burze, preklady, predikci textu.}
+We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, \todof{Mam to tady rozebrat vice?} which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
 
 		\subsection{LSTM -- Long Short-Term Memory}\label{subsec:lstm}
+
+Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber (1997) in \cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers and nowadays LSTM is most used and popular RNN architecture used.
+
+The LSTM unit designed that it can remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should continue to remember or forget the value, and when it should output the value. All these gates are built from simple layers and mathematical operations, and have the same input - current network input, last output of the unit and hidden state value of the unit. Diagram of an LSTM unit is on the figure \ref{fig:lstm-unroll}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{./fig/LSTM3-chain.png}
+	\caption{Unrolled LSTM unit. (C. Olah 2015)
+		\label{fig:lstm-unroll}}
+\end{figure}
+%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
 \todo[inline]{Jak to vyresilo problem vyse. Pridat i rovnice, ktere pouzivam ja, rozebrat dopodrobna.}
-\cite{Hochreiter:1997:LSM:1246443.1246450}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/LSTM-equations.png}
+	\caption{LSTM unit for equations
+		\label{fig:lstm-equations}}
+\end{figure}
+
+\begin{align}
+	i_t &= \sigma(W_x^ix_t + W_h^ih_{t-1} + W_c^ic_{t-1} + b^i) \label{eq:lstm1}\\
+	f_t &= \sigma(W_x^fx_t + W_h^fh_{t-1} + W_c^fc_{t-1} + b^f) \label{eq:lstm2}
+\end{align}
+
+\eqref{eq:lstm1}
+
+\ref{eq:lstm2}
 
 		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
 \todo[inline]{Zminit jako updatovanou verzi}

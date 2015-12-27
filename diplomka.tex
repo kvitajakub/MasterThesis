@@ -28,9 +28,18 @@
 
 %zde muzeme vlozit vlastni balicky
 \usepackage[shadow]{todonotes}
+%\usepackage[shadow,disable]{todonotes}
 \setlength{\marginparwidth}{2.9cm}
 \reversemarginpar
 \newcommand{\todof}[1]{\todo[fancyline]{#1}}
+
+%cislovani obrazku
+\renewcommand{\thefigure}{\arabic{figure}}
+
+%rovnice
+\usepackage{amsmath}
+\renewcommand{\theequation}{\arabic{equation}}
+
 
 % =======================================================================
 % balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
