@@ -27,33 +27,38 @@ We can understand recurrent neural networks as very deep forward nets with share
 
 Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber (1997) in \cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers and nowadays LSTM is most used and popular RNN architecture used.
 
-The LSTM unit designed that it can remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should continue to remember or forget the value, and when it should output the value. All these gates are built from simple layers and mathematical operations, and have the same input - current network input, last output of the unit and hidden state value of the unit. Diagram of an LSTM unit is on the figure \ref{fig:lstm-unroll}.
+The LSTM unit designed that it can remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should continue to remember or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit is on the figure \ref{fig:lstm-unroll}.\todof{Udelat lepsi obrazek, ktery presne odpovida rovnicim? Je to dost komplikovane..}
 
+%\begin{figure}[!ht]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{./fig/LSTM-equations.png}
+%	\caption{LSTM unit for equations
+%		\label{fig:lstm-equations}}
+%\end{figure}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.9\textwidth]{./fig/LSTM3-chain.png}
-	\caption{Unrolled LSTM unit. (C. Olah 2015)
+	\caption{An unrolled LSTM unit. (C. Olah 2015)
 		\label{fig:lstm-unroll}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-\todo[inline]{Jak to vyresilo problem vyse. Pridat i rovnice, ktere pouzivam ja, rozebrat dopodrobna.}
+All these gates can be described by series of equations \eqref{eq:lstm1}$ \rightarrow $\eqref{eq:lstm6}. In each time slice the unit is using current input $ x_t $, last stored value $ c_{t-1} $ and hidden state of the unit $ h_{t-1} $ to compute next state $ c_t $, $ h_t $ and output $ o_t $. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model.
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.7\textwidth]{./fig/LSTM-equations.png}
-	\caption{LSTM unit for equations
-		\label{fig:lstm-equations}}
-\end{figure}
-
+\belowdisplayskip=24pt
 \begin{align}
 	i_t &= \sigma(W_x^ix_t + W_h^ih_{t-1} + W_c^ic_{t-1} + b^i) \label{eq:lstm1}\\
-	f_t &= \sigma(W_x^fx_t + W_h^fh_{t-1} + W_c^fc_{t-1} + b^f) \label{eq:lstm2}
+	f_t &= \sigma(W_x^fx_t + W_h^fh_{t-1} + W_c^fc_{t-1} + b^f) \label{eq:lstm2}\\
+	z_t &= \tanh(W_x^cx_t + W_h^ch_{t-1} + b^c) \label{eq:lstm3}\\
+	c_t &= f_tc_{t-1} + i_tz_t \label{eq:lstm4}\\
+	o_t &= \sigma(W_x^ox_t + W_h^oh_{t-1} + W_c^oc_t + b^o) \label{eq:lstm5}\\
+	h_t &= o_t\tanh(c_t) \label{eq:lstm6}\\[16pt]
+	\sigma(x) &= \frac{1}{1+e^{-x}} \label{eq:lstm7}
 \end{align}
 
-\eqref{eq:lstm1}
+LSTM based on the equations \eqref{eq:lstm1}$ \rightarrow $\eqref{eq:lstm6} is using total of 11 weight matrices and 4 bias vectors for computations and $ \sigma $ is sigmoid function defined in the equation \eqref{eq:lstm7}.
 
-\ref{eq:lstm2}
+Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates until they learn to deal with it.
 
 		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
 \todo[inline]{Zminit jako updatovanou verzi}
