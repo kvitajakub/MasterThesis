@@ -15,8 +15,8 @@ Apart from classification, which can be more precise when using sequences, one o
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{fig/RNN-unrolled.png}
-	\caption{Unrolling of the recurrent neural net. (C. Olah 2015)
+	\includegraphics[width=0.9\textwidth]{fig/RNN-unrolled.png}
+	\caption{Unrolling of the recurrent neural net. (C. Olah 2015 \cite{colah-lstm})
 		\label{fig:rnn-unroll}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
@@ -27,7 +27,7 @@ We can understand recurrent neural networks as very deep forward nets with share
 
 Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber (1997) in \cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers and nowadays LSTM is most used and popular RNN architecture used.
 
-The LSTM unit designed that it can remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should continue to remember or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit is on the figure \ref{fig:lstm-unroll}.\todof{Udelat lepsi obrazek, ktery presne odpovida rovnicim? Je to dost komplikovane..}
+The LSTM unit designed that it can remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit is on the figure \ref{fig:lstm}.
 
 %\begin{figure}[!ht]
 %	\centering
@@ -37,36 +37,59 @@ The LSTM unit designed that it can remember a value for an arbitrary length of t
 %\end{figure}
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\textwidth]{./fig/LSTM3-chain.png}
-	\caption{An unrolled LSTM unit. (C. Olah 2015)
-		\label{fig:lstm-unroll}}
+	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-peepholes.png}
+	\caption{Variation of the LSTM unit. (C. Olah 2015 \cite{colah-lstm})
+		\label{fig:lstm}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-All these gates can be described by series of equations \eqref{eq:lstm1}$ \rightarrow $\eqref{eq:lstm6}. In each time slice the unit is using current input $ x_t $, last stored value $ c_{t-1} $ and hidden state of the unit $ h_{t-1} $ to compute next state $ c_t $, $ h_t $ and output $ o_t $. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model.
+All these gates can be described by series of equations \eqref{eq:lstm1}$ \rightarrow $\eqref{eq:lstm6}. In each time slice the unit is using current input $ x_t $, last stored value $ c_{t-1} $ and unit output $ h_{t-1} $ to compute next state $ c_t $ and output $ h_t $. Variables $ i_t $, $ f_t $, $ o_t $ denotes value of input, forget and output gates which are used to control the information flow.
 
 \belowdisplayskip=24pt
 \begin{align}
-	i_t &= \sigma(W_x^ix_t + W_h^ih_{t-1} + W_c^ic_{t-1} + b^i) \label{eq:lstm1}\\
-	f_t &= \sigma(W_x^fx_t + W_h^fh_{t-1} + W_c^fc_{t-1} + b^f) \label{eq:lstm2}\\
-	z_t &= \tanh(W_x^cx_t + W_h^ch_{t-1} + b^c) \label{eq:lstm3}\\
-	c_t &= f_tc_{t-1} + i_tz_t \label{eq:lstm4}\\
-	o_t &= \sigma(W_x^ox_t + W_h^oh_{t-1} + W_c^oc_t + b^o) \label{eq:lstm5}\\
-	h_t &= o_t\tanh(c_t) \label{eq:lstm6}\\[16pt]
-	\sigma(x) &= \frac{1}{1+e^{-x}} \label{eq:lstm7}
+	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}c_{t-1} + b_i) \label{eq:lstm1}\\
+	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}c_{t-1} + b_f) \label{eq:lstm2}\\
+	z_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \label{eq:lstm3}\\
+	c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot z_t \label{eq:lstm4}\\
+	o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1} + W_{co}c_t + b_o) \label{eq:lstm5}\\
+	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(c_t) \label{eq:lstm6}\\[16pt]
+	\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:lstm7}
 \end{align}
 
-LSTM based on the equations \eqref{eq:lstm1}$ \rightarrow $\eqref{eq:lstm6} is using total of 11 weight matrices and 4 bias vectors for computations and $ \sigma $ is sigmoid function defined in the equation \eqref{eq:lstm7}.
+LSTM based on these equations is using total of 11 weight matrices and 4 bias vectors for computations and sigmoid function $ \sigma $ defined in the equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting \textquoteleft peephole connections\textquoteright, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
 
-Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates until they learn to deal with it.
+Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
+
 
 		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
-\todo[inline]{Zminit jako updatovanou verzi}
-\cite{DBLP:journals/corr/ChoMGBSB14}
-\cite{DBLP:journals/corr/GreffSKSS15}
+Gated Recurrent Unit is slightly more dramatic variation on the LSTM theme from 2014 paper \cite{DBLP:journals/corr/ChoMGBSB14}. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-GRU.png}
+	\caption{Variation of a GRU unit. (C. Olah 2015 \cite{colah-lstm})
+		\label{fig:gru}}
+\end{figure}
+%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+\begin{align}
+r_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xr}x_t + W_{hr}h_{t-1} + b_r) \label{eq:gru1}\\
+z_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xz}x_t + W_{hz}h_{t-1} + b_z) \label{eq:gru2}\\
+\widetilde{h}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xh}x_t + W_{hh}(h_{t-1}\odot r_t) + b_h) \label{eq:gru3}\\
+h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}\\[16pt]
+\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:gru5}
+\end{align}
+
+Equations \eqref{eq:gru1}$ \rightarrow $\eqref{eq:gru4} describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:gru5}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
+
+Last year, study by Chung \cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally researchers agree that most of the LSTM variations, including GRU, are roughly on the same level of performance. In \cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
+
+In paper \cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's \cite{DBLP:conf/icml/JozefowiczZS15} paper. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
+It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
+
 
 		\subsection{Text sequences -- Word level embeddings and character level}
-\todo[inline]{Mozna trochu upravit nazev. (Character level and word level embeddings)}
+\todo[inline]{Mozna trochu upravit nazev. language modeling - character level and word level embeddings}
 \todo[inline]{Popis toho jak se pracuje s textem v rnn, ze to je taky sekvence. Character level, word level, embeddings. Popis rozdilu toho jak funguji preklady a generovani dalsiho prvku sekvence.}
 
 	\section{Convolutional neural nets}
