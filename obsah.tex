@@ -82,14 +82,13 @@ h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \
 
 Equations \eqref{eq:gru1}$ \rightarrow $\eqref{eq:gru4} describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:gru5}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
 
-Last year, study by Chung \cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally researchers agree that most of the LSTM variations, including GRU, are roughly on the same level of performance. In \cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
+Last year, study by Chung \cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. In \cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
 
 In paper \cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's \cite{DBLP:conf/icml/JozefowiczZS15} paper. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
 
 
-		\subsection{Text sequences -- Word level embeddings and character level}
-\todo[inline]{Mozna trochu upravit nazev. language modeling - character level and word level embeddings}
+		\subsection{Language modeling -- Word level embeddings and character level}
 \todo[inline]{Popis toho jak se pracuje s textem v rnn, ze to je taky sekvence. Character level, word level, embeddings. Popis rozdilu toho jak funguji preklady a generovani dalsiho prvku sekvence.}
 
 	\section{Convolutional neural nets}
@@ -121,6 +120,7 @@ It is also worth mentioning that Jozefowicz in his paper discovered several arch
 		\todo[inline]{loadcaffe, optim,...}
 
 	\section{Predicting next character in sequence}
+\todo[inline]{Implementace sekce Language modeling, jak se to konkretne dela.}
 \todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
 \todo[inline]{Reference na Karpathyho char-rnn}
 \cite{char-rnn}
@@ -154,17 +154,50 @@ It is also worth mentioning that Jozefowicz in his paper discovered several arch
 
 
 	\section{Datasets}
-\todo[inline]{COCO, Flicker, popis jake jsou. Asi zrusit sekce, udelat jen tabulku a mensi popis.}
-	
-		\subsection{MS COCO}
-		\cite{dataset-coco}
 		
-		\subsection{Flickr 30k,8k}
-		\cite{dataset-flickr30k}
-		\cite{dataset-flickr8k}
+Big datasets are necessary requirement in training recurrent neural nets, together with sufficient computing power. As access to machines and hardware suitable for training has been made extremely easy, obtaining enough data become the biggest problem. All the descriptions in the image captioning datasets have to be human generated, which is very expensive. This is one of the reasons, not many specialized datasets are created.
+
+There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
+
+Flickr8k \cite{dataset-flickr8k} was one of the first datasets created for this purpose. It has been later expanded into Flickr30k \cite{dataset-flickr30k}. MS COCO \cite{dataset-coco} is dataset created by Microsoft for their captioning challenge. CIDEr \cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric.
+
+\def\arraystretch{1.2}%  1 is the default, change whatever you need
+%\setlength\extrarowheight{20pt}%add points to the row height
+
+\begin{center}
+	\begin{longtable}{|l|m{2cm}|m{2cm}|m{4.7cm}|}			
+		\caption{Image captioning datasets.} \label{tab:datasets} \\
+
+	   	\hline
+	   	\multicolumn{1}{|l|}{\textbf{Name}} & 
+	   	\textbf{Images} & 
+	   	\textbf{Captions per image} & 
+	   	\textbf{Note} \\
+	   	\hline \hline
+		\endhead
 		
-		\subsection{CIDEr datasets}
-		\cite{Vedantam_2015_CVPR}		
+	   	Flickr8k\footnote{Flickr8k project page: \url{http://nlp.cs.illinois.edu/HockenmaierGroup/8k-pictures.html}} &
+		   	\multicolumn{1}{r|}{8 092} &
+		   	\multicolumn{1}{c|}{5} &
+		   	Focused on people or animals (mainly dogs) performing some specific action. \\ \hline
+	   	Flickr30k\footnote{Flickr30k project page: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} & 
+		   	\multicolumn{1}{r|}{31 783} &
+		   	\multicolumn{1}{c|}{5-6} &
+		   	An extension of Flickr8k dataset. \\ \hline
+	   	MS COCO\footnote{MS COCO project page: \url{http://mscoco.org/dataset/}} &
+		   	\multicolumn{1}{r|}{120 000} &
+		   	\multicolumn{1}{c|}{5} &
+		   	Images are divided - 80 000 to training and 40 000 for testing purposes. \\ \hline
+	   	PASCAL-50S\footnote{\label{ft:cider}PASCAL-50S and ABSTRACT-50S page: \url{http://ramakrishnavedantam928.github.io/cider/}} &
+		   	\multicolumn{1}{r|}{1 000} &
+		   	\multicolumn{1}{c|}{50} &
+		   	Built upon images from the UIUC Pascal Sentence Dataset. \\ \hline
+	   	ABSTRACT-50S\footnote{See footnote \ref{ft:cider}.} &
+		   	\multicolumn{1}{r|}{500} &
+		   	\multicolumn{1}{c|}{50} &
+		   	Built upon images from the Abstract Scenes Dataset. No photos.\\ \hline
+	\end{longtable}
+\end{center}
 
 	\section{Evaluation metrics}
 \todo[inline]{BLEU, cIDER, jak se pouzivaji, co delaji...}
