@@ -90,13 +90,38 @@ It is also worth mentioning that Jozefowicz in his paper discovered several arch
 
 		\subsection{Language modeling -- text generation}
 
+With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
+
+Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value. \todof{Pridat ukazky vektoru a jak to odpovida tomu rozdeleni.}
+
+At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
+
+\todo[inline]{Popsat word embeddings jako reseni problemu s hodne dimenzema. \cite{DBLP:journals/corr/MikolovSCCD13}}
+
+
+
+\vspace{3cm}
+experimentovani s character level sitema, protoze to je jednodussi, vhodne i pro jine jazyky nez anglictinu (konjugace, deklinace - rustina)
+
+krome jinych oblasti maji dobre vzsledky i v generovani textu
+
+mozna nekde zminit lstm stacking
+
+tohle kodovani je taky rozdeleni pravdepodobnosti o tom jaky je soucasny vstup.
+
+roztahnout  ukazkama vektoru, rovnicema pro multinomial. nepridavat	referenci na ten prvni clanek
+
+nejdrive character level, pak presun do word level, jake maji plusy a minusy
+
+moc velky slovnik, reseni word embeddings.
+
 Word level, character level, word embeddings.
 
 %https://www.reddit.com/r/MachineLearning/comments/3a9awn/wordlevel_vs_characterlevel_models/
 
 %http://karpathy.github.io/2015/05/21/rnn-effectiveness/
 
-%http://arxiv.org/abs/1310.4546v1
+%http://arxiv.org/abs/1308.0850v5
 
 %http://arxiv.org/abs/1310.4546v1 - word embeddings
 
@@ -132,7 +157,6 @@ Word level, character level, word embeddings.
 \todo[inline]{Udelat tady tabulku o ruznych balicich co torch ma}
 \todo[inline]{Jak funguji rekurentni site v Torchi.}
 \todo[inline]{Nacitani modelu z Caffe, ukladani v Torchi...}
-\cite{TorchLib}
 
 		\subsection{nn, nngraph}
 		\todo[inline]{Linky na knihovny v poznamkach pod carou.}
@@ -145,8 +169,7 @@ Word level, character level, word embeddings.
 	\section{Predicting next character in sequence}
 \todo[inline]{Implementace sekce Language modeling, jak se to konkretne dela.}
 \todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
-\todo[inline]{Reference na Karpathyho char-rnn}
-\cite{char-rnn}
+\todo[inline]{Karpathyho char-rnn \cite{char-rnn}}
 
 \chapter{Image caption generation}
 \todo[inline]{Znovu uvod k tomu jak je to dulezite a tentokrat jak na tom lidi pracuji, co je potreba a jak se to hodnoti.}
@@ -156,19 +179,17 @@ Word level, character level, word embeddings.
 
 		\subsection{Show and Tell}
 		\cite{DBLP:journals/corr/VinyalsTBE14}
-		\cite{DBLP:journals/corr/SutskeverVL14}
-		
 		\todo[inline]{Clanek z Coco od Googlu.}
+		
+		\cite{DBLP:journals/corr/SutskeverVL14}
 		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks), architektura encoder, decoder}
 		
 		\subsection{Show, Attend and Tell}
 		\cite{DBLP:journals/corr/XuBKCCSZB15}
-		
 		\todo[inline]{Clanek z Coco z Montrealu/Toronta}
 		
 		\subsection{From Captions to Visual Concepts and Back}
 		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
-		
 		\todo[inline]{Clanek z Coco od Microsoftu, mrknout se i na pokracovani v druhem clanku}
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
@@ -210,7 +231,7 @@ Flickr8k \cite{dataset-flickr8k} was one of the first datasets created for this 
 	   	MS COCO\footnote{MS COCO project page: \url{http://mscoco.org/dataset/}} &
 		   	\multicolumn{1}{r|}{120 000} &
 		   	\multicolumn{1}{c|}{5} &
-		   	Images are divided - 80 000 to training and 40 000 for testing purposes. \\ \hline
+		   	Images are divided - 80 000 for training and 40 000 for testing purposes. \\ \hline
 	   	PASCAL-50S\footnote{\label{ft:cider}PASCAL-50S and ABSTRACT-50S page: \url{http://ramakrishnavedantam928.github.io/cider/}} &
 		   	\multicolumn{1}{r|}{1 000} &
 		   	\multicolumn{1}{c|}{50} &
