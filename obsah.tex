@@ -88,67 +88,30 @@ In paper \cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
 
 
-		\subsection{Language modeling -- text generation}
+		\subsection{Language modeling and word embeddings}
 
 With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
 
-Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value. \todof{Pridat ukazky vektoru a jak to odpovida tomu rozdeleni.}
+Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
+
+%TODO pridat ukazky vektoru a pravdepodobnostniho rozlozeni, kdyz bude cas
 
 At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
 
-\todo[inline]{Popsat word embeddings jako reseni problemu s hodne dimenzema. \cite{DBLP:journals/corr/MikolovSCCD13}}
+To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model from \cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
 
+%TODO vice rozebrat kdyz bude cas a misto, klidne s ukazkama na celou stranku
+%http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
 
-
-\vspace{3cm}
-experimentovani s character level sitema, protoze to je jednodussi, vhodne i pro jine jazyky nez anglictinu (konjugace, deklinace - rustina)
-
-krome jinych oblasti maji dobre vzsledky i v generovani textu
-
-mozna nekde zminit lstm stacking
-
-tohle kodovani je taky rozdeleni pravdepodobnosti o tom jaky je soucasny vstup.
-
-roztahnout  ukazkama vektoru, rovnicema pro multinomial. nepridavat	referenci na ten prvni clanek
-
-nejdrive character level, pak presun do word level, jake maji plusy a minusy
-
-moc velky slovnik, reseni word embeddings.
-
-Word level, character level, word embeddings.
-
-%https://www.reddit.com/r/MachineLearning/comments/3a9awn/wordlevel_vs_characterlevel_models/
-
-%http://karpathy.github.io/2015/05/21/rnn-effectiveness/
-
-%http://arxiv.org/abs/1308.0850v5
-
-%http://arxiv.org/abs/1310.4546v1 - word embeddings
-
-\todo[inline]{Popis toho jak se pracuje s textem v rnn, ze to je taky sekvence. Character level, word level, embeddings. Popis rozdilu toho jak funguji preklady a generovani dalsiho prvku sekvence.}
-
-\todo[inline]{Character-level models are much worse for vocabulary size though. I can barely get my character-level models to learn more than 5000 words. Usually less.
-	
-	
-	[?]olBaa 2 body pøed 6 mìsícù 
-	
-	The problem is the slow learning time, I suppose. Training a char-rnn should in theory yield vocabulary as rich, and possibly more rich as word-level model. I observed emergency on new word forms in the texts generated by character-level RNNs, so it may need some more computational resources to get the vocab.
-	
-	
-	[?]yowdge 1 bod pøed 6 mìsícù 
-	
-	Well, yeah, you can also approximate any function with a single-layer NN, but that doesn't mean that deep NNs aren't useful. It could be the case that you need millions of hidden units to get a character-level NN to perform as well as a word-level NN (do you know of any empirical research on this?).}
+Character level modeling has been considered and used as an alternative to word-level, but so far had slightly worse performance. Regardless, it is still considered as an option, because it has much simpler representation of input and output. Consider roughly $ 45 $ characters in English text and over $ 50 000 $ words created from them. Character level network is also more suited for Czech or Russian and other fusional languages\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.}, which heavily use prefixes and suffixes to create new words. This is also an ability, which cannot be overlooked, as it is not available for word level.
+Character level models have usually smaller vocabulary size and have to be trained longer, as they need to learn spelling of the words on top of the same features of word level. With the properly trained character level model we can benefit from its much greater generative abilities, than we can achieve with word-level.
 
 	\section{Convolutional neural nets}
-\todo[inline]{Kratky uvod do toho, kde se pouzivaji, jak se vyvinuly, jednoduchy popis toho jak funguji. Obrazek?}
-\todo[inline]{Asi neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek. V diplomce rozpracovat vic.}
-
-%		\subsection{Convolutional layer}
-%
-%		\subsection{Pooling layer}
+\todo[inline]{Kratky uvod do toho, kde se pouzivaji, popis jak funguji.}
+\todo[inline]{Neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek. V diplomce rozpracovat vic.}
 
 \chapter{Experiments}
-\todo[inline, color=magenta!60]{Kapitola jen na semestralni projekt. V diplomce ji odstranim.}
+\todo[inline, color=magenta!60]{Asi kapitola jen na semestralni projekt. V diplomce ji odstranim.}
 \todo[inline]{Jak se to implementuje, jake knihovny se pouzivaji - Caffe, Theano, TensorFlow, Torch. Popsat ze Torch bude v tehle kapitole.}
 \todo[inline]{Budu popisovat veci co jsem zkousel implementovat v Torchi.}
 
@@ -169,7 +132,8 @@ Word level, character level, word embeddings.
 	\section{Predicting next character in sequence}
 \todo[inline]{Implementace sekce Language modeling, jak se to konkretne dela.}
 \todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
-\todo[inline]{Karpathyho char-rnn \cite{char-rnn}}
+\todo[inline]{Karpathyho char-rnn}
+\cite{char-rnn}
 
 \chapter{Image caption generation}
 \todo[inline]{Znovu uvod k tomu jak je to dulezite a tentokrat jak na tom lidi pracuji, co je potreba a jak se to hodnoti.}
@@ -177,24 +141,24 @@ Word level, character level, word embeddings.
 	\section{Related Work}
 \todo[inline]{Dat tomu nejake lepsi jmeno, clanky o popisovani obrazku ktere jsem cetl, pouzil.}
 
-		\subsection{Show and Tell}
-		\cite{DBLP:journals/corr/VinyalsTBE14}
+		\subsection{Show and Tell: A Neural Image Caption Generator}
 		\todo[inline]{Clanek z Coco od Googlu.}
+		\cite{DBLP:journals/corr/VinyalsTBE14}
 		
-		\cite{DBLP:journals/corr/SutskeverVL14}
 		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks), architektura encoder, decoder}
+		\cite{DBLP:journals/corr/SutskeverVL14}
 		
-		\subsection{Show, Attend and Tell}
-		\cite{DBLP:journals/corr/XuBKCCSZB15}
+		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 		\todo[inline]{Clanek z Coco z Montrealu/Toronta}
+		\cite{DBLP:journals/corr/XuBKCCSZB15}
 		
 		\subsection{From Captions to Visual Concepts and Back}
-		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		\todo[inline]{Clanek z Coco od Microsoftu, mrknout se i na pokracovani v druhem clanku}
+		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
-		\cite{DBLP:journals/corr/DonahueHGRVSD14}
 		\todo[inline]{Clanek z Coco z berkeley}
+		\cite{DBLP:journals/corr/DonahueHGRVSD14}
 
 
 	\section{Datasets}
