@@ -163,7 +163,7 @@ Character level models have usually smaller vocabulary size and have to be train
 
 
 	\section{Datasets}
-		
+\label{sec:datasets}		
 Big datasets are necessary requirement in training recurrent neural nets, together with sufficient computing power. As access to machines and hardware suitable for training has been made extremely easy, obtaining enough data become the biggest problem. All the descriptions in the image captioning datasets have to be human generated, which is very expensive. This is one of the reasons, not many specialized datasets are created.
 
 There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
@@ -216,13 +216,11 @@ Recent progress in fields like machine translation, which are very similar to im
 		
 Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquoteleft same\textquoteright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server available through \url{http://mscoco.org/dataset/\#captions-upload}.} which have many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
 		
-	\todo[inline]{BLEU, cIDER, meteor, staci odstavec pro kazdou, zase tolik toho psat nebudem}
+The most commonly used metric has been BLEU (Bilingual Evaluation Understudy) \cite{Papineni:2002:BMA:1073083.1073135}, which was created in 2002 to evaluate quality of machine translated text from one language to another. Scores are computed on individual segments, usually sentences. BLEU has high correlation with human judgments and is still highly popular even for captioning tasks. However, it is becoming outdated as automatic methods are now outperforming humans. Four different variations of BLEU are used in MS COCO evaluation server.
 
-		\cite{Papineni:2002:BMA:1073083.1073135} - Bleu
+METEOR (Metric for Evaluation of Translation with Explicit ORdering) \cite{Lavie:2007:MAM:1626355.1626389} is another metric for the evaluation of machine translation from 2007. It was designed to fix some problems of the BLEU metric and it can also look for synonyms and perform stemming on input words.
 		
-		\cite{Vedantam_2015_CVPR} - Cider
-		
-		\cite{Lavie:2007:MAM:1626355.1626389} - meteor
+Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation) \cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
 
 \chapter{Model}
 \todo[inline, color=cyan!60]{Do semestralniho projektu nebo az na diplomku?}
