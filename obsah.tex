@@ -113,7 +113,7 @@ Character level models have usually smaller vocabulary size and have to be train
 
 \chapter{Experiments}
 \todo[inline, color=magenta!60]{Asi kapitola jen na semestralni projekt. V diplomce ji odstranim.}
-\todo[inline]{Jak se to implementuje, jake knihovny se pouzivaji - Caffe, Theano, TensorFlow, Torch. Popsat ze Torch bude v tehle kapitole.}
+\todo[inline]{Jak se implementuje deep learning, jake knihovny se pouzivaji - Caffe, Theano, TensorFlow, Torch. Popsat ze Torch bude v tehle kapitole.}
 \todo[inline]{Budu popisovat veci co jsem zkousel implementovat v Torchi.}
 
 	\section{Torch}
@@ -123,7 +123,7 @@ Character level models have usually smaller vocabulary size and have to be train
 \todo[inline]{Nacitani modelu z Caffe, ukladani v Torchi...}
 
 		\subsection{nn, nngraph}
-		\todo[inline]{Linky na knihovny v poznamkach pod carou.}
+		\todo[inline]{Linky na knihovny.}
 		
 		\subsection{rnn}
 		
@@ -137,16 +137,29 @@ Character level models have usually smaller vocabulary size and have to be train
 \cite{char-rnn}
 
 \chapter{Image caption generation}
-\todo[inline]{Znovu uvod k tomu jak je to dulezite a tentokrat jak na tom lidi pracuji, co je potreba a jak se to hodnoti.}
+
+Scene understanding is one of the fundamental and most difficult tasks of computer vision. Being able to automatically generate image or video captions in regular text could have great effect. However, it is much more complicated than simple classification or object recognition, because the model also need to understand relations between the recognized objects and capture that correctly in the captions.
+
+In this chapter I will do an overview of approaches to this task and more closely describe latest papers on which is this work based (section \ref{sec:related}). Following parts cover datasets (\ref{sec:datasets}) and evaluation procedures (\ref{sec:evaluation}) most commonly used for this task.
 
 	\section{Related Work}
-\todo[inline]{Dat tomu nejake lepsi jmeno, clanky o popisovani obrazku ktere jsem cetl, pouzil.}
+	\label{sec:related}
+	
+Currently, neural networks are most heavily used to generate captions. Before them two main approaches were common. The first one used caption templates, which were filled by detected objects and relations. Second was based on retrieving similar captions from database and modifying them to fit current image. Question of similarity ranking has been addressed by many papers, which are based on the idea of joint embedding vector space for both images and captions. Close captions are located by searching this space.
+
+Both approaches above usually included generalization step to remove information relevant only to current image, for example names. They are quite successful in describing images, but they are heavily hand-designed and their text-generation power is fixed on the database/embedding and is not able to describe previously unseen compositions of objects. Over time these approaches fell out of favor to now dominant neural network methods.
+
+Many of the methods using neural nets are inspired by successful sequence to sequence training of recurrent neural nets for machine translation. One of the reasons is that introduced encoder-decoder architecture can be easily applied for captioning. We can interpret image captioning problem as translation from an image to a sentence. Encoder-decoder is an architecture which first encode image or sequence to a single feature vector, then decode it to produce output. The encoder part of the model is most of the time a convolutional neural network for image classification and decoder is type of a RNN or LSTM, which captioning community took over from machine translation.
+
+One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge - \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
+
+%\todo[inline]{nejlepsi clanky se ucastni ms coco.}
 
 		\subsection{Show and Tell: A Neural Image Caption Generator}
 		\todo[inline]{Clanek z Coco od Googlu.}
 		\cite{DBLP:journals/corr/VinyalsTBE14}
 		
-		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks), architektura encoder, decoder}
+		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks)}
 		\cite{DBLP:journals/corr/SutskeverVL14}
 		
 		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
@@ -163,7 +176,7 @@ Character level models have usually smaller vocabulary size and have to be train
 
 
 	\section{Datasets}
-\label{sec:datasets}		
+	\label{sec:datasets}		
 Big datasets are necessary requirement in training recurrent neural nets, together with sufficient computing power. As access to machines and hardware suitable for training has been made extremely easy, obtaining enough data become the biggest problem. All the descriptions in the image captioning datasets have to be human generated, which is very expensive. This is one of the reasons, not many specialized datasets are created.
 
 There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
@@ -209,7 +222,7 @@ Flickr8k \cite{dataset-flickr8k} was one of the first datasets created for this 
 \end{center}
 
 	\section{Evaluation}
-	
+	\label{sec:evaluation}	
 Recent progress in fields like machine translation, which are very similar to image captioning, caused spike of interest in evaluating regular text output accuracy. Although it is sometimes not clear if a description of an image is best option available, some degree of assessment is possible. The best results can be obtained by asking live raters to give a score on the usefulness of each description. Subjective scores can vary, but it can be averaged by giving same description to multiple raters. However this method consumes tremendous amount of time and usually external raters are necessary. Tools like Amazon Mechanical Turk can be used to great extent, but need for automated tools is evident.
 
 		\subsection{Automated metrics}
