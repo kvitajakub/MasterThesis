@@ -4,7 +4,7 @@
 \todo[inline]{Klasicky popis toho co se tady bude dit, jak je to dulezite, atd.}
 
 \chapter{Neural networks} 
-General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt \cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm \cite{bryson1975applied}\cite{werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquoteleft Deep Learning\textquoteright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision, speech recognition and natural language modeling.\todof{reference, CV,rec,LM}
+General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt \cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm \cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquoteleft Deep Learning\textquoteright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision, speech recognition and natural language modeling.\todof{reference, CV,rec,LM}
 
 Various useful architectures and algorithms are now introduced almost every month. In this chapter, I will describe only a handful -- recurrent neural networks with the LSTM and GRU units, and basics of convolutional neural nets.
 
@@ -25,7 +25,7 @@ We can understand recurrent neural networks as very deep forward nets with share
 
 		\subsection{LSTM -- Long Short-Term Memory}\label{subsec:lstm}
 
-Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber (1997) \cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem \cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers \cite{DBLP:conf/ijcnn/GersS00}\cite{DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
+Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber (1997) \cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem \cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers \cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
 
@@ -104,6 +104,34 @@ Character level modeling has been considered and used as an alternative to word-
 Character level models have usually smaller vocabulary size and have to be trained longer, as they need to learn spelling of the words on top of the same features of word level. With the properly trained character level model we can benefit from its much greater generative abilities, than we can achieve with word-level.
 
 	\section{Convolutional neural nets}
+	
+Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven \cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
+
+Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma \cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98} and one of the most famous convolutional nets -- LeNet -- was created. Basic architecture of CNN can be described as the following process:
+
+\begin{minipage}{0.9\textwidth}
+\begin{enumerate}
+	\item Convolve several small filters on the input image.
+	\item Subsample this space of filter activations.
+	\item Repeat steps 1 and 2 until your left with sufficiently high level features.
+	\item Use a standard a standard FFNN to solve a particular task, using the results features as input.
+\end{enumerate}
+\end{minipage}
+
+\vspace{1cm}
+
+Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma \cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98} and one of the most famous convolutional nets -- LeNet -- was created. Basic architecture of CNN can be described as the following process:
+
+
+\todo[inline]{problemy FFNN s vizualnimi daty - zrod konvoluci podle inspirace v mozku, lenet, obrazek lenet, popis konvoluci, popis subsampling}
+	
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
+	\caption{Architecture of LeNet. \cite{lecun-98}
+		\label{fig:lenet}}
+\end{figure}	
+	
 \todo[inline]{Kratky uvod do toho, kde se pouzivaji, popis jak funguji.}
 \todo[inline]{Neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek. V diplomce rozpracovat vic.}
 
