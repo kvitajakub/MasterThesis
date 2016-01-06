@@ -100,40 +100,40 @@ To solve the problem with extremely long input vectors, set of techniques called
 %http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
 %https://www.gavagai.se/blog/2015/09/30/a-brief-history-of-word-embeddings/
 
-Character level modeling has been considered and used as an alternative to word-level, but so far had slightly worse performance. Regardless, it is still considered as an option, because it has much simpler representation of input and output. Consider roughly $ 45 $ characters in English text and over $ 50 000 $ words created from them. Character level network is also more suited for Czech or Russian and other fusional languages\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.}, which heavily use prefixes and suffixes to create new words. This is also an ability, which cannot be overlooked, as it is not available for word level.
+Character level modeling has been considered and used as an alternative to word-level, but so far had slightly worse performance. Regardless, it is still considered as an option, because it has much simpler representation of input and output. Consider roughly $ 45 $ characters in English text and over $ 50 000 $ words created from them. Character level network is also more suited for Czech or Russian and other fusional\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.} languages, which heavily use prefixes and suffixes to create new words. This is also an ability, which cannot be overlooked, as it is not available for word level.
 Character level models have usually smaller vocabulary size and have to be trained longer, as they need to learn spelling of the words on top of the same features of word level. With the properly trained character level model we can benefit from its much greater generative abilities, than we can achieve with word-level.
 
 	\section{Convolutional neural nets}
 	
 Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven \cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
 
-Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma \cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98} and one of the most famous convolutional nets -- LeNet -- was created. Basic architecture of CNN can be described as the following process:
+Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma \cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98}. Different CNN architecture was proposed by Graupe \cite{graupe1988} for decomposition of one-dimensional EMG signals. Convolutional nets can be also used to natural language processing \cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos \cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
 
+Basic architecture of CNN can be described as the following process:
+
+\vspace{8mm}
 \begin{minipage}{0.9\textwidth}
 \begin{enumerate}
-	\item Convolve several small filters on the input image.
+	\item Convolve several small filters on the input.
 	\item Subsample this space of filter activations.
-	\item Repeat steps 1 and 2 until your left with sufficiently high level features.
-	\item Use a standard a standard FFNN to solve a particular task, using the results features as input.
+	\item Repeat steps 1 and 2 until you are left with a sufficiently high level features.
+	\item Use a standard feed-forward neural net to solve the task, using the features as input.
 \end{enumerate}
 \end{minipage}
-
 \vspace{1cm}
 
-Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma \cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98} and one of the most famous convolutional nets -- LeNet -- was created. Basic architecture of CNN can be described as the following process:
+Convolutional layer, which is most important and gave CNN their name is essentially the same as mathematical convolution used elsewhere. Here it means to apply a 'filter' over an input at all possible offsets. This filter - in image processing and computer vision called kernel - has a layer of connection weights with the same dimensionality as the input, but with much smaller size. Despite the fact that there is many connections, which are even overlapping, the weights are tied together and during training only handful of parameters per filter need to be updated. It is also possible to stack filters on top of each other to create more powerful architectures, but as they do not reduce dimensionality significantly, output has the same size as the input. Second type of a layer has been introduced to improve it - subsampling.
 
+Subsampling, or max pooling in this version, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
 
-\todo[inline]{problemy FFNN s vizualnimi daty - zrod konvoluci podle inspirace v mozku, lenet, obrazek lenet, popis konvoluci, popis subsampling}
-	
-\begin{figure}[!ht]
+Last type of unit commonly used in CNN is rectified linear unit (ReLU), which provides nonlinearity and improves overall performance \cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}} \cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of LeNet-5 is on the figure \ref{fig:lenet}.
+
+\begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
-	\caption{Architecture of LeNet. \cite{lecun-98}
+	\caption{LeNet-5 architecture. \cite{lecun-98}
 		\label{fig:lenet}}
-\end{figure}	
-	
-\todo[inline]{Kratky uvod do toho, kde se pouzivaji, popis jak funguji.}
-\todo[inline]{Neni potreba davat subsekce na vrstvy, staci popsat jak to funguje vsechno dohromady, jednotlive vrstvy ve vetach v jednom odstavci. Obrazek. V diplomce rozpracovat vic.}
+\end{figure}
 
 \chapter{Image caption generation}
 
@@ -152,7 +152,7 @@ Many of the methods using neural nets are inspired by successes in training of r
 
 The introduced encoder--decoder architecture is important to the captioning task, because we can interpret image description problem as a translation from an image to a sentence. In this case, encoder part of the model is usually convolutional neural net, as they are excellent in the image classification \cite{DBLP:journals/corr/SzegedyLJSRAEVR14}. Decoder part is similar as in machine translation models -- type of a RNN or LSTM, as the output for both tasks is essentially same.
 
-One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge - \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
+One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
 
 %\todo[inline]{nejlepsi clanky se ucastni ms coco.}
 
@@ -199,19 +199,19 @@ Flickr8k \cite{dataset-flickr8k} was one of the first datasets created for this 
 	   	\hline \hline
 		\endhead
 		
-	   	Flickr8k\footnote{Flickr8k project page: \url{http://nlp.cs.illinois.edu/HockenmaierGroup/8k-pictures.html}} &
+	   	Flickr8k\footnote{Flickr8k project: \url{http://nlp.cs.illinois.edu/HockenmaierGroup/8k-pictures.html}} &
 		   	\multicolumn{1}{r|}{8 092} &
 		   	\multicolumn{1}{c|}{5} &
 		   	Focused on people or animals (mainly dogs) performing some specific action. \\ \hline
-	   	Flickr30k\footnote{Flickr30k project page: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} & 
+	   	Flickr30k\footnote{Flickr30k project: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} & 
 		   	\multicolumn{1}{r|}{31 783} &
 		   	\multicolumn{1}{c|}{5-6} &
 		   	An extension of Flickr8k dataset. \\ \hline
-	   	MS COCO\footnote{MS COCO project page: \url{http://mscoco.org/dataset/}} &
+	   	MS COCO\footnote{MS COCO project: \url{http://mscoco.org/dataset/}} &
 		   	\multicolumn{1}{r|}{120 000} &
 		   	\multicolumn{1}{c|}{5} &
 		   	Images are divided - 80 000 for training and 40 000 for testing purposes. \\ \hline
-	   	PASCAL-50S\footnote{\label{ft:cider}PASCAL-50S and ABSTRACT-50S page: \url{http://ramakrishnavedantam928.github.io/cider/}} &
+	   	PASCAL-50S\footnote{\label{ft:cider}PASCAL-50S and ABSTRACT-50S: \url{http://ramakrishnavedantam928.github.io/cider/}} &
 		   	\multicolumn{1}{r|}{1 000} &
 		   	\multicolumn{1}{c|}{50} &
 		   	Built upon images from the UIUC Pascal Sentence Dataset. \\ \hline
@@ -228,7 +228,7 @@ Recent progress in fields like machine translation, which are very similar to im
 
 		\subsection{Automated metrics}
 		
-Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquoteleft same\textquoteright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server available through \url{http://mscoco.org/dataset/\#captions-upload}.} which have many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
+Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquoteleft same\textquoteright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
 		
 The most commonly used metric has been BLEU (Bilingual Evaluation Understudy) \cite{Papineni:2002:BMA:1073083.1073135}, which was created in 2002 to evaluate quality of machine translated text from one language to another. Scores are computed on individual segments, usually sentences. BLEU has high correlation with human judgments and is still highly popular even for captioning tasks. However, it is becoming outdated as automatic methods are now outperforming humans. Four different variations of BLEU are used in MS COCO evaluation server.
 
