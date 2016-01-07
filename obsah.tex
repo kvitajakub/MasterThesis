@@ -236,10 +236,17 @@ METEOR (Metric for Evaluation of Translation with Explicit ORdering)\cite{Lavie:
 		
 Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation)\cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
 
-\chapter{Experiments}
-\todo[inline, color=magenta!60]{Asi kapitola jen na semestralni projekt. V diplomce ji odstranim.}
-\todo[inline]{Jak se implementuje deep learning, jake knihovny se pouzivaji - Caffe, Theano, TensorFlow, Torch. Popsat ze Torch bude v tehle kapitole.}
-\todo[inline]{Budu popisovat veci co jsem zkousel implementovat v Torchi.}
+\chapter{Tools and Experiments}
+
+In this chapter I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
+
+%The landscape of tools for neural networks is changing rapidly, so please bear in mind that if you are reading this several years later, some of the information does not have to be valid anymore.
+
+One of the tools most academic researchers in deep learning rely on is \emph{Theano}\footnote{Theano: \url{http://deeplearning.net/software/theano/}}\cite{bergstra-proc-scipy-2010}, which is Python library that works with mathematical expressions and matrices. It is built upon \emph{NumPy} to handle multidimensional arrays and compiles expressions before use for efficient computation. Theano can be quite intimidating and non-intuitive for some people, as it is focused on researchers and creating new architectures. For this reason, many packages and libraries has been created on top of Theano to simplify and streamline development of standard models. Among most popular are \emph{Keras}\footnote{Keras: \url{https://github.com/fchollet/keras}}, \emph{Lasagne}\footnote{Lasagne: \url{https://lasagne.readthedocs.org/en/latest/}}, \emph{Blocks}\footnote{Blocks: \url{https://github.com/mila-udem/blocks}}, which are open-source and available on GitHub, and \emph{PyLearn2}\footnote{PyLearn2: \url{http://deeplearning.net/software/pylearn2/}}.
+
+Next Python library, independent of Theano, is \emph{TensorFlow}\footnote{TensorFlow: \url{https://www.tensorflow.org/}}, a tool from Google, released last year. It is used to process symbolic data flow graphs on many different types of machines, ranging from multiple GPU computers to smartphones. Interesting feature is ability to perform partial subgraph computation, which allows distributed training of the neural network. TensorBoard is a tool worth mentioning, as it provides visualisations of training and evaluation of the model, tool missing in most of the other libraries.
+
+Python tools with the engine implemented in C/C++ are not the only ones. \emph{Caffe}\footnote{Caffe: \url{http://caffe.berkeleyvision.org/}} is well-known and widely used library with API in C++. It performs very well in image classification with neural nets and can be used as a source of many pre-trained models hosted on the Model Zoo\footnote{Caffe Model Zoo: \url{https://github.com/BVLC/caffe/wiki/Model-Zoo}} site. It is also possible to use \emph{Deeplearning4j}\footnote{Deeplearning4j: \url{http://deeplearning4j.org/}}, which is deep-learning library written for Java and Scala, and a lot of others. Nowadays, libraries are introduced almost every month as this field is very live, which also means not everything is implemented in every framework and users need to follow news about their tools.
 
 \section{Torch}
 \todo[inline, color=cyan!60]{Torch se zrecykluje do diplomky.}
