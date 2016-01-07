@@ -249,18 +249,19 @@ Next Python library, independent of Theano, is \emph{TensorFlow}\footnote{Tensor
 Python tools with the engine implemented in C/C++ are not the only ones. \emph{Caffe}\footnote{Caffe: \url{http://caffe.berkeleyvision.org/}} is well-known and widely used library with API in C++. It performs very well in image classification with neural nets and can be used as a source of many pre-trained models hosted on the Model Zoo\footnote{Caffe Model Zoo: \url{https://github.com/BVLC/caffe/wiki/Model-Zoo}} site. It is also possible to use \emph{Deeplearning4j}\footnote{Deeplearning4j: \url{http://deeplearning4j.org/}}, which is deep-learning library written for Java and Scala, and a lot of others. Nowadays, libraries are introduced almost every month as this field is very live, which also means not everything is implemented in every framework and users need to follow news about their tools.
 
 \section{Torch}
-\todo[inline, color=cyan!60]{Torch se zrecykluje do diplomky.}
-\todo[inline]{Udelat tady tabulku o ruznych balicich co torch ma}
-\todo[inline]{Jak funguji rekurentni site v Torchi.}
-\todo[inline]{Nacitani modelu z Caffe, ukladani v Torchi...}
+
+\emph{Torch}\footnote{Torch: \url{http://torch.ch/}} is an open source scientific computing framework and machine learning library for the Lua. Underlying implementation is using extremely fast LuaJIT and C, but no need to code in C is required. Torch is not as popular in academic environment as Theano, but it is used by several large companies including Google \& DeepMind, Facebook and IBM, which also contribute to the project. Apart from the companies, Torch has a large ecosystem of community-driven packages\footnote{Most of the packages are listed on the wikipage: \url{https://github.com/torch/torch7/wiki/Cheatsheet}} with almost every tool needed for machine learning, computer vision and signal processing, and wide range of utilities. In the rest of this section I will describe fundamental Torch packages, which are necessary for my research.
+
+The core package of Torch is \emph{torch}, which is installed together with the library. It contains data structures for multi-dimensional tensors and operations over them. This is the most important part, as almost every package depends on them. Additionally, it provides many utilities for accessing files, serializing objects, processing command-line parameters and other useful utilities.
 
 \subsection{nn, nngraph}
-\todo[inline]{Linky na knihovny.}
+\todo[inline]{V torchi vlastne nejsou neuronove site, ty jsou az v techto balicich.}
 
 \subsection{rnn}
+\todo[inline]{Jak funguji rekurentni site v Torchi.}
 
 \subsection{Other packages}
-\todo[inline]{loadcaffe, optim,...}
+\todo[inline]{loadcaffe, optim, cutorch, cltorch}
 
 \section{Predicting next character in sequence}
 \todo[inline]{Implementace sekce Language modeling, jak se to konkretne dela.}
