@@ -1,10 +1,15 @@
 %=========================================================================
 
 \chapter{Introduction}
-\todo[inline]{Klasicky popis toho co se tady bude dit, jak je to dulezite, atd.}
 
-\chapter{Neural networks} 
-General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquoteleft Deep Learning\textquoteright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision\cite{DBLP:journals/corr/HeZRS15}, speech recognition\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling\cite{DBLP:conf/interspeech/MikolovKBCK10}.
+When does a machine \textquoteleft understand\textquoteright\ an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
+
+Deep machine learning, sometimes under the name of neural networks\footnote{Terms \emph{deep learning} and \emph{neural networks} will be used in this work interchangeably.}, is branch of machine learning based on composing multiple non-linear functions to solve the task. As it is fundamentally different from the standard computer algorithms, it perform well on problems, which are unsuitable these algorithms. For example, neural networks have excellent performance in recognizing speech and images, writing stories and composing music. This work focuses on generating image descriptions in regular English sentences, which is also a task suitable for deep learning.
+
+First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
+
+\chapter{Neural networks} \label{chp:nn}
+General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquoteleft deep learning\textquoteright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision\cite{DBLP:journals/corr/HeZRS15}, speech recognition\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
 Various useful architectures and algorithms are now introduced almost every month. In this chapter, I will describe only a handful -- recurrent neural networks with the LSTM and GRU units, and basics of convolutional neural nets.
 
@@ -92,11 +97,14 @@ It is also worth mentioning that Jozefowicz in his paper discovered several arch
 
 With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
 
-Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value. \todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
+Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
+% TODO \todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
 
 At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
 
-To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them. \todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
+To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
+% TODO \todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
+
 %http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
 %https://www.gavagai.se/blog/2015/09/30/a-brief-history-of-word-embeddings/
 
@@ -135,7 +143,7 @@ Last type of unit commonly used in CNN is rectified linear unit (ReLU), which pr
 		\label{fig:lenet}}
 \end{figure}
 
-\chapter{Image caption generation}
+\chapter{Image caption generation}\label{chp:captions}
 
 Scene understanding is one of the fundamental and most difficult tasks of computer vision. Being able to automatically generate image or video captions in regular text could have great effect. However, it is much more complicated than simple classification or object recognition, because the model also need to understand relations between the recognized objects and capture that correctly in the captions.
 
@@ -236,7 +244,7 @@ METEOR (Metric for Evaluation of Translation with Explicit ORdering)\cite{Lavie:
 		
 Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation)\cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
 
-\chapter{Tools and Experiments}
+\chapter{Tools and Experiments}\label{chp:exper}
 
 In this chapter I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
 
@@ -293,7 +301,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \todo[inline]{Karpathyho char-rnn}
 \cite{char-rnn}
 
-\chapter{Model}
+\chapter{Model}\label{chp:model}
 \todo[inline, color=cyan!60]{Do semestralniho projektu nebo az na diplomku?}
 \todo[inline]{Design modelu, co chci pouzit, jake metody chci zkusit.}
 \todo[inline]{Polozit si principialni otazku a zjistit jestli to nejak pomuze, jak to funguje.}
@@ -321,6 +329,6 @@ As the number of community packages is enormous, I will list just a few, which a
 %	\section{Speed}
 %\todo[inline]{Jak bylo trenovani rychle, }
 
-\chapter{Conclusion}
-\todo[inline]{Udelat jeden zaver pro semestralni projekt, pak ho prepsat pro diplomku.}
+\chapter{Conclusion}\label{chp:conclusion}
+\todo[inline]{Co ocekavam od navrhu modelu?}
 %=========================================================================
