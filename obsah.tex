@@ -52,10 +52,9 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 \begin{align}
 	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}c_{t-1} + b_i) \label{eq:lstm1}\\
 	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}c_{t-1} + b_f) \label{eq:lstm2}\\
-	z_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \label{eq:lstm3}\\
-	c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot z_t \label{eq:lstm4}\\
-	o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1} + W_{co}c_t + b_o) \label{eq:lstm5}\\
-	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(c_t) \label{eq:lstm6}\\[16pt]
+	c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \label{eq:lstm3}\\
+	o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1} + W_{co}c_t + b_o) \label{eq:lstm4}\\
+	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(c_t) \label{eq:lstm5}\\[16pt]
 	\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:lstm7}
 \end{align}
 
@@ -165,19 +164,49 @@ One of the most interesting event in this field is MS COCO Captioning Challenge\
 %\todo[inline]{nejlepsi clanky se ucastni ms coco.}
 
 		\subsection{Show and Tell: A Neural Image Caption Generator}
-		\todo[inline]{Clanek z Coco od Googlu.}
-		\cite{DBLP:journals/corr/VinyalsTBE14}
 		
-%		\todo[inline]{Zminit i strojovy preklad (Sequence to Sequence Learning with Neural Networks)}
-%		\cite{DBLP:journals/corr/SutskeverVL14}
+Model from this paper\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in MS COCO Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
+		
+Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the RNN decoder that generates word sequences. The decoder part of the network is made of LSTM units based on the following equations:
+
+\belowdisplayskip=24pt
+\begin{align}
+i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1}) \label{eq:showlstm1}\\
+f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1}) \label{eq:showlstm2}\\
+o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1}) \label{eq:showlstm3}\\
+c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot\tanh(W_{xc}x_t + W_{hc}h_{t-1}) \label{eq:showlstm4}\\
+h_t \hspace{7pt}&=\hspace{7pt} o_t\odot c_t \label{eq:showlstm5}
+\end{align}
+		
+Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the sigmoid function and the operation $ \odot $ denotes the element-wise vector product.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.4\textwidth]{./fig/show-tell_model.pdf}
+	\caption{\textquoteleft Show and Tell\textquoteright\ image captioning model.\cite{DBLP:journals/corr/VinyalsTBE14}
+		\label{fig:showmodel}}
+\end{figure}
+
+RNN produces output on the word level, using word embedding vectors\cite{DBLP:journals/corr/abs-1301-3781}, one at a time. Complete procedure and architecture of the model with the unrolled RNN, word embeddings and \emph{softmax} layer is on the figure \ref{fig:showmodel}. Computing procedure of the model equal to the image is on the following equations:
+
+\belowdisplayskip=24pt
+\begin{align}
+x_{-1}  \hspace{7pt}&=\hspace{7pt} CNN(I) \label{eq:showmodel1}\\
+x_t     \hspace{7pt}&=\hspace{7pt} W_eS_t,\hspace{15pt} t\in\{0\ldots N-1\}  \label{eq:showmodel2}\\
+p_{t+1} \hspace{7pt}&=\hspace{7pt} LSTM(x_t),\hspace{15pt} t\in\{0\ldots N-1\}  \label{eq:showmodel3}
+\end{align}		
+		
+Each word is represented as a one-hot vector $ S_t $ of the size equal to size of the dictionary. Special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are also present. Both the image and the words are mapped to the same space. Input image embedding is fed to the LSTM only once, at $ t=-1 $.
+		
+The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using stochastic gradient descent with fixed learning rate and no momentum. For the embeddings and the LSTM memory 512 dimensions were used.
+				
+		\subsection{From Captions to Visual Concepts and Back} \label{subsec:fromCaptions}
+		\todo[inline]{Clanek z Coco od Microsoftu, mrknout se i na pokracovani v druhem clanku}
+		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		
 		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 		\todo[inline]{Clanek z Coco z Montrealu/Toronta}
 		\cite{DBLP:journals/corr/XuBKCCSZB15}
-		
-		\subsection{From Captions to Visual Concepts and Back}
-		\todo[inline]{Clanek z Coco od Microsoftu, mrknout se i na pokracovani v druhem clanku}
-		\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 		\todo[inline]{Clanek z Coco z berkeley}
