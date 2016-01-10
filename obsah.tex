@@ -235,9 +235,17 @@ Paper is also showing how we can gain insight and interpret the results of the m
 CNN trained on ImageNet without finetuning was used for the decoder part of the model. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
-		\todo[inline]{Clanek z Coco z berkeley}
-		\cite{DBLP:journals/corr/DonahueHGRVSD14}
 
+The research group from Berkeley in paper \cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output). 
+
+Architecture of the proposed model is similar to the one from part \ref{subsec:showtell}, only output of the CNN is fed to the LSTM in each time step. According to the task specification model can use separate convolutional networks, different for each time step, each with specific input or single CNN through all the time steps. Example is on the figure \ref{fig:LRCN}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{./fig/long-term-rec-con.pdf}
+	\caption{Task-specific instantiations of the LRCN model.\cite{DBLP:journals/corr/DonahueHGRVSD14}
+		\label{fig:LRCN}}
+\end{figure}
 
 	\section{Datasets}
 	\label{sec:datasets}		
