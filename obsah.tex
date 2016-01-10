@@ -2,14 +2,14 @@
 
 \chapter{Introduction}
 
-When does a machine \textquoteleft understand\textquoteright\ an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
+When does a machine \textquotedblleft understand\textquotedblright\ an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
 
 Deep machine learning, sometimes under the name of neural networks\footnote{Terms \emph{deep learning} and \emph{neural networks} will be used in this work interchangeably.}, is branch of machine learning based on composing multiple non-linear functions to solve the task. As it is fundamentally different from the standard computer algorithms, it perform well on problems, which are unsuitable these algorithms. For example, neural networks have excellent performance in recognizing speech and images, writing stories and composing music. This work focuses on generating image descriptions in regular English sentences, which is also a task suitable for deep learning.
 
 First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
 
 \chapter{Neural networks} \label{chp:nn}
-General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquoteleft deep learning\textquoteright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision\cite{DBLP:journals/corr/HeZRS15}, speech recognition\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling\cite{DBLP:conf/interspeech/MikolovKBCK10}.
+General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquotedblleft deep learning\textquotedblright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision\cite{DBLP:journals/corr/HeZRS15}, speech recognition\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
 Various useful architectures and algorithms are now introduced almost every month. In this chapter, I will describe only a handful -- recurrent neural networks with the LSTM and GRU units, and basics of convolutional neural nets.
 
@@ -60,7 +60,7 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 
 In each time slice the unit is using current input $ x_t $, last stored value $ c_{t-1} $ and unit output $ h_{t-1} $ to compute next state $ c_t $ and output $ h_t $. Variables $ i_t $, $ f_t $, $ o_t $ denotes value of input, forget and output gates which are used to control the information flow.
 
-LSTM based on these equations is using total of 11 weight matrices and 4 bias vectors for computations and sigmoid function $ \sigma $ defined in the equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting \textquoteleft peephole connections\textquoteright, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
+LSTM based on these equations is using total of 11 weight matrices and 4 bias vectors for computations and sigmoid function $ \sigma $ defined in the equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting \textquotedblleft peephole connections\textquotedblright, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
 
 Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
 
@@ -211,8 +211,28 @@ Third, candidate captions are re-ranked using MERT\cite{och2003minimum} (Minimum
 Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper \cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
 		
 		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
-		\todo[inline]{Clanek z Coco z Montrealu/Toronta}
-		\cite{DBLP:journals/corr/XuBKCCSZB15}
+	
+Work \cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
+
+Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in \cite{DBLP:journals/corr/BahdanauCB14}. Which gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-correct.pdf}
+	\caption{Examples of attending the correct object while generating the word.\cite{DBLP:journals/corr/XuBKCCSZB15}
+		\label{fig:attendmodelcorrect}}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-wrong.pdf}
+	\caption{We can use attention to understand what the model saw while creating wrong caption.\cite{DBLP:journals/corr/XuBKCCSZB15}
+		\label{fig:attendmodelwrong}}
+\end{figure}
+
+Paper is also showing how we can gain insight and interpret the results of the model by visualising where and what the attention was focused on. Examples of the correct visualisations is on the figure \ref{fig:attendmodelcorrect} and the wrong ones on the figure \ref{fig:attendmodelwrong}. Visualisations show that model can attend even \textquotedblleft non-object\textquotedblright\ regions. This adds an extra layer of interpretability to the output. The model learns alignments that correspond very strongly with human intuition. Especially in the examples of mistakes, we can understand why those mistakes were made.
+
+CNN trained on ImageNet without finetuning was used for the decoder part of the model. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 		\todo[inline]{Clanek z Coco z berkeley}
@@ -271,7 +291,7 @@ Recent progress in fields like machine translation, which are very similar to im
 
 		\subsection{Automated metrics}
 		
-Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquoteleft same\textquoteright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
+Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquotedblleft same\textquotedblright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
 		
 The most commonly used metric has been BLEU (Bilingual Evaluation Understudy)\cite{Papineni:2002:BMA:1073083.1073135}, which was created in 2002 to evaluate quality of machine translated text from one language to another. Scores are computed on individual segments, usually sentences. BLEU has high correlation with human judgments and is still highly popular even for captioning tasks. However, it is becoming outdated as automatic methods are now outperforming humans. Four different variations of BLEU are used in MS COCO evaluation server.
 
