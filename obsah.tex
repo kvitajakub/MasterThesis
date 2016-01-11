@@ -92,11 +92,11 @@ In paper \cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
 
 
-		\subsection{Language modeling and word embeddings}
+		\subsection{Language modeling and word embeddings}\label{subsec:lmAndEmbedd}
 
 With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
 
-Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the entries of $ V $ will be switched off to 0, except $ V_i $, which will have the value of 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
+Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the values of $ V $ will be switched off to 0, except $ V_i $, which will be 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
 % TODO \todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
 
 At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
@@ -232,7 +232,7 @@ Decoder part is a LSTM network working of the word level, which generates, apart
 
 Paper is also showing how we can gain insight and interpret the results of the model by visualising where and what the attention was focused on. Examples of the correct visualisations is on the figure \ref{fig:attendmodelcorrect} and the wrong ones on the figure \ref{fig:attendmodelwrong}. Visualisations show that model can attend even \textquotedblleft non-object\textquotedblright\ regions. This adds an extra layer of interpretability to the output. The model learns alignments that correspond very strongly with human intuition. Especially in the examples of mistakes, we can understand why those mistakes were made.
 
-CNN trained on ImageNet without finetuning was used for the decoder part of the model. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
+CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
@@ -335,9 +335,9 @@ Creating networks with complex graphs is quite complicated with the \emph{nn}. T
 
 Both packages are sufficient and provide even advanced features like weight-sharing or weight-tying. They are mainly focused on feed-forward and convolutional networks. Creating RNNs is possible, however it is very complicated and labor-intensive.
 
-\subsection{rnn}
+\subsection{rnn}\label{subsec:torch-rnn}
 
-Torch's \emph{rnn} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
+Torch's \emph{rnn}\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
 
 Package also provide module for implementing attention model\cite{DBLP:journals/corr/MnihHGK14}. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
 
@@ -359,10 +359,63 @@ As the number of community packages is enormous, I will list just a few, which a
 \vspace{3mm}
 
 \section{Predicting next character in sequence}
-\todo[inline]{Implementace sekce Language modeling, jak se to konkretne dela.}
-\todo[inline]{Jak jsem to udelal, co to dela, ukazky.}
-\todo[inline]{Karpathyho char-rnn}
-\cite{char-rnn}
+
+As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post\cite{char-rnn}.
+
+Model used one-hot encoding for the input and probability distribution of the next character in sequence as an output. First network has three recurrent LSTM layers, each with 400 nodes, followed by linear and logarithmic softmax layer. \todof{Druhy model.} Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
+
+\begin{figure}[htb]
+	\begin{minipage}{.48\textwidth}
+		\centering
+	\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model1.pdf}
+		\caption{Architecture of the LSTM model.
+			\label{fig:chargen1}}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.48\textwidth}
+		\missingfigure{Architektura 2}
+%	\includegraphics[width=\textwidth]{./fig/long-term-rec-con.pdf}
+		\caption{MISSING CAPTION
+			\label{fig:chargen2}}
+	\end{minipage}
+\end{figure}
+
+Models were trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters. After couple of hours, models were producing following samples:
+
+\begin{center}
+	\begin{longtable}{|l|m{11cm}|}					
+		\caption{Predictions of the models.} \label{tab:predictions}\\
+
+		\hline
+		\textbf{Inicialization} &
+		\begin{lstlisting}
+And therefore has he closely mew'd her u
+		\end{lstlisting}\\ \hline
+		\textbf{LSTM model}&
+		\begin{lstlisting}
+ndon,
+And, ine and Frenice handle and forth can hday for pu-chang but riothed.
+
+QUEEN ELIZABETH:
+Whyou art me yough to hell three,
+?gecT blswance'd wv reign Mantuas arm onB could hold thy anurrem tranioh  newhful heart
+chnermwer than you are devnrcewMrnistCman yeT Norusezood with my chance?
+
+CAMILLO:
+Sirrah, that Is, my state now a haaaticaply.
+
+PETRUCHIO:
+Fellow me to never ae my tru sin someth
+		\end{lstlisting}\\ \hline
+		\textbf{GRU model}&
+%		\begin{lstlisting}
+\todo[inline]{Pridat ukazku samplovani u GRU modelu.}
+%		\end{lstlisting}
+\\ \hline		
+	\end{longtable}
+\end{center}
+
+It is obvious that the models are not perfectly trained, but they have been able to pick up the form of text (names of speakers in upper case, followed by colon) and most of the short English words. Training was using only single desktop CPU and only for several hours. As I am arranging access to the GPU nodes, models are expected to improve simply by prolonging the training times, without changing the parameters.
 
 \chapter{Model}\label{chp:model}
 \todo[inline, color=cyan!60]{Do semestralniho projektu nebo az na diplomku?}
