@@ -362,7 +362,7 @@ As the number of community packages is enormous, I will list just a few, which a
 
 As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post\cite{char-rnn}.
 
-Model used one-hot encoding for the input and probability distribution of the next character in sequence as an output. First network has three recurrent LSTM layers, each with 400 nodes, followed by linear and logarithmic softmax layer. \todof{Druhy model.} Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
+Models used one-hot encoding for the input and probability distribution of the next character in sequence as an output. Networks have three recurrent layers (LSTM or GRU), each with 400 nodes, followed by linear and logarithmic softmax layer. Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
 
 \begin{figure}[htb]
 	\begin{minipage}{.47\textwidth}
@@ -380,7 +380,7 @@ Model used one-hot encoding for the input and probability distribution of the ne
 	\end{minipage}
 \end{figure}
 
-Models were trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters.\todof{Trenovani druheho modelu.} After couple of hours, models were producing following samples:
+LSTM model was trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters. GRU model was trained with SGD without momentum, however, weight decay was used. After couple of hours, models were producing following samples:
 
 \begin{center}
 	\begin{longtable}{|l|m{11cm}|}					
@@ -407,11 +407,11 @@ Sirrah, that Is, my state now a haaaticaply.
 PETRUCHIO:
 Fellow me to never ae my tru sin someth
 		\end{lstlisting}\\ \hline
-		\textbf{GRU model}&
-%		\begin{lstlisting}
-\todo[inline]{Pridat ukazku samplovani u GRU modelu.}
-%		\end{lstlisting}
-\\ \hline		
+%		\textbf{GRU model}&
+%%		\begin{lstlisting}
+%\todo[inline]{Pridat ukazku samplovani u GRU modelu.}
+%%		\end{lstlisting}
+%\\ \hline		
 	\end{longtable}
 \end{center}
 
