@@ -365,22 +365,22 @@ As an application of the Torch library, I created a model predicting next charac
 Model used one-hot encoding for the input and probability distribution of the next character in sequence as an output. First network has three recurrent LSTM layers, each with 400 nodes, followed by linear and logarithmic softmax layer. \todof{Druhy model.} Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
 
 \begin{figure}[htb]
-	\begin{minipage}{.48\textwidth}
+	\begin{minipage}{.47\textwidth}
 		\centering
-	\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model1.pdf}
+		\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model1.pdf}
 		\caption{Architecture of the LSTM model.
 			\label{fig:chargen1}}
 	\end{minipage}
 	\hfill
-	\begin{minipage}{.48\textwidth}
-		\missingfigure{Architektura 2}
-%	\includegraphics[width=\textwidth]{./fig/long-term-rec-con.pdf}
-		\caption{MISSING CAPTION
+	\begin{minipage}{.47\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model2.pdf}
+		\caption{Architecture of the GRU model.
 			\label{fig:chargen2}}
 	\end{minipage}
 \end{figure}
 
-Models were trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters. After couple of hours, models were producing following samples:
+Models were trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters.\todof{Trenovani druheho modelu.} After couple of hours, models were producing following samples:
 
 \begin{center}
 	\begin{longtable}{|l|m{11cm}|}					
@@ -418,15 +418,21 @@ Fellow me to never ae my tru sin someth
 It is obvious that the models are not perfectly trained, but they have been able to pick up the form of text (names of speakers in upper case, followed by colon) and most of the short English words. Training was using only single desktop CPU and only for several hours. As I am arranging access to the GPU nodes, models are expected to improve simply by prolonging the training times, without changing the parameters.
 
 \chapter{Model}\label{chp:model}
-\todo[inline, color=cyan!60]{Do semestralniho projektu nebo az na diplomku?}
-\todo[inline]{Design modelu, co chci pouzit, jake metody chci zkusit.}
-\todo[inline]{Polozit si principialni otazku a zjistit jestli to nejak pomuze, jak to funguje.}
 
-	\section{Architecture}
-\todo[inline]{Architektura modelu, jake matematicke modely jsem pouzil, bez implementacnich detailu.}
+As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
 
-	\section{Training details}
-\todo[inline]{Popis pomoci jakeho algoritmu jsme trenovali, s jakyma parametrama, minibatches, datasety.}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{./fig/proposed-model.pdf}
+	\caption{Architecture of the proposed model.
+		\label{fig:proposedModel}}
+\end{figure}
+
+First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in \cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
+
+Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in \cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
+
+Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
 %\chapter{Implementation}
 %\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
@@ -446,5 +452,5 @@ It is obvious that the models are not perfectly trained, but they have been able
 %\todo[inline]{Jak bylo trenovani rychle, }
 
 \chapter{Conclusion}\label{chp:conclusion}
-\todo[inline]{Co ocekavam od navrhu modelu?}
+\todo[inline]{Co ocekavam od navrhu modelu? Co se tady v te zprave delo?}
 %=========================================================================

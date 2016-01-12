@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="char-rnn-model1.svg">
+   sodipodi:docname="char-rnn-model2.svg">
   <defs
      id="defs4">
     <marker
@@ -323,11 +323,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="81.848642"
-     inkscape:cy="170.88533"
+     inkscape:zoom="1.4"
+     inkscape:cx="101.61738"
+     inkscape:cy="177.28872"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4422"
      showgrid="false"
      inkscape:snap-nodes="false"
      inkscape:snap-bbox="false"
@@ -377,13 +377,13 @@
          sodipodi:linespacing="125%"
          id="text4146"
          y="700.88464"
-         x="221.62244"
+         x="227.90565"
          style="font-style:normal;font-weight:normal;font-size:24.88979149px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            id="tspan4198"
            y="700.88464"
-           x="221.62244"
-           sodipodi:role="line">LSTM  400</tspan></text>
+           x="227.90565"
+           sodipodi:role="line">GRU  400</tspan></text>
     </g>
     <g
        id="g4422"
@@ -452,13 +452,13 @@
          sodipodi:linespacing="125%"
          id="text4146-8"
          y="700.88464"
-         x="221.62244"
+         x="227.90565"
          style="font-style:normal;font-weight:normal;font-size:24.88979149px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            id="tspan4198-4"
            y="700.88464"
-           x="221.62244"
-           sodipodi:role="line">LSTM  400</tspan></text>
+           x="227.90565"
+           sodipodi:role="line">GRU  400</tspan></text>
     </g>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.79999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5145)"
@@ -481,13 +481,13 @@
          sodipodi:linespacing="125%"
          id="text4146-4"
          y="700.88464"
-         x="221.62244"
+         x="227.90565"
          style="font-style:normal;font-weight:normal;font-size:24.88979149px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            id="tspan4198-7"
            y="700.88464"
-           x="221.62244"
-           sodipodi:role="line">LSTM  400</tspan></text>
+           x="227.90565"
+           sodipodi:role="line">GRU  400</tspan></text>
     </g>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5215)"
