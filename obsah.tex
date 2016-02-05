@@ -9,7 +9,7 @@ Deep machine learning, sometimes under the name of neural networks\footnote{Term
 First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
 
 \chapter{Neural networks} \label{chp:nn}
-General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquotedblleft deep learning\textquotedblright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision\cite{DBLP:journals/corr/HeZRS15}, speech recognition\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling\cite{DBLP:conf/interspeech/MikolovKBCK10}.
+General idea of artificial neural networks emerged after World War II. Perceptron, as a single neuron unit, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they are not working, but due to small computing power of machines back then and lack of datasets. Recently (after 2000) neural nets became popular again, under the name of \textquotedblleft deep learning\textquotedblright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778} and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
 Various useful architectures and algorithms are now introduced almost every month. In this chapter, I will describe only a handful -- recurrent neural networks with the LSTM and GRU units, and basics of convolutional neural nets.
 
@@ -21,7 +21,7 @@ Apart from classification, which can be more precise when using sequences, one o
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/RNN-unrolled.png}
-	\caption{Unrolling of the recurrent neural net.\cite{colah-lstm}
+	\caption{Unrolling of the recurrent neural net.~\cite{colah-lstm}
 		\label{fig:rnn-unroll}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
@@ -30,7 +30,7 @@ We can understand recurrent neural networks as very deep forward nets with share
 
 		\subsection{LSTM -- Long Short-Term Memory}\label{subsec:lstm}
 
-Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
+Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem~\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
 
@@ -43,7 +43,7 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-peepholes.png}
-	\caption{Variation of the LSTM unit.\cite{colah-lstm}
+	\caption{Variation of the LSTM unit.~\cite{colah-lstm}
 		\label{fig:lstm}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
@@ -66,12 +66,12 @@ Training of the LSTM based network can be performed effectively by standard meth
 
 
 		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
-Gated Recurrent Unit\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
+Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-GRU.png}
-	\caption{Variation of a GRU unit.\cite{colah-lstm}
+	\caption{Variation of a GRU unit.~\cite{colah-lstm}
 		\label{fig:gru}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
@@ -86,9 +86,9 @@ h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \
 
 Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:gru5}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
 
-Last year, study by Chung\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to \cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
+Last year, study by Chung~\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to ~\cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
 
-In paper \cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's paper\cite{DBLP:conf/icml/JozefowiczZS15}. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
+In paper ~\cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's paper~\cite{DBLP:conf/icml/JozefowiczZS15}. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
 
 
@@ -101,7 +101,7 @@ Text is represented by discrete values and is usually presented to network in fo
 
 At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
 
-To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
+To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model~\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
 % TODO \todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
 
 %http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
@@ -112,9 +112,9 @@ Character level models have usually smaller vocabulary size and have to be train
 
 	\section{Convolutional neural nets}
 	
-Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
+Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
 
-Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. \cite{lecun-98}. Different CNN architecture was proposed by Graupe\cite{graupe1988} for decomposition of one-dimensional EMG signals. Convolutional nets can be also used to natural language processing\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
+Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. ~\cite{lecun-98}. Different CNN architecture was proposed by Graupe~\cite{graupe1988} for decomposition of one-dimensional EMG signals. Convolutional nets can be also used to natural language processing~\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
 
 Basic architecture of CNN can be described as the following process:
 
@@ -133,12 +133,12 @@ Convolutional layer, which is most important and gave CNN their name is essentia
 
 Subsampling, or max pooling in this version, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
 
-Last type of unit commonly used in CNN is rectified linear unit (ReLU), which provides nonlinearity and improves overall performance\cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of LeNet-5 is on the figure \ref{fig:lenet}.
+Last type of unit commonly used in CNN is rectified linear unit (ReLU), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of LeNet-5 is on the figure \ref{fig:lenet}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
-	\caption{LeNet-5 architecture.\cite{lecun-98}
+	\caption{LeNet-5 architecture.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
 
@@ -151,13 +151,13 @@ In this chapter I will do an overview of approaches to this task and more closel
 	\section{Related Work}
 	\label{sec:related}
 	
-Currently, neural networks are most heavily used to generate captions. Before them two main approaches were common. The first one used caption templates, which were filled by detected objects and relations. Second was based on retrieving similar captions from database and modifying them to fit current image. Question of similarity ranking has been addressed by many papers, which are based on the idea of joint embedding vector space for both images and captions\cite{DBLP:journals/corr/KarpathyF14}. Similar descriptions are in this space close to each other.
+Currently, neural networks are most heavily used to generate captions. Before them two main approaches were common. The first one used caption templates, which were filled by detected objects and relations. Second was based on retrieving similar captions from database and modifying them to fit current image. Question of similarity ranking has been addressed by many papers, which are based on the idea of joint embedding vector space for both images and captions~\cite{DBLP:journals/corr/KarpathyF14}. Similar descriptions are in this space close to each other.
 
 Both approaches above usually included generalization step to remove information relevant only to current image, for example names. They are quite successful in describing images, but they are heavily hand-designed and their text-generation power is fixed on the database/embedding and is not able to describe previously unseen compositions of objects. Over time these approaches fell out of favor to now dominant neural network methods.
 
-Many of the methods using neural nets are inspired by successes in training of recurrent nets for machine translation. It is worth mentioning Sutskevers work \cite{DBLP:journals/corr/SutskeverVL14}, which studied general sequence to sequence mapping by converting input sequence to vector of fixed length. Vector is then decoded to output sequence. This encoder--decoder architecture is closely related to autoencoders and work of Kalchbrenner and Blunsom\cite{conf/emnlp/KalchbrennerB13}, who were first to map the entire input sequence to vector.
+Many of the methods using neural nets are inspired by successes in training of recurrent nets for machine translation. It is worth mentioning Sutskevers work ~\cite{DBLP:journals/corr/SutskeverVL14}, which studied general sequence to sequence mapping by converting input sequence to vector of fixed length. Vector is then decoded to output sequence. This encoder--decoder architecture is closely related to autoencoders and work of Kalchbrenner and Blunsom~\cite{conf/emnlp/KalchbrennerB13}, who were first to map the entire input sequence to vector.
 
-The introduced encoder--decoder architecture is important to the captioning task, because we can interpret image description problem as a translation from an image to a sentence. In this case, encoder part of the model is usually convolutional neural net, as they are excellent in the image classification\cite{DBLP:journals/corr/SzegedyLJSRAEVR14}. Decoder part is similar as in machine translation models -- type of a RNN or LSTM, as the output for both tasks is essentially same.
+The introduced encoder--decoder architecture is important to the captioning task, because we can interpret image description problem as a translation from an image to a sentence. In this case, encoder part of the model is usually convolutional neural net, as they are excellent in the image classification~\cite{DBLP:journals/corr/SzegedyLJSRAEVR14}. Decoder part is similar as in machine translation models -- type of a RNN or LSTM, as the output for both tasks is essentially same.
 
 One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
 
@@ -165,7 +165,7 @@ One of the most interesting event in this field is MS COCO Captioning Challenge\
 
 		\subsection{Show and Tell: A Neural Image Caption Generator} \label{subsec:showtell}
 		
-Model from this paper\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in MS COCO Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
+Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in MS COCO Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 		
 Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the RNN decoder that generates word sequences. The decoder part of the network is made of LSTM units based on the following equations:
 
@@ -183,11 +183,11 @@ Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the sigmoid funct
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.4\textwidth]{./fig/show-tell_model.pdf}
-	\caption{\textquoteleft Show and Tell\textquoteright\ image captioning model.\cite{DBLP:journals/corr/VinyalsTBE14}
+	\caption{\textquoteleft Show and Tell\textquoteright\ image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
 		\label{fig:showmodel}}
 \end{figure}
 
-RNN produces output on the word level, using word embedding vectors\cite{DBLP:journals/corr/abs-1301-3781}, one at a time. Complete procedure and architecture of the model with the unrolled RNN, word embeddings and \emph{softmax} layer is on the figure \ref{fig:showmodel}. Computing procedure of the model equal to the image is on the following equations:
+RNN produces output on the word level, using word embedding vectors~\cite{DBLP:journals/corr/abs-1301-3781}, one at a time. Complete procedure and architecture of the model with the unrolled RNN, word embeddings and \emph{softmax} layer is on the figure \ref{fig:showmodel}. Computing procedure of the model equal to the image is on the following equations:
 
 \belowdisplayskip=24pt
 \begin{align}
@@ -202,48 +202,48 @@ The CNN component of the model has been initialized to an ImageNet trained model
 				
 		\subsection{From Captions to Visual Concepts and Back} \label{subsec:fromCaptions}
 		
-This paper\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
+This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
 
-Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (ME) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to \cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
+Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (ME) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to ~\cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
 
-Third, candidate captions are re-ranked using MERT\cite{och2003minimum} (Minimum Error Rate Training) and the best one is selected. MERT uses linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (DMSM) score, which measures similarity between images and text. The DMSM is model proposed in this paper, which learns two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is one of the features fed to MERT.
+Third, candidate captions are re-ranked using MERT~\cite{och2003minimum} (Minimum Error Rate Training) and the best one is selected. MERT uses linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (DMSM) score, which measures similarity between images and text. The DMSM is model proposed in this paper, which learns two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is one of the features fed to MERT.
 
-Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper \cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
+Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper ~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
 		
 		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 	
-Work \cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
+Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
 
-Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in \cite{DBLP:journals/corr/BahdanauCB14}. Which gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
+Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in ~\cite{DBLP:journals/corr/BahdanauCB14}. Which gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-correct.pdf}
-	\caption{Examples of attending the correct object while generating the word.\cite{DBLP:journals/corr/XuBKCCSZB15}
+	\caption{Examples of attending the correct object while generating the word.~\cite{DBLP:journals/corr/XuBKCCSZB15}
 		\label{fig:attendmodelcorrect}}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-wrong.pdf}
-	\caption{We can use attention to understand what the model saw while creating wrong caption.\cite{DBLP:journals/corr/XuBKCCSZB15}
+	\caption{We can use attention to understand what the model saw while creating wrong caption.~\cite{DBLP:journals/corr/XuBKCCSZB15}
 		\label{fig:attendmodelwrong}}
 \end{figure}
 
 Paper is also showing how we can gain insight and interpret the results of the model by visualising where and what the attention was focused on. Examples of the correct visualisations is on the figure \ref{fig:attendmodelcorrect} and the wrong ones on the figure \ref{fig:attendmodelwrong}. Visualisations show that model can attend even \textquotedblleft non-object\textquotedblright\ regions. This adds an extra layer of interpretability to the output. The model learns alignments that correspond very strongly with human intuition. Especially in the examples of mistakes, we can understand why those mistakes were made.
 
-CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
+CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam~\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 		
 		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
-The research group from Berkeley in paper \cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output). 
+The research group from Berkeley in paper ~\cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output). 
 
 Architecture of the proposed model is similar to the one from part \ref{subsec:showtell}, only output of the CNN is fed to the LSTM in each time step. According to the task specification model can use separate convolutional networks, different for each time step, each with specific input or single CNN through all the time steps. Example is on the figure \ref{fig:LRCN}.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{./fig/long-term-rec-con.pdf}
-	\caption{Task-specific instantiations of the LRCN model.\cite{DBLP:journals/corr/DonahueHGRVSD14}
+	\caption{Task-specific instantiations of the LRCN model.~\cite{DBLP:journals/corr/DonahueHGRVSD14}
 		\label{fig:LRCN}}
 \end{figure}
 
@@ -253,7 +253,7 @@ Big datasets are necessary requirement in training recurrent neural nets, togeth
 
 There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
 
-Flickr8k\cite{dataset-flickr8k} was one of the first datasets created for this purpose. It has been later expanded into Flickr30k\cite{dataset-flickr30k}. MS COCO\cite{DBLP:journals/corr/ChenFLVGDZ15} is dataset created by Microsoft for their captioning challenge. CIDEr\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric.
+Flickr8k~\cite{dataset-flickr8k} was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. MS COCO~\cite{DBLP:journals/corr/ChenFLVGDZ15} is dataset created by Microsoft for their captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric.
 
 \def\arraystretch{1.2}%  1 is the default, change whatever you need
 %\setlength\extrarowheight{20pt}%add points to the row height
@@ -299,13 +299,13 @@ Recent progress in fields like machine translation, which are very similar to im
 
 		\subsection{Automated metrics}
 		
-Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquotedblleft same\textquotedblright \ evaluation method. Microsoft group of researchers addresses this issue in \cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
+Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquotedblleft same\textquotedblright \ evaluation method. Microsoft group of researchers addresses this issue in ~\cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
 		
-The most commonly used metric has been BLEU (Bilingual Evaluation Understudy)\cite{Papineni:2002:BMA:1073083.1073135}, which was created in 2002 to evaluate quality of machine translated text from one language to another. Scores are computed on individual segments, usually sentences. BLEU has high correlation with human judgments and is still highly popular even for captioning tasks. However, it is becoming outdated as automatic methods are now outperforming humans. Four different variations of BLEU are used in MS COCO evaluation server.
+The most commonly used metric has been BLEU (Bilingual Evaluation Understudy)~\cite{Papineni:2002:BMA:1073083.1073135}, which was created in 2002 to evaluate quality of machine translated text from one language to another. Scores are computed on individual segments, usually sentences. BLEU has high correlation with human judgments and is still highly popular even for captioning tasks. However, it is becoming outdated as automatic methods are now outperforming humans. Four different variations of BLEU are used in MS COCO evaluation server.
 
-METEOR (Metric for Evaluation of Translation with Explicit ORdering)\cite{Lavie:2007:MAM:1626355.1626389} is another metric for the evaluation of machine translation from 2007. It was designed to fix some problems of the BLEU metric and it can also look for synonyms and perform stemming on input words.
+METEOR (Metric for Evaluation of Translation with Explicit ORdering)~\cite{Lavie:2007:MAM:1626355.1626389} is another metric for the evaluation of machine translation from 2007. It was designed to fix some problems of the BLEU metric and it can also look for synonyms and perform stemming on input words.
 		
-Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation)\cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
+Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation)~\cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
 
 \chapter{Tools and Experiments}\label{chp:exper}
 
@@ -313,7 +313,7 @@ In this chapter I will describe tools and frameworks, which are used to implemen
 
 %The landscape of tools for neural networks is changing rapidly, so please bear in mind that if you are reading this several years later, some of the information does not have to be valid anymore.
 
-One of the tools most academic researchers in deep learning rely on is \emph{Theano}\footnote{Theano: \url{http://deeplearning.net/software/theano/}}\cite{bergstra-proc-scipy-2010}, which is Python library that works with mathematical expressions and matrices. It is built upon \emph{NumPy} to handle multidimensional arrays and compiles expressions before use for efficient computation. Theano can be quite intimidating and non-intuitive for some people, as it is focused on researchers and creating new architectures. For this reason, many packages and libraries has been created on top of Theano to simplify and streamline development of standard models. Among most popular are \emph{Keras}\footnote{Keras: \url{https://github.com/fchollet/keras}}, \emph{Lasagne}\footnote{Lasagne: \url{https://lasagne.readthedocs.org/en/latest/}}, \emph{Blocks}\footnote{Blocks: \url{https://github.com/mila-udem/blocks}}, which are open-source and available on GitHub, and \emph{PyLearn2}\footnote{PyLearn2: \url{http://deeplearning.net/software/pylearn2/}}.
+One of the tools most academic researchers in deep learning rely on is \emph{Theano}\footnote{Theano: \url{http://deeplearning.net/software/theano/}}~\cite{bergstra-proc-scipy-2010}, which is Python library that works with mathematical expressions and matrices. It is built upon \emph{NumPy} to handle multidimensional arrays and compiles expressions before use for efficient computation. Theano can be quite intimidating and non-intuitive for some people, as it is focused on researchers and creating new architectures. For this reason, many packages and libraries has been created on top of Theano to simplify and streamline development of standard models. Among most popular are \emph{Keras}\footnote{Keras: \url{https://github.com/fchollet/keras}}, \emph{Lasagne}\footnote{Lasagne: \url{https://lasagne.readthedocs.org/en/latest/}}, \emph{Blocks}\footnote{Blocks: \url{https://github.com/mila-udem/blocks}}, which are open-source and available on GitHub, and \emph{PyLearn2}\footnote{PyLearn2: \url{http://deeplearning.net/software/pylearn2/}}.
 
 Next Python library, independent of Theano, is \emph{TensorFlow}\footnote{TensorFlow: \url{https://www.tensorflow.org/}}, a tool from Google, released last year. It is used to process symbolic data flow graphs on many different types of machines, ranging from multiple GPU computers to smartphones. Interesting feature is ability to perform partial subgraph computation, which allows distributed training of the neural network. TensorBoard is a tool worth mentioning, as it provides visualisations of training and evaluation of the model, tool missing in most of the other libraries.
 
@@ -337,9 +337,9 @@ Both packages are sufficient and provide even advanced features like weight-shar
 
 \subsection{rnn}\label{subsec:torch-rnn}
 
-Torch's \emph{rnn}\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
+Torch's \emph{rnn}~\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
 
-Package also provide module for implementing attention model\cite{DBLP:journals/corr/MnihHGK14}. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
+Package also provide module for implementing attention model~\cite{DBLP:journals/corr/MnihHGK14}. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
 
 \subsection{Other packages}
 
@@ -360,9 +360,9 @@ As the number of community packages is enormous, I will list just a few, which a
 
 \section{Predicting next character in sequence}
 
-As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post\cite{char-rnn}.
+As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post~\cite{char-rnn}.
 
-Models used one-hot encoding for the input and probability distribution of the next character in sequence as an output. Networks have three recurrent layers (LSTM or GRU), each with 400 nodes, followed by linear and logarithmic softmax layer. Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
+Models used one-hot encoding for the input and probability distribution of the next character in sequence as an output. Networks have four recurrent layers (LSTM or GRU), each with 300 nodes, followed by linear and logarithmic softmax layer. Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
 
 \begin{figure}[htb]
 	\begin{minipage}{.47\textwidth}
@@ -387,15 +387,8 @@ LSTM model was trained with stochastic gradient descent with Nesterov's momentum
 		\caption{Predictions of the models.} \label{tab:predictions}\\
 
 		\hline
-		\textbf{Inicialization} &
-		\begin{lstlisting}
-And therefore has he closely mew'd her u
-		\end{lstlisting}\\ \hline
 		\textbf{LSTM model}&
 		\begin{lstlisting}
-ndon,
-And, ine and Frenice handle and forth can hday for pu-chang but riothed.
-
 QUEEN ELIZABETH:
 Whyou art me yough to hell three,
 ?gecT blswance'd wv reign Mantuas arm onB could hold thy anurrem tranioh  newhful heart
@@ -407,11 +400,24 @@ Sirrah, that Is, my state now a haaaticaply.
 PETRUCHIO:
 Fellow me to never ae my tru sin someth
 		\end{lstlisting}\\ \hline
-%		\textbf{GRU model}&
-%%		\begin{lstlisting}
-%\todo[inline]{Pridat ukazku samplovani u GRU modelu.}
-%%		\end{lstlisting}
-%\\ \hline		
+		\textbf{GRU model}&
+		\begin{lstlisting}
+GLOUCESTER:
+An ambatch the rest persure of methink
+Be father, a damned, skish a thy daughed, let tites an oar that your angpules dis cur,'t, my pl
+easons now many he tnoon king not what you must his duke, on to jello comforts of the welceful
+are whyself. Ty succemence, conves, our son, to choot this nimneat?
+
+First Muldiagoud Regerand:
+We'll not of a hates, I not have naturing at worthy Dore on Euncus, let my gental till rap it l
+ake, against thee, who was the labour tillows Henry: welcome.
+
+DUKE OF YORK:
+It is not amiss, is that close, shows do not, agoing told his cold
+and with their torety, you and then, your minds, as I waily
+low a jewel
+		\end{lstlisting}
+\\ \hline		
 	\end{longtable}
 \end{center}
 
@@ -428,11 +434,11 @@ As a result of the previous research, I propose a model for the image captioning
 		\label{fig:proposedModel}}
 \end{figure}
 
-First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in \cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
+First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
 
-Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in \cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
+Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
 
-Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
+Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
 %\chapter{Implementation}
 %\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
