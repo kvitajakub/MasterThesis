@@ -42,19 +42,20 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 %\end{figure}
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-peepholes.png}
-	\caption{Variation of the LSTM unit.~\cite{colah-lstm}
+	\includegraphics[width=0.7\textwidth]{./fig/lstm.pdf}
+	\caption{Variation of the LSTM unit.
 		\label{fig:lstm}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 \belowdisplayskip=24pt
 \begin{align}
-	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}c_{t-1} + b_i) \label{eq:lstm1}\\
-	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}c_{t-1} + b_f) \label{eq:lstm2}\\
-	c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \label{eq:lstm3}\\
-	o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1} + W_{co}c_t + b_o) \label{eq:lstm4}\\
-	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(c_t) \label{eq:lstm5}\\[16pt]
+	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}C_{t-1} + b_i) \label{eq:lstm1}\\
+	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}C_{t-1} + b_f) \label{eq:lstm2}\\
+	\widetilde{C}_t\hspace{7pt}&=\hspace{7pt} \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \label{eq:lstm3}\\
+	C_t \hspace{7pt}&=\hspace{7pt} f_t\odot C_{t-1} + i_t\odot \widetilde{C}_t \label{eq:lstm4}\\
+	o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1} + W_{co}C_t + b_o) \label{eq:lstm5}\\
+	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(C_t) \label{eq:lstm6}\\[16pt]
 	\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:lstm7}
 \end{align}
 
