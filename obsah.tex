@@ -20,11 +20,11 @@ Apart from classification, which can be more precise when using sequences, one o
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig/RNN-unrolled.png}
-	\caption{Unrolling of the recurrent neural net.~\cite{colah-lstm}
+	\includegraphics[width=0.9\textwidth]{fig/rnn-unrolled.pdf}
+	\caption{Unrolling of the recurrent neural net.
 		\label{fig:rnn-unroll}}
 \end{figure}
-%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
 
@@ -34,19 +34,13 @@ Long Short-Term Memory nets are special kind of recurrent network, capable of le
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
 
-%\begin{figure}[!ht]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{./fig/LSTM-equations.png}
-%	\caption{LSTM unit for equations
-%		\label{fig:lstm-equations}}
-%\end{figure}
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./fig/lstm.pdf}
+	\includegraphics[width=0.7\textwidth]{./fig/lstm-peepholes.pdf}
 	\caption{Variation of the LSTM unit.
 		\label{fig:lstm}}
 \end{figure}
-%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 \belowdisplayskip=24pt
 \begin{align}
@@ -75,7 +69,7 @@ Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more drama
 	\caption{Variation of a GRU unit.
 		\label{fig:gru}}
 \end{figure}
-%reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 \begin{align}
 r_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xr}x_t + W_{hr}h_{t-1} + b_r) \label{eq:gru1}\\
