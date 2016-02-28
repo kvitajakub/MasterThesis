@@ -71,8 +71,8 @@ Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more drama
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./fig/LSTM3-var-GRU.png}
-	\caption{Variation of a GRU unit.~\cite{colah-lstm}
+	\includegraphics[width=0.7\textwidth]{./fig/gru.pdf}
+	\caption{Variation of a GRU unit.
 		\label{fig:gru}}
 \end{figure}
 %reference http://colah.github.io/posts/2015-08-Understanding-LSTMs/
@@ -81,11 +81,10 @@ Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more drama
 r_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xr}x_t + W_{hr}h_{t-1} + b_r) \label{eq:gru1}\\
 z_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xz}x_t + W_{hz}h_{t-1} + b_z) \label{eq:gru2}\\
 \widetilde{h}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xh}x_t + W_{hh}(h_{t-1}\odot r_t) + b_h) \label{eq:gru3}\\
-h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}\\[16pt]
-\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:gru5}
+h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}
 \end{align}
 
-Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:gru5}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
+Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
 
 Last year, study by Chung~\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to ~\cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
 

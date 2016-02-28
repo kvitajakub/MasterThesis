@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="lstm.svg"
+   sodipodi:docname="lstm no peepholes.svg"
    inkscape:export-filename="/home/jkvita/DATA/Git/MasterThesis/fig/lstm.png"
    inkscape:export-xdpi="153.56071"
    inkscape:export-ydpi="153.56071">
@@ -391,9 +391,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="291.13665"
-     inkscape:cy="200.34241"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="240.95054"
+     inkscape:cy="150.80764"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -449,30 +449,6 @@
        y="721.7049"
        rx="29.934662"
        ry="27.556898"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 199.81536,952.89964 c 14.36976,0 21.72186,-8.43485 21.77037,-20.93442"
-       id="path16027"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path15854-7-6"
-       d="m 111.54498,952.89964 c 7.80726,0.0936 16.94889,-8.43485 16.9974,-20.93442"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <path
-       sodipodi:nodetypes="cccscsssc"
-       inkscape:connector-curvature="0"
-       id="path4572-60"
-       d="m 198.08292,952.89907 -39.54999,3e-4 -45.38361,2.7e-4 c -13.753376,0.65622 -18.089936,-9.70538 -18.089936,-21.27482 l 0,-36.44115 0,-36.44115 c 0,-24.91714 0.36951,-49.77675 0,-74.69115 -0.1728,-11.64714 -2.0019,-31.48871 -16.40433,-31.48871 l -7.59345,0"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
        inkscape:export-xdpi="153.33279"
        inkscape:export-ydpi="153.33279" />
     <path
@@ -604,14 +580,6 @@
        inkscape:export-xdpi="153.33279"
        inkscape:export-ydpi="153.33279" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 395.68068,931.96522 c -0.0486,12.49956 -6.08421,20.74692 -15.41868,20.93442 -13.12431,-3e-5 -14.72748,-9.71514 -15.20262,-21.27482 l 0,-36.44115 0,-36.44115 c 0,-24.91714 0.36951,-49.77675 0,-74.69115 -0.1728,-11.64714 -2.0019,-31.48871 -16.40433,-31.48871 l -7.59345,0"
-       id="path22216"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccscsssc"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <path
        sodipodi:nodetypes="cssc"
        inkscape:connector-curvature="0"
        id="path22357"
@@ -643,32 +611,6 @@
          x="456.15292"
          y="809.91547"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">σ</tspan></text>
-    <rect
-       style="opacity:1;fill:#d3a5ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.72899997;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4140-2-67-5"
-       width="21.43656"
-       height="27.513252"
-       x="385.03931"
-       y="902.26117"
-       rx="0"
-       ry="0"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <text
-       transform="scale(1.0304244,0.97047391)"
-       sodipodi:linespacing="125%"
-       id="text6347-62-4"
-       y="952.10022"
-       x="377.29935"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.58397865px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.49841487;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279"><tspan
-         y="952.10022"
-         x="377.29935"
-         id="tspan6349-0-1"
-         sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'">w</tspan></text>
     <rect
        ry="0"
        rx="0"
@@ -745,32 +687,6 @@
          x="162.16171"
          y="809.91602"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none">σ</tspan></text>
-    <rect
-       style="opacity:1;fill:#d3a5ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.72899997;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4140-2-67-5-5"
-       width="21.43656"
-       height="27.513252"
-       x="117.86239"
-       y="902.26166"
-       rx="0"
-       ry="0"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <text
-       transform="scale(1.0304244,0.97047391)"
-       sodipodi:linespacing="125%"
-       id="text6347-62-4-0"
-       y="952.10071"
-       x="118.01112"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.58397865px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.49841487;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279"><tspan
-         y="952.10071"
-         x="118.01112"
-         id="tspan6349-0-1-1"
-         sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'">w</tspan></text>
     <rect
        ry="0"
        rx="0"
@@ -997,32 +913,6 @@
          x="264.40378"
          id="tspan4532"
          sodipodi:role="line">σ</tspan></text>
-    <rect
-       ry="0"
-       rx="0"
-       y="902.26166"
-       x="210.77916"
-       height="27.513252"
-       width="21.43656"
-       id="rect4538"
-       style="opacity:1;fill:#d3a5ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.72899997;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.58397865px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.49841487;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="208.18442"
-       y="952.10071"
-       id="text4540"
-       sodipodi:linespacing="125%"
-       transform="scale(1.0304244,0.97047391)"
-       inkscape:export-xdpi="153.33279"
-       inkscape:export-ydpi="153.33279"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'"
-         sodipodi:role="line"
-         id="tspan4542"
-         x="208.18442"
-         y="952.10071">w</tspan></text>
     <rect
        style="opacity:1;fill:#d3a5ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.72899997;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4546"
