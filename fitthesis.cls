@@ -75,10 +75,13 @@
 \def\@keywords@CS{Klíèová slova}
 \def\@keywords@EN{Keywords}
 \def\@cite@CS{Citace}
+\def\@cite@EN{Citation}
 \def\@copyright@CS{Tato práce vznikla jako ¹kolní dílo na Vysokém uèení technickém v Brnì, Fakultì informaèních technologií. 
 Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem je nezákonné, s výjimkou zákonem definovaných pøípadù.}
 \def\@tdecl@CS{Prohlá¹ení}
+\def\@tdecl@EN{Declaration}
 \def\@tackn@CS{Podìkování}
+\def\@tackn@EN{Acknowledgements}
 
 \newif\ifnasel
 \def\ifEqString#1#2#3#4{\def\testa{#1}\def\testb{#2}%
@@ -256,7 +259,7 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 
 \vfill
 
-\mktxt@b{16}{\@cite@CS}
+\mktxt@b{16}{\ifczech\@cite@CS\else\@cite@EN\fi}
 \noindent\@author: \@title, \MakeLowercase{\@projecttype@CS}, Brno, FIT VUT v~Brnì, \@year
 %===================================================
 \newpage
@@ -270,7 +273,7 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 \mktxt@b{18}{\@title}
 
 \vspace{10mm}
-\mktxt@b{16}{\@tdecl@CS}
+\mktxt@b{16}{\ifczech\@tdecl@CS\else\@tdecl@EN\fi}
 \noindent\@declaration
 
   \begin{flushright}
@@ -282,7 +285,7 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 \ifx\undefined\@acknowledgment
 \else
 \vspace{20mm}
-\mktxt@b{16}{\@tackn@CS}
+\mktxt@b{16}{\ifczech\@tackn@CS\else\@tackn@EN\fi}
 \noindent\@acknowledgment
 \fi
 
