@@ -1,8 +1,8 @@
-diplomka.aux
-diplomka.bbl
-diplomka.blg
-diplomka.log
-diplomka.out
-diplomka.synctex.gz
-diplomka.toc
-diplomka.brf
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.brf
