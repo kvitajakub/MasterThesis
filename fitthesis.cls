@@ -78,6 +78,8 @@
 \def\@cite@EN{Citation}
 \def\@copyright@CS{Tato práce vznikla jako ¹kolní dílo na Vysokém uèení technickém v Brnì, Fakultì informaèních technologií. 
 Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem je nezákonné, s výjimkou zákonem definovaných pøípadù.}
+\def\@copyright@EN{Tato práce vznikla jako ¹kolní dílo na Vysokém uèení technickém v Brnì, Fakultì informaèních technologií. 
+Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem je nezákonné, s výjimkou zákonem definovaných pøípadù.}
 \def\@tdecl@CS{Prohlá¹ení}
 \def\@tdecl@EN{Declaration}
 \def\@tackn@CS{Podìkování}
@@ -203,18 +205,18 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 %===================================================
 \fontfamily{phv}\selectfont%
 %  
-\mkuctxt{24}{\@vut@CS}
-\mkuctxt{11}{\@vut@EN}
+\mkuctxt{24}{\ifczech\@vut@CS\else\@vut@EN\fi}
+\mkuctxt{11}{\ifczech\@vut@EN\else\@vut@CS\fi}
 
 \vspace{12mm}
 
-\mkuctxt{14}{\@fit@CS}
-\mkuctxt{14}{\@departmentname@CS}
+\mkuctxt{14}{\ifczech\@fit@CS\else\@fit@EN\fi}
+\mkuctxt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}
 
 \vspace{4mm}
 
-\mkuctxt{11}{\@fit@EN}
-\mkuctxt{11}{\@departmentname@EN}
+\mkuctxt{11}{\ifczech\@fit@EN\else\@fit@CS\fi}
+\mkuctxt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
 
 \vfill
 
@@ -222,12 +224,12 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 
 \vfill
 
-\mkuctxt{14}{\@projecttype@CS}
-\mkuctxt{10}{\@projecttype@EN}
+\mkuctxt{14}{\ifczech\@projecttype@CS\else\@projecttype@EN\fi}
+\mkuctxt{10}{\ifczech\@projecttype@EN\else\@projecttype@CS\fi}
 \vspace{5mm}
 
-\mktxt{14}{\MakeUppercase{\@author@CS} \hfill \get@author}
-\mkuctxt{10}{\@author@EN}
+\mktxt{14}{\MakeUppercase{\ifczech\@author@CS\else\@author@EN\fi} \hfill \get@author}
+\mkuctxt{10}{\ifczech\@author@EN\else\@author@CS\fi}
 
 \vspace{10mm}
 
@@ -243,19 +245,35 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 \newcommand\makeabstract{%
 \thispagestyle{empty}\null%
 
+\ifczech
 \mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
-
-\vfill
-
+\else
 \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
+\fi
 
 \vfill
 
+\ifczech
+\mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
+\else
+\mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
+\fi
+
+\vfill
+
+\ifczech
 \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
+\else
+\mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
+\fi
 
 \vfill
 
+\ifczech
 \mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
+\else
+\mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
+\fi
 
 \vfill
 
@@ -292,7 +310,7 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 \vfill
 
 \noindent\copyright\ \@author, \@year.\newline
-{\em \@copyright@CS}
+{\em \ifczech\@copyright@CS\else\@copyright@EN\fi}
 %===================================================
 \newpage
 }
@@ -308,7 +326,7 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 \newsavebox{\@obrlogo}\newsavebox{\@rtext}\newlength{\@vyskartext}\newlength{\@vyskaobr}%
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/vut-zp2}}%logo VUT
-\savebox{\@rtext}{\vbox{\mkuctxt{18}{\@vut@CS}\mkuctxt{11}{\@vut@EN}}}%text VUT
+\savebox{\@rtext}{\vbox{\mkuctxt{18}{\ifczech\@vut@CS\else\@vut@EN\fi}\mkuctxt{11}{\ifczech\@vut@EN\else\@vut@CS\fi}}}%text VUT
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
@@ -318,9 +336,14 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/fit-zp2}}%logo FIT
 \savebox{\@rtext}{%text FIT, USTAV
-\vbox{\mkuctxt{14}{\@fit@CS}\mkuctxt{14}{\@departmentname@CS}
-\vspace{3mm}
-\mkuctxt{11}{\@fit@EN}\mkuctxt{11}{\@departmentname@EN}}}%
+\vbox{\mkuctxt{14}{\ifczech\@fit@CS\else\@fit@EN\fi}
+%	  \mkuctxt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}\\
+	  \noindent\parbox[l]{\textwidth-3.9cm}{{\setfontsize{14}\noindent\MakeUppercase{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}}\vspace\mkspc}
+	  \vspace{3mm}\linebreak
+      \mkuctxt{11}{\ifczech\@fit@EN\else\@fit@CS\fi}
+      \mkuctxt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
+     }
+   }%
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
@@ -328,23 +351,23 @@ Práce je chránìna autorským zákonem a její u¾ití bez udìlení oprávnìní autorem j
 
 \vfill
 
-\mkuctxt{18}{\@title@CS}
-\mkuctxt{10}{\@title@EN}
+\mkuctxt{18}{\ifczech\@title@CS\else\@title@EN\fi}
+\mkuctxt{10}{\ifczech\@title@EN\else\@title@CS\fi}
 
 \vfill
 
-\mkuctxt{14}{\@projecttype@CS}
-\mkuctxt{10}{\@projecttype@EN}
+\mkuctxt{14}{\ifczech\@projecttype@CS\else\@projecttype@EN\fi}
+\mkuctxt{10}{\ifczech\@projecttype@EN\else\@projecttype@CS\fi}
 
 \vspace{5mm}
 
-\mktxt{14}{\MakeUppercase{\@author@CS} \hfill \get@author}
-\mkuctxt{10}{\@author@EN}
+\mktxt{14}{\MakeUppercase{\ifczech\@author@CS\else\@author@EN\fi} \hfill \get@author}
+\mkuctxt{10}{\ifczech\@author@EN\else\@author@CS\fi}
 
 \vspace{5mm}
 
-\mktxt{14}{\MakeUppercase{\@supervisor@CS} \hfill \get@supervisor}
-\mkuctxt{10}{\@supervisor@EN}
+\mktxt{14}{\MakeUppercase{\ifczech\@supervisor@CS\else\@supervisor@EN\fi} \hfill \get@supervisor}
+\mkuctxt{10}{\ifczech\@supervisor@EN\else\@supervisor@CS\fi}
 
 \vspace{10mm}
 
