@@ -13,6 +13,11 @@ General idea of artificial neural networks emerged after World War II. Perceptro
 
 Various useful architectures and algorithms are now introduced almost every month. In this chapter, I will describe only a handful -- recurrent neural networks with the LSTM and GRU units, and basics of convolutional neural nets.
 
+\section{Common NN layers}
+\subsubsection{Linear}
+\subsubsection{ReLU}
+\subsubsection{Dropout}
+
 	\section{Recurrent neural nets}
 Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task. There is vast amount of recurrent neural networks, many not suitable for sequential tasks like Hopfield network, which are very successful in specific tasks, but nevertheless not useful for us now.
 
@@ -24,11 +29,14 @@ Apart from classification, which can be more precise when using sequences, one o
 	\caption{Unrolling of the recurrent neural net.
 		\label{fig:rnn-unroll}}
 \end{figure}
-%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
 
-		\subsection{LSTM -- Long Short-Term Memory}\label{subsec:lstm}
+	\subsection{Recurrent units}\label{subsec:recUnits}
+
+	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu...}
+
+		\subsubsection{LSTM -- Long Short-Term Memory}\label{subsubsec:lstm}
 
 Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem~\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
@@ -60,7 +68,8 @@ LSTM based on these equations is using total of 11 weight matrices and 4 bias ve
 Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
 
 
-		\subsection{GRU -- Gated Recurrent Unit}\label{subsec:gru}
+		\subsubsection{GRU -- Gated Recurrent Unit}\label{subsubsec:gru}
+		
 Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
 
 \begin{figure}[!ht]
@@ -69,7 +78,6 @@ Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more drama
 	\caption{Variation of a GRU unit.
 		\label{fig:gru}}
 \end{figure}
-%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 \begin{align}
 r_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xr}x_t + W_{hr}h_{t-1} + b_r) \label{eq:gru1}\\
@@ -157,7 +165,7 @@ One of the most interesting event in this field is MS COCO Captioning Challenge\
 
 %\todo[inline]{nejlepsi clanky se ucastni ms coco.}
 
-		\subsection{Show and Tell: A Neural Image Caption Generator} \label{subsec:showtell}
+		\subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 		
 Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in MS COCO Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 		
@@ -194,7 +202,7 @@ Each word is represented as a one-hot vector $ S_t $ of the size equal to size o
 		
 The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using stochastic gradient descent with fixed learning rate and no momentum. For the embeddings and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
 				
-		\subsection{From Captions to Visual Concepts and Back} \label{subsec:fromCaptions}
+		\subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
 		
 This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
 
@@ -204,7 +212,7 @@ Third, candidate captions are re-ranked using MERT~\cite{och2003minimum} (Minimu
 
 Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper ~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
 		
-		\subsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
+		\subsubsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 	
 Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
 
@@ -228,7 +236,7 @@ Paper is also showing how we can gain insight and interpret the results of the m
 
 CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam~\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 		
-		\subsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
+		\subsubsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
 The research group from Berkeley in paper ~\cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output). 
 
@@ -301,7 +309,49 @@ METEOR (Metric for Evaluation of Translation with Explicit ORdering)~\cite{Lavie
 		
 Last year, metric designed directly to caption evaluation called CIDEr (Consensus-based Image Description Evaluation)~\cite{Vedantam_2015_CVPR} was introduced. This is still new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is that given enough captions for the same image, metrics perform better. This can be seen in datasets introduced with it (see part \ref{sec:datasets}).		
 
-\chapter{Tools and Experiments}\label{chp:exper}
+\chapter{Model design}\label{chp:model}
+
+\todo[inline]{Jak vypada celkovy navrh modelu, velky diagram. Pak jednotlive sekce s tim jak vypadaji casti modelu, klidne zoom velkeho diagramu.}
+\section{Overall architecture}
+\subsection{CNN}
+\subsection{Language model}
+\section{Learning procedure}
+\todo[inline]{Algorithms and data.}
+As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{./fig/proposed-model.pdf}
+	\caption{Architecture of the proposed model.
+		\label{fig:proposedModel}}
+\end{figure}
+
+First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
+
+Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
+
+Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
+
+%\chapter{Implementation}
+%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
+%
+%	\section{Torch framework}
+%\todo[inline]{Popis Torche, ruznych druhu modulu ktere ma, ktere jsem pouzil ja.}
+%
+%	\section{Parallelization}
+%\todo[inline]{Nejaky popis toho ze to lze trenovat na gpu, jak se to dela v Torchi..}	
+%
+%\chapter{Results and model evaluation}
+%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
+%\todo[inline]{Performance, analysis,... spravne pojmenovat}
+%\todo[inline]{Kde se trenovalo? Na jakych strojich? Jak to bylo rychle? Jak to bylo na cpu pomale?}
+%
+%	\section{Speed}
+%\todo[inline]{Jak bylo trenovani rychle, }
+
+\chapter{Implementation}
+
+	\section{Tools}\label{chp:exper}
 
 In this chapter I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
 
@@ -313,13 +363,13 @@ Next Python library, independent of Theano, is \emph{TensorFlow}\footnote{Tensor
 
 Python tools with the engine implemented in C/C++ are not the only ones. \emph{Caffe}\footnote{Caffe: \url{http://caffe.berkeleyvision.org/}} is well-known and widely used library with API in C++. It performs very well in image classification with neural nets and can be used as a source of many pre-trained models hosted on the Model Zoo\footnote{Caffe Model Zoo: \url{https://github.com/BVLC/caffe/wiki/Model-Zoo}} site. It is also possible to use \emph{Deeplearning4j}\footnote{Deeplearning4j: \url{http://deeplearning4j.org/}}, which is deep-learning library written for Java and Scala, and a lot of others. Nowadays, libraries are introduced almost every month as this field is very live, which also means not everything is implemented in every framework and users need to follow news about their tools.
 
-\section{Torch}
+\subsection{Torch}
 
 \emph{Torch}\footnote{Torch: \url{http://torch.ch/}} is an open source scientific computing framework and machine learning library for the Lua. Underlying implementation is using extremely fast LuaJIT and C, but no need to code in C is required. Torch is not as popular in academic environment as Theano, but it is used by several large companies including Google \& DeepMind, Facebook and IBM, which also contribute to the project. Apart from the companies, Torch has a large ecosystem of community-driven packages\footnote{Wikipage with list of packages: \url{https://github.com/torch/torch7/wiki/Cheatsheet}} with almost every tool needed for machine learning, computer vision and signal processing, and wide range of utilities. In the rest of this section I will describe fundamental Torch packages, which are necessary for my research.
 
 The core package of Torch is \emph{torch}, which is installed together with the library. It contains data structures for multi-dimensional tensors and operations over them. This is the most important part, as almost every package depends on them. Additionally, it provides many utilities for accessing files, serializing objects, processing command-line parameters and other useful utilities.
 
-\subsection{nn, nngraph}
+\subsubsection{nn, nngraph}
 
 The base Torch provides necessary math structures, but the \emph{nn} package allows simple creation of neural networks with a common \texttt{Module} interface. Module represents a layer of the network, which is the building block of the nets in Torch. Layers have \texttt{forward()} and \texttt{backward()} method and can be joined together by module composites \texttt{Sequential}, \texttt{Parallel} and \texttt{Concat}. These components allows creation of arbitrary graphs.
 
@@ -329,13 +379,13 @@ Creating networks with complex graphs is quite complicated with the \emph{nn}. T
 
 Both packages are sufficient and provide even advanced features like weight-sharing or weight-tying. They are mainly focused on feed-forward and convolutional networks. Creating RNNs is possible, however it is very complicated and labor-intensive.
 
-\subsection{rnn}\label{subsec:torch-rnn}
+\subsubsection{rnn}\label{subsec:torch-rnn}
 
 Torch's \emph{rnn}~\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
 
 Package also provide module for implementing attention model~\cite{DBLP:journals/corr/MnihHGK14}. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
 
-\subsection{Other packages}
+\subsubsection{Other packages}
 
 As the number of community packages is enormous, I will list just a few, which are commonly used and related to the topic of this work:
 
@@ -354,6 +404,7 @@ As the number of community packages is enormous, I will list just a few, which a
 
 \section{Predicting next character in sequence}
 
+\todo[inline]{Tohle prijde asi odstranit.}
 As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post~\cite{char-rnn}.
 
 Models used one-hot encoding for the input and probability distribution of the next character in sequence as an output. Networks have four recurrent layers (LSTM or GRU), each with 300 nodes, followed by linear and logarithmic softmax layer. Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
@@ -417,39 +468,16 @@ low a jewel
 
 It is obvious that the models are not perfectly trained, but they have been able to pick up the form of text (names of speakers in upper case, followed by colon) and most of the short English words. Training was using only single desktop CPU and only for several hours. As I am arranging access to the GPU nodes, models are expected to improve simply by prolonging the training times, without changing the parameters.
 
-\chapter{Model}\label{chp:model}
+\section{Design and file structure}
+\todo[inline]{Nejaky popis jake soubory jsem udelal, co delaji, jak je spoustet pri trenovani a pri samplovani...}
 
-As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
+\todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry.}
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{./fig/proposed-model.pdf}
-	\caption{Architecture of the proposed model.
-		\label{fig:proposedModel}}
-\end{figure}
+\chapter{Experiments and results}
 
-First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
-
-Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
-
-Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
-
-%\chapter{Implementation}
-%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
-%
-%	\section{Torch framework}
-%\todo[inline]{Popis Torche, ruznych druhu modulu ktere ma, ktere jsem pouzil ja.}
-%
-%	\section{Parallelization}
-%\todo[inline]{Nejaky popis toho ze to lze trenovat na gpu, jak se to dela v Torchi..}	
-%
-%\chapter{Results and model evaluation}
-%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
-%\todo[inline]{Performance, analysis,... spravne pojmenovat}
-%\todo[inline]{Kde se trenovalo? Na jakych strojich? Jak to bylo rychle? Jak to bylo na cpu pomale?}
-%
-%	\section{Speed}
-%\todo[inline]{Jak bylo trenovani rychle, }
+\section{Language model initialization variations}
+\section{Evaluation}
+\section{Analysis of results}
 
 \chapter{Conclusion}\label{chp:conclusion}
 
