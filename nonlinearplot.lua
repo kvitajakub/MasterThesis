@@ -1,16 +1,40 @@
 
+function sigmoid(x)
+    local result = x:clone()
+    for i=1,(#x)[1] do
+        result[i] = 1/(1+torch.exp(-x[i]))
+    end
+    return result
+end
+
+function relu(x)
+    local zero = x:clone():zero()
+    return torch.cmax(x, zero)
+end
+
+function softplus(x)
+    return torch.log1p(torch.exp(x))
+end
+
+
 require 'gnuplot'
 
-x=torch.linspace(-4,4)
+x = torch.linspace(-3.18,3.18,101)
 
-gnuplot.title("Nonlinear functions")
+gnuplot.title("")
 
-gnuplot.xlabel("Input")
-gnuplot.ylabel("Output")
+gnuplot.xlabel("")
+gnuplot.ylabel("")
+
+gnuplot.movelegend('left','top')
 
 gnuplot.grid(true)
 
--- gnuplot.axis('equal')
+gnuplot.axis({-3.2,3.2,-1.6,3.25})
 
-gnuplot.plot({"Sin",x,torch.sin(x),'~'},
-             {"Tanh",x,torch.tanh(x),'~'})
+gnuplot.plot(
+             {"Softplus",x,softplus(x),'~'},
+             {"Tanh",x,torch.tanh(x),'~'},
+             {"Sigmoid",x,sigmoid(x),'~'},
+             {"ReLU",x,relu(x),'-'}
+            )
