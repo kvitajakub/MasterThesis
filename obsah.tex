@@ -10,6 +10,9 @@ Deep machine learning, sometimes under the name of neural networks\footnote{Term
 
 First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
 
+
+\todo[inline]{V opravdu dobrém textu mezi nadpisy bude v¾dy nìjaký text a to ne jen jeden øádek. Pøed ka¾dým informaèním blokem (kapitolou, podkapitolou) mù¾e být shrnutí co se ètenáø dozvìdìl v minulém textu a uvedení, proè právì teï je ten správný okam¾ik se pustit do následujícího tématu, jak navazuje na pøedchozí, jak ètenáøe posune v pochopení celého øe¹ení a proè se na následující informace má tì¹it.}
+
 \chapter{Neural networks} \label{chp:nn}
 General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then and also the lack of datasets. Recently (after 2000), neural nets became popular again, under the name of \textquotedblleft deep learning\textquotedblright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
@@ -27,8 +30,8 @@ This type of unit is the most basic one. It was part of the Rosenblatt's percept
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.5\textwidth]{fig/linear.png}
-	\caption{A linear unit.
+	\includegraphics[width=0.4\textwidth]{fig/linear.pdf}
+	\caption{Mozna bude lepsi jen rovnice.
 		\label{fig:linear}}
 \end{figure}
 
