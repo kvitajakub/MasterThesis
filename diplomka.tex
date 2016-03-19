@@ -1,32 +1,37 @@
 %============================================================================
 % tento soubor pouzijte jako zaklad
 % (c) 2008 Michal Bidlo
+% E-mail: bidlom AT fit vutbr cz
 %============================================================================
-% kodovaní: iso-8859-2 (zmena prikazem iconv, recode nebo cstocs)
+% kodovanÃ­: UTF-8 (zmena prikazem iconv, recode nebo cstocs)
 %----------------------------------------------------------------------------
-% zpracování: make, make pdf, make desky, make clean
-% pøipomínky posílejte na e-mail: bidlom AT fit.vutbr.cz
-% vim: set syntax=tex encoding=latin2:
+% zpracovÃ¡nÃ­: make, make pdf, make desky, make clean
 %============================================================================
-\documentclass[english, cover]{fitthesis} % odevzdani do wisu - odkazy, na ktere se da klikat
-%\documentclass[cover,print]{fitthesis} % pro tisk - na odkazy se neda klikat
-%\documentclass[english,print]{fitthesis} % pro tisk - na odkazy se neda klikat
-%      \documentclass[english]{fitthesis}
+% Å ablonu upravil: Ing. Jaroslav Dytrych, idytrych@fit.vutbr.cz
+%============================================================================
+\documentclass[english, zadani]{fitthesis} % bez zadÃ¡nÃ­ - pro zaÄÃ¡tek prÃ¡ce, aby nebyl problÃ©m s pÅ™ekladem
+%\documentclass[zadani]{fitthesis} % odevzdani do wisu - odkazy jsou barevnÃ©
+%\documentclass[zadani,print]{fitthesis} % pro tisk - odkazy jsou ÄernÃ©
+%\documentclass[english,print,zadani]{fitthesis} % pro tisk - odkazy jsou ÄernÃ©
 % * Je-li prace psana v anglickem jazyce, je zapotrebi u tridy pouzit 
 %   parametr english nasledovne:
 %      \documentclass[english]{fitthesis}
-% * Neprejete-li si vysazet na prvni strane dokumentu desky, zruste 
-%   parametr cover
 
-% zde zvolime kodovani, ve kterem je napsan text prace
-% "latin2" pro iso8859-2 nebo "cp1250" pro windows-1250, "utf8" pro "utf-8"
-%\usepackage{ucs}
-\usepackage[latin2]{inputenc}
-\usepackage[T1, IL2]{fontenc}
+\usepackage[czech,english]{babel}
+\usepackage[utf8]{inputenc} %kodovani
+\usepackage[T1]{fontenc}
+\usepackage{cmap}
 \usepackage{url}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 %zde muzeme vlozit vlastni balicky
+\usepackage{listings}
+\usepackage[toc,page,header]{appendix}
+\RequirePackage{titletoc}
+\ifczech
+  \usepackage{ae}
+\fi
+
 \usepackage[shadow]{todonotes}
 %\usepackage[shadow,disable]{todonotes}
 \setlength{\marginparwidth}{2.9cm}
@@ -59,23 +64,44 @@
 }
 
 
+%---rm---------------
+\renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
+%---sf---------------
+\renewcommand{\sfdefault}{qhv}%zavede TeX Gyre Heros jako sf
+%---tt------------
+\renewcommand{\ttdefault}{lmtt}% zavede Latin Modern tt jako tt
+
+% vypne funkci novÃ© Å¡ablony, kterÃ¡ automaticky nahrazuje uvozovky,
+% aby nebyly provÃ¡dÄ›ny nevhodnÃ© nÃ¡hrady v popisech API apod.
+\csdoublequotesoff
+
 % =======================================================================
-% balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
-% problém je, ¾e balíèek hyperref musí bıt uveden jako poslední, tak¾e nemù¾e
-% bıt v ¹ablonì
+% balÃ­Äek "hyperref" vytvÃ¡Å™Ã­ klikacÃ­ odkazy v pdf, pokud tedy pouÅ¾ijeme pdflatex
+% problÃ©m je, Å¾e balÃ­Äek hyperref musÃ­ bÃ½t uveden jako poslednÃ­, takÅ¾e nemÅ¯Å¾e
+% bÃ½t v Å¡ablonÄ›
 \ifWis
 \ifx\pdfoutput\undefined % nejedeme pod pdflatexem
 \else
   \usepackage{color}
 %  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
-  %zpetne reference v bibliografii na stranky kde se citovalo
   \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,backref]{hyperref}
-%  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,pagebackref]{hyperref}
   \definecolor{links}{rgb}{0.4,0.5,0}
   \definecolor{anchors}{rgb}{1,0,0}
   \def\AnchorColor{anchors}
   \def\LinkColor{links}
-  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajù kolem odkazù
+  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajÅ¯ kolem odkazÅ¯
+  \pdfcompresslevel=9
+\fi
+\else % pro tisk budou odkazy, na kterÃ© se dÃ¡ klikat, ÄernÃ©
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+  \usepackage{color}
+  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
+  \definecolor{links}{rgb}{0,0,0}
+  \definecolor{anchors}{rgb}{0,0,0}
+  \def\AnchorColor{anchors}
+  \def\LinkColor{links}
+  \def\pdfBorderAttrs{/Border [0 0 0] } % bez okrajÅ¯ kolem odkazÅ¯
   \pdfcompresslevel=9
 \fi
 \fi
@@ -88,7 +114,7 @@
   year=2016,             %rok
   date=\today,           %datum odevzdani
   %Nazev prace
-  title.cs=Popis fotografií pomocí rekurentních neuronovıch sítí,  %nazev prace v cestine
+  title.cs=Popis fotografiÃ­ pomocÃ­ rekurentnÃ­ch neuronovÃ½ch sÃ­tÃ­,  %nazev prace v cestine
   title.en=Image Captioning with Recurrent Neural Networks, %nazev prace v anglictine
   %Autor
   author=Jakub Kvita,   %jmeno prijmeni autora
@@ -97,40 +123,37 @@
   %Ustav
   department=UPGM, % doplnte spravnou zkratku ustavu: UPSY/UIFS/UITS/UPGM
   %Skolitel
-  supervisor=Michal Hradi¹, %jmeno prijmeni skolitele
+  supervisor=Michal HradiÅ¡, %jmeno prijmeni skolitele
   supervisor.title.p=Ing.,   %titul pred jmenem (nepovinne)
   supervisor.title.a=Ph.D.,    %titul za jmenem (nepovinne)
   %Klicova slova, abstrakty, prohlaseni a podekovani je mozne definovat 
   %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
   %===========================================================================
   %Klicova slova
-  keywords.cs={rekurentní neuronové sítì, RNN, konvoluèní neuronové sítì, CNN, popisování obrázkù, LSTM, GRU, MS COCO, Torch, hluboké uèení}, %klicova slova v ceskem jazyce
-  keywords.en={recurrent neural networks, RNN, convolutional neural networks, CNN, image captioning, LSTM, GRU, MS COCO, Torch, deep learning}, %klicova slova v anglickem jazyce
+  %keywords.cs={KlÃ­ÄovÃ¡ slova v ÄeskÃ©m jazyce.}, %klicova slova v ceskem jazyce
+  %keywords.en={KlÃ­ÄovÃ¡ slova v anglickÃ©m jazyce.}, %klicova slova v anglickem jazyce
   %Abstract
-  abstract.cs={Tato práce se zabıvá automatickım generovaním popisù obrázkù s vyu¾itím nìkolika druhù neuronovıch sítí. Práce je zalo¾ena na èláncích z MS COCO Captioning Challenge 2015 a znakovıch jazykovıch modelech, popularizovanıch A. Karpathym. Navr¾enı model je kombinací konvoluèní a rekurentní neuronové sítì s architekturou kodér--dekodér. Vektor reprezentující zakódovanı obrázek je pøedáván jazykovému modelu jako hodnoty pamìti první vrstvy LSTM/GRU v síti. Práce zkoumá, jestli je model s takto jednoduchou architekturou vhodnìj¹í, ne¾ ostatní souèasné modely, pro jiné jazyky ne¾ je angliètina.}, % abstrakt v ceskem jazyce
-  abstract.en={In this paper we deal with automatic generation of image captions by using multiple types of neural networks. Thesis is based on the papers from MS COCO Captioning Challenge 2015 and character language models, popularized by A. Karpathy. Proposed model is combination of convolutional and recurrent neural network with encoder--decoder architecture. Vector representing encoded image is passed to language model as memory values of first LSTM layer of the network. This work investigate, whether model with such simple architecture is more suitable than other contemporary solutions for languages different than English.}, % abstrakt v anglickem jazyce
+  %abstract.cs={VÃ½tah (abstrakt) prÃ¡ce v ÄeskÃ©m jazyce.}, % abstrakt v ceskem jazyce
+  %abstract.en={VÃ½tah (abstrakt) prÃ¡ce v anglickÃ©m jazyce.}, % abstrakt v anglickem jazyce
   %Prohlaseni
-  declaration={I hereby certify that this thesis is a presentation of my original research work and I have excercised reasonable care to ensure it does not to the best of my knowledge breach any law of copyright. Wherever contributions of others are involved, every effort is made to indicate this clearly, with due reference to the literature, and acknowledgement of collaborative research and discussions. The work was done under the guidance of Michal Hradi¹ at the Brno University of Technology.},
-  % Podekovani (nepovinne)
-  acknowledgment={Access to computing and storage facilities owned by parties and projects contributing to the National Grid Infrastructure MetaCentrum, provided under the programme "Projects of Large Research, Development, and Innovations Infrastructures" (CESNET LM2015042), is greatly appreciated.} % nepovinne
+  %declaration={ProhlaÅ¡uji, Å¾e jsem tuto bakalÃ¡Å™skou prÃ¡ci vypracoval samostatnÄ› pod vedenÃ­m pana ...},
+  %Podekovani (nepovinne)
+  %acknowledgment={Zde je moÅ¾nÃ© uvÃ©st podÄ›kovÃ¡nÃ­ vedoucÃ­mu prÃ¡ce a tÄ›m, kteÅ™Ã­ poskytli odbornou pomoc.} % nepovinne
 }
 
 %Abstrakt (cesky, anglicky)
-%\abstract[cs]{Do tohoto odstavce bude zapsán vıtah (abstrakt) práce v èeském jazyce.}
-%\abstract[en]{Do tohoto odstavce bude zapsán vıtah (abstrakt) práce v anglickém jazyce.}
+\abstract[cs]{Tato prÃ¡ce se zabÃ½vÃ¡ automatickÃ½m generovanÃ­m popisÅ¯ obrÃ¡zkÅ¯ s vyuÅ¾itÃ­m nÄ›kolika druhÅ¯ neuronovÃ½ch sÃ­tÃ­. PrÃ¡ce je zaloÅ¾ena na ÄlÃ¡ncÃ­ch z MS COCO Captioning Challenge 2015 a znakovÃ½ch jazykovÃ½ch modelech, popularizovanÃ½ch A. Karpathym. NavrÅ¾enÃ½ model je kombinacÃ­ konvoluÄnÃ­ a rekurentnÃ­ neuronovÃ© sÃ­tÄ› s architekturou kodÃ©r--dekodÃ©r. Vektor reprezentujÃ­cÃ­ zakÃ³dovanÃ½ obrÃ¡zek je pÅ™edÃ¡vÃ¡n jazykovÃ©mu modelu jako hodnoty pamÄ›ti prvnÃ­ vrstvy LSTM/GRU v sÃ­ti. PrÃ¡ce zkoumÃ¡, jestli je model s takto jednoduchou architekturou vhodnÄ›jÅ¡Ã­, neÅ¾ ostatnÃ­ souÄasnÃ© modely, pro jinÃ© jazyky neÅ¾ je angliÄtina.}
+\abstract[en]{In this paper we deal with automatic generation of image captions by using multiple types of neural networks. Thesis is based on the papers from MS COCO Captioning Challenge 2015 and character language models, popularized by A. Karpathy. Proposed model is combination of convolutional and recurrent neural network with encoder--decoder architecture. Vector representing encoded image is passed to language model as memory values of first LSTM layer of the network. This work investigate, whether model with such simple architecture is more suitable than other contemporary solutions for languages different than English.}
 
 %Klicova slova (cesky, anglicky)
-%\keywords[cs]{Sem budou zapsána jednotlivá klíèová slova v èeském jazyce, oddìlená èárkami.}
-%\keywords[en]{Sem budou zapsána jednotlivá klíèová slova v anglickém jazyce, oddìlená èárkami.}
+\keywords[cs]{rekurentnÃ­ neuronovÃ© sÃ­tÄ›, RNN, konvoluÄnÃ­ neuronovÃ© sÃ­tÄ›, CNN, popisovÃ¡nÃ­ obrÃ¡zkÅ¯, LSTM, GRU, MS COCO, Torch, hlubokÃ© uÄenÃ­}
+\keywords[en]{recurrent neural networks, RNN, convolutional neural networks, CNN, image captioning, LSTM, GRU, MS COCO, Torch, deep learning}
 
 %Prohlaseni
-%\declaration{Prohla¹uji, ¾e jsem tuto bakaláøskou práci vypracoval samostatnì pod vedením pana X...
-%Dal¹í informace mi poskytli...
-%Uvedl jsem v¹echny literární prameny a publikace, ze kterıch jsem èerpal.}
+\declaration{I hereby certify that this thesis is a presentation of my original research work and I have excercised reasonable care to ensure it does not to the best of my knowledge breach any law of copyright. Wherever contributions of others are involved, every effort is made to indicate this clearly, with due reference to the literature, and acknowledgement of collaborative research and discussions. The work was done under the guidance of Michal HradiÅ¡ at the Brno University of Technology.}
 
 %Podekovani (nepovinne)
-%\acknowledgment{V této sekci je mo¾no uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc
-%(externí zadavatel, konzultant, apod.).}
+\acknowledgment{Access to computing and storage facilities owned by parties and projects contributing to the National Grid Infrastructure MetaCentrum, provided under the programme "Projects of Large Research, Development, and Innovations Infrastructures" (CESNET LM2015042), is greatly appreciated.}
 
 \begin{document}
   % Vysazeni titulnich stran
@@ -141,9 +164,14 @@
   \tableofcontents
   
   % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
+\ifczech
+  \renewcommand\listfigurename{Seznam obrÃ¡zkÅ¯}
+\fi
   % \listoffigures
+\ifczech
+  \renewcommand\listtablename{Seznam tabulek}
+\fi
   % \listoftables 
-
 
   % Text prace
   % ----------------------------------------------
@@ -152,15 +180,38 @@
   % Pouzita literatura
   % ----------------------------------------------
 \ifczech
+  \makeatletter
+  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
+  \makeatother
   \bibliographystyle{czechiso}
 \else 
+  \makeatletter
+  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literature}}
+  \makeatother
   \bibliographystyle{plain}
 %  \bibliographystyle{alpha}
 \fi
 %  \begin{flushleft}
   \bibliography{literatura} % viz. literatura.bib
 %  \end{flushleft}
+
+  % Prilohy
+  % ---------------------------------------------
   \appendix
-  
+\ifczech
+  \renewcommand{\appendixpagename}{PÅ™Ã­lohy}
+  \renewcommand{\appendixtocname}{PÅ™Ã­lohy}
+  \renewcommand{\appendixname}{PÅ™Ã­loha}
+\fi
+  \appendixpage
+\ifczech
+  \section*{Seznam pÅ™Ã­loh}
+  \addcontentsline{toc}{section}{Seznam pÅ™Ã­loh}
+\else
+  \section*{List of Appendices}
+  \addcontentsline{toc}{section}{List of Appendices}
+\fi
+  \startcontents[chapters]
+  \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
   \input{prilohy} % viz. prilohy.tex
 \end{document}
