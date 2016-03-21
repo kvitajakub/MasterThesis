@@ -296,27 +296,30 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \thispagestyle{empty}\null%
 %=====================================================
 \fontfamily{qhv}\selectfont%
-\newsavebox{\@obrlogo}\newsavebox{\@rtext}\newlength{\@vyskartext}\newlength{\@vyskaobr}%
+\newsavebox{\@obrlogo}\newsavebox{\@rtext}\newlength{\@vyskartext}\newlength{\@sirkartext}\newlength{\@vyskaobr}\newlength{\@sirkaobr}%
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/vut-zp2}}%logo VUT
 \savebox{\@rtext}{\vbox{\mkuctxt{18}{\ifczech\@vut@CS\else\@vut@EN\fi}\mkuctxt{11}{\ifczech\@vut@EN\else\@vut@CS\fi}}}%text VUT
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
+\settowidth{\@sirkaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
+\settowidth{\@sirkartext}{\makebox{\usebox{\@rtext}}}% sirka textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
+\addtolength{\@sirkartext}{-\@sirkaobr}\addtolength{\@sirkartext}{-10pt}%sirka textu na radku s obrazkem a odsazenim
 \noindent\usebox{\@obrlogo}\raisebox{\@vyskaobr}{\hspace{10pt}\usebox{\@rtext}}%zvedneme box s textem
 
 \vspace{5mm}
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/fit-zp2}}%logo FIT
 \savebox{\@rtext}{%text FIT, USTAV
-\vbox{\mkuctxt{14}{\ifczech\@fit@CS\else\@fit@EN\fi}
-%	  \mkuctxt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}\\
-	\noindent\parbox[l]{\textwidth-3.9cm}{{\setfontsize{14}\noindent\MakeUppercase{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}}\vspace\mkspc}
-	\vspace{3mm}\linebreak
-	\mkuctxt{11}{\ifczech\@fit@EN\else\@fit@CS\fi}
-	\mkuctxt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
+	\vbox{\mkuctxt{14}{\ifczech\@fit@CS\else\@fit@EN\fi}
+		%	  \mkuctxt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}\\
+		\noindent\parbox[l]{\@sirkartext}{{\setfontsize{14}\noindent\MakeUppercase{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}}\vspace\mkspc}
+		\vspace{3mm}\linebreak
+		\mkuctxt{11}{\ifczech\@fit@EN\else\@fit@CS\fi}
+		\mkuctxt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
 	}
-   }%
+}%
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
