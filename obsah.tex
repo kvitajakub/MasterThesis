@@ -18,38 +18,41 @@ General idea of artificial neural networks emerged after World War II. Perceptro
 
 Nowadays, various useful architectures and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which will be later used in the research.
 
-\section{Common NN layers}
+\section{Common layers of feed-forward neural nets}
 
-There are several types of neurons, each with special behavior, like in brain. In this part I will describe few popular options, which are used later in the text. I selected neurons from different families, as many of them have multiple variations with similar approach.
+\todo[inline]{Nejaky uvod k doprednym sitim, at se neskace po tematech. Mozna pouzit neco z uvodu k RNN.}
+
+There are several types of neurons, each of them with special behavior, like in brain. In this part I will describe few popular options, which are used later in the text. I selected neurons from different families, because many of them have multiple variations with similar approach.
 
 \subsubsection{Linear}
 
-In this type of neuron, the output unit is simply the weighted sum of its inputs added to a bias term. Visualisation is on the figure \ref{fig:linear}. A combination of these neurons performs a linear transformation of the input vector. Ability to perform only linear and affine transformations is also its weakness, as other types of units are required to perform nonlinear functions. However it is useful at the beginning and end of the network, to emphasize important features of the input or output and change its dimensionality.
+In this type of neuron, the output of the unit is simply the weighted sum of its inputs added to a bias term, described by equation
+\begin{align}
+y \hspace{7pt}&=\hspace{7pt} Wx + b. \label{eq:lin}
+\end{align}
+A combination of these neurons performs a linear transformation of the input vector. Ability to perform only linear and affine transformations is also its weakness, as some kind of nonlinear function needs to be added to produce more complicated functions. However it is useful at the beginning and end of the network, to emphasize important features of the input or output and change its dimensionality.
 
-This type of unit is the most basic one. It was part of the Rosenblatt's perceptron~\cite{rosenblatt58a} as well as the boolean function, which later evolved into nonlinear functions, like Rectifier.
-
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=0.4\textwidth]{fig/linear.pdf}
-	\caption{Mozna bude lepsi jen rovnice.
-		\label{fig:linear}}
-\end{figure}
+This type of unit is the most basic one. It was part of the Rosenblatt's perceptron~\cite{rosenblatt58a} as well as the boolean function, which later evolved into nonlinear functions, like Rectifier described further in the text.
 
 \subsubsection{Rectifier}
 %https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
 
 %http://www.erogol.com/what-is-special-about-rectifier-neural-units-used-in-nn-learning/
 
-V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.
+\todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.6\textwidth]{fig/nonlinearities.pdf}
+	\includegraphics[width=0.5\textwidth]{fig/nonlinearities.pdf}
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
 
 \subsubsection{Dropout}
+
+%http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html
+
+\todo[inline]{One of the regularization techniques}
 
 \begin{figure}[!t]
 	\centering
@@ -59,20 +62,26 @@ V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden 
 \end{figure}
 
 \subsubsection{Softmax}
+\todo[inline]{Pridat jako ukazku rovnici nebo graf? Asi hezky graf, rovnice je komplikovana a nic moc z ni nejde videt.}
+
 
 	\section{Recurrent neural nets}
-Feedforward neural nets are extremely powerful models, which can be highly parallelized. Despite that, they can be only applied to problems with inputs and outputs, which have fixed dimensionality (e.g. one-hot encoding vectors). This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us in beforehand. Soon recurrent neural networks were introduced and they proved to be very useful to this kind of task. There is vast amount of recurrent neural networks, many not suitable for sequential tasks like Hopfield network, which are very successful in specific tasks, but nevertheless not useful for us now.
+Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
 
-Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers.
+Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time from a starting base caption. More detailed description is further in the following chapters.
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/rnn-unrolled.pdf}
-	\caption{Unrolling of the recurrent neural net.
+	\caption{Unrolling of a recurrent neural net.
 		\label{fig:rnn-unroll}}
 \end{figure}
 
-We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
+The \Gls{latex} typesetting markup language is specially suitable 
+for documents that include \gls{maths}. 
+
+
+\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
 
 	\subsection{Recurrent units}\label{subsec:recUnits}
 
@@ -181,7 +190,7 @@ Last type of unit commonly used in CNN is rectified linear unit (ReLU), which pr
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
-	\caption{LeNet-5 architecture.~\cite{lecun-98}
+	\caption{Architecture of famous convolutional net LeNet-5.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
 
@@ -254,7 +263,7 @@ Third, candidate captions are re-ranked using MERT~\cite{och2003minimum} (Minimu
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.5\textwidth]{./fig/from-captions-workflow.png}
-	\caption{\textquoteleft From Captions to Visual Concepts\textquoteright\ image captioning sequence.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
+	\caption{\textquoteleft From Captions to Visual Concepts\textquoteright\ caption generation process.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		\label{fig:fromCaptionsModel}}
 \end{figure}
 
@@ -264,7 +273,7 @@ Direct comparison of this approach with the first one, presented in the paper de
 
 Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
 
-Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in ~\cite{DBLP:journals/corr/BahdanauCB14}. Which gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
+Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in~\cite{DBLP:journals/corr/BahdanauCB14}. It gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
 
 \begin{figure}[!t]
 	\centering
@@ -276,7 +285,7 @@ Decoder part is a LSTM network working of the word level, which generates, apart
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-wrong.pdf}
-	\caption{We can use attention to understand what the model saw, while a wrong caption was generated.~\cite{DBLP:journals/corr/XuBKCCSZB15}
+	\caption{We can use attention to understand, what was the model looking at, while generating wrong caption.~\cite{DBLP:journals/corr/XuBKCCSZB15}
 		\label{fig:attendmodelwrong}}
 \end{figure}
 

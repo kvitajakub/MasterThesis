@@ -27,14 +27,15 @@ gnuplot.xlabel("")
 gnuplot.ylabel("")
 
 gnuplot.movelegend('left','top')
+gnuplot.raw('set key font "FreeSerif,18"')
 
 gnuplot.grid(true)
 
-gnuplot.axis({-3.2,3.2,-1.6,3.25})
+gnuplot.axis({-3.2,3.2,-1.2,2.4})
 
 gnuplot.plot(
              {"Softplus",x,softplus(x),'~'},
              {"Tanh",x,torch.tanh(x),'~'},
              {"Sigmoid",x,sigmoid(x),'~'},
-             {"ReLU",x,relu(x),'-'}
+             {"Rectifier",x,relu(x),'-'}
             )

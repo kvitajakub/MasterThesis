@@ -62,6 +62,11 @@
 	belowskip=0pt
 }
 
+%seznam zkratek
+\usepackage{glossaries}
+\makeglossaries
+%novy soubor pro seznam zkratek a jejich popis
+\input{glossary}
 
 %---rm---------------
 \renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
@@ -166,11 +171,11 @@
 \ifczech
   \renewcommand\listfigurename{Seznam obrázků}
 \fi
-  % \listoffigures
+%   \listoffigures
 \ifczech
   \renewcommand\listtablename{Seznam tabulek}
 \fi
-  % \listoftables 
+%   \listoftables 
 
   % Text prace
   % ----------------------------------------------
@@ -185,7 +190,7 @@
   \bibliographystyle{czechiso}
 \else 
   \makeatletter
-  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literature}}
+  \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
   \makeatother
   \bibliographystyle{plain}
 %  \bibliographystyle{alpha}
@@ -193,6 +198,14 @@
 %  \begin{flushleft}
   \bibliography{literatura} % viz. literatura.bib
 %  \end{flushleft}
+
+\ifczech
+	\renewcommand\glossaryname{Seznam zkratek}
+\else
+	\renewcommand\glossaryname{List of Abbreviations}
+\fi
+\printglossaries 
+
 
   % Prilohy
   % ---------------------------------------------
