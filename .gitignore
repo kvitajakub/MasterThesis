@@ -7,3 +7,6 @@
 *.toc
 *.brf
 *.ptc
+*.glg
+*.gls
+*.ist
