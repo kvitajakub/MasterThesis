@@ -39,6 +39,8 @@ This type of unit is the most basic one. It was part of the Rosenblatt's percept
 
 %http://www.erogol.com/what-is-special-about-rectifier-neural-units-used-in-nn-learning/
 
+kombinaci s linear vznikne \gls{relu}.
+
 \todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
 
 \begin{figure}[!t]
@@ -77,11 +79,7 @@ Apart from classification, which can be more precise when using sequences, one o
 		\label{fig:rnn-unroll}}
 \end{figure}
 
-The \Gls{latex} typesetting markup language is specially suitable 
-for documents that include \gls{maths}. 
-
-
-\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called RNN unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training RNN with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the LSTM unit described in part \ref{subsec:lstm}, which is most popular now and following research resulting in GRU described in part \ref{subsec:gru}.
+\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called \gls{rnn} unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the \gls{lstm} described in part \ref{subsec:lstm}, which is most popular now and following research resulting in \gls{gru} described in part \ref{subsec:gru}.
 
 	\subsection{Recurrent units}\label{subsec:recUnits}
 
@@ -96,7 +94,7 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/lstm-peepholes.pdf}
-	\caption{Variation of the LSTM unit.
+	\caption{Variation of the LSTM.
 		\label{fig:lstm}}
 \end{figure}
 
@@ -125,7 +123,7 @@ Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more drama
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/gru.pdf}
-	\caption{Variation of a GRU unit.
+	\caption{Variation of a GRU.
 		\label{fig:gru}}
 \end{figure}
 
@@ -166,7 +164,7 @@ Character level models have usually smaller vocabulary size and have to be train
 
 Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
 
-Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. ~\cite{lecun-98}. Different CNN architecture was proposed by Graupe~\cite{graupe1988} for decomposition of one-dimensional EMG signals. Convolutional nets can be also used to natural language processing~\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
+Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. ~\cite{lecun-98}. Different CNN architecture was proposed by Graupe~\cite{graupe1988} for decomposition of one-dimensional EMG signals\footnote{Electromyography (EMG) is an electrodiagnostic medicine technique for evaluating and recording the electrical activity produced by skeletal muscles.}. Convolutional nets can be also used to natural language processing~\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
 
 Basic architecture of CNN can be described as the following process:
 
@@ -185,12 +183,12 @@ Convolutional layer, which is most important and gave CNN their name is essentia
 
 Subsampling, or max pooling in this version, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
 
-Last type of unit commonly used in CNN is rectified linear unit (ReLU), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of LeNet-5 is on the figure \ref{fig:lenet}.
+Last type of unit commonly used in CNN is rectified linear unit (\gls{relu}), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
-	\caption{Architecture of famous convolutional net LeNet-5.~\cite{lecun-98}
+	\caption{Architecture of famous \gls{cnn} \textquotedblleft LeNet-5\textquotedblright.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
 
@@ -217,7 +215,7 @@ One of the most interesting event in this field is MS COCO Captioning Challenge\
 
 		\subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 
-Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in MS COCO Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
+Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in \gls{coco} Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 
 Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the RNN decoder that generates word sequences. The decoder part of the network is made of LSTM units based on the following equations:
 
@@ -235,7 +233,7 @@ Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the sigmoid funct
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.4\textwidth]{./fig/show-tell_model.pdf}
-	\caption{\textquoteleft Show and Tell\textquoteright\ image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
+	\caption{\textquotedblleft Show and Tell\textquotedblright\ image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
 		\label{fig:showmodel}}
 \end{figure}
 
@@ -256,14 +254,14 @@ The CNN component of the model has been initialized to an ImageNet trained model
 
 This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
 
-Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (ME) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to ~\cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
+Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (\gls{me}) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to ~\cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
 
-Third, candidate captions are re-ranked using MERT~\cite{och2003minimum} (Minimum Error Rate Training) and the best one is selected. MERT uses linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (DMSM) score, which measures similarity between images and text. The DMSM is model proposed in this paper, which learns two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is one of the features fed to MERT.
+Third, candidate captions are re-ranked using Minimum Error Rate Training~\cite{och2003minimum} (\gls{mert}) and the best one is selected. MERT uses linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (DMSM) score, which measures similarity between images and text. The DMSM is model proposed in this paper, which learns two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is one of the features fed to MERT.
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.5\textwidth]{./fig/from-captions-workflow.png}
-	\caption{\textquoteleft From Captions to Visual Concepts\textquoteright\ caption generation process.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
+	\caption{\textquotedblleft From Captions to Visual Concepts\textquotedblright\ caption generation process.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		\label{fig:fromCaptionsModel}}
 \end{figure}
 

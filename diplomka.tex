@@ -62,12 +62,6 @@
 	belowskip=0pt
 }
 
-%seznam zkratek
-\usepackage{glossaries}
-\makeglossaries
-%novy soubor pro seznam zkratek a jejich popis
-\input{glossary}
-
 %---rm---------------
 \renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
 %---sf---------------
@@ -110,6 +104,12 @@
 \fi
 \fi
 
+%seznam zkratek
+\usepackage[nonumberlist]{glossaries}
+\makeglossaries
+%novy soubor pro seznam zkratek a jejich popis
+\input{glossary}
+
 %Informace o praci/projektu
 %---------------------------------------------------------------------------
 \projectinfo{
@@ -146,8 +146,8 @@
 }
 
 %Abstrakt (cesky, anglicky)
-\abstract[cs]{Tato práce se zabývá automatickým generovaním popisů obrázků s využitím několika druhů neuronových sítí. Práce je založena na článcích z MS COCO Captioning Challenge 2015 a znakových jazykových modelech, popularizovaných A. Karpathym. Navržený model je kombinací konvoluční a rekurentní neuronové sítě s architekturou kodér--dekodér. Vektor reprezentující zakódovaný obrázek je předáván jazykovému modelu jako hodnoty paměti první vrstvy LSTM/GRU v síti. Práce zkoumá, jestli je model s takto jednoduchou architekturou vhodnější, než ostatní současné modely, pro jiné jazyky než je angličtina.}
-\abstract[en]{In this paper we deal with automatic generation of image captions by using multiple types of neural networks. Thesis is based on the papers from MS COCO Captioning Challenge 2015 and character language models, popularized by A. Karpathy. Proposed model is combination of convolutional and recurrent neural network with encoder--decoder architecture. Vector representing encoded image is passed to language model as memory values of first LSTM layer of the network. This work investigate, whether model with such simple architecture is more suitable than other contemporary solutions for languages different than English.}
+\abstract[cs]{Tato práce se zabývá automatickým generovaním popisů obrázků s využitím několika druhů neuronových sítí. Práce je založena na článcích z MS COCO Captioning Challenge 2015 a znakových jazykových modelech, popularizovaných A. Karpathym. Navržený model je kombinací konvoluční a rekurentní neuronové sítě s architekturou kodér--dekodér. Vektor reprezentující zakódovaný obrázek je předáván jazykovému modelu jako hodnoty paměti první LSTM vrstvy v síti. Práce zkoumá, jestli je model s takto jednoduchou architekturou vhodnější pro jiné jazyky než je angličtina, než ostatní současné modely.}
+\abstract[en]{In this paper we deal with automatic generation of image captions by using multiple types of neural networks. Thesis is based on the papers from MS COCO Captioning Challenge 2015 and character language models, popularized by A. Karpathy. Proposed model is combination of convolutional and recurrent neural network with encoder--decoder architecture. Vector representing encoded image is passed to language model as memory values of first LSTM layer of the network. This work investigate, whether model with such simple architecture is more suitable for languages different than English than other contemporary solutions.}
 
 %Klicova slova (cesky, anglicky)
 \keywords[cs]{rekurentní neuronové sítě, RNN, konvoluční neuronové sítě, CNN, popisování obrázků, LSTM, GRU, MS COCO, Torch, hluboké učení}
@@ -157,7 +157,7 @@
 \declaration{I hereby certify that this thesis is a presentation of my original research work and I have excercised reasonable care to ensure it does not to the best of my knowledge breach any law of copyright. Wherever contributions of others are involved, every effort is made to indicate this clearly, with due reference to the literature, and acknowledgement of collaborative research and discussions. The work was done under the guidance of Michal Hradiš at the Brno University of Technology.}
 
 %Podekovani (nepovinne)
-\acknowledgment{Access to computing and storage facilities owned by parties and projects contributing to the National Grid Infrastructure MetaCentrum, provided under the programme "Projects of Large Research, Development, and Innovations Infrastructures" (CESNET LM2015042), is greatly appreciated.}
+\acknowledgment{Access to computing and storage facilities owned by parties and projects contributing to the National Grid Infrastructure MetaCentrum, provided under the programme \textquotedblleft Projects of Large Research, Development, and Innovations Infrastructures\textquotedblright (CESNET LM2015042), is greatly appreciated.}
 
 \begin{document}
   % Vysazeni titulnich stran
@@ -171,7 +171,7 @@
 \ifczech
   \renewcommand\listfigurename{Seznam obrázků}
 \fi
-%   \listoffigures
+   \listoffigures
 \ifczech
   \renewcommand\listtablename{Seznam tabulek}
 \fi
@@ -204,6 +204,7 @@
 \else
 	\renewcommand\glossaryname{List of Abbreviations}
 \fi
+%\glossarystyle{long}
 \printglossaries 
 
 

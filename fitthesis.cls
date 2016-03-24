@@ -262,7 +262,8 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 %-----------------------------------------------------------------------------
 \newcommand\makedeclaration{
 \thispagestyle{empty}%
-\mktxt@b{18}{\@title}
+%\mktxt@b{21}{\@title}
+\mktxt@b{17}{\@title}
 
 \vspace{10mm}
 \mktxt@b{16}{\ifczech\@tdecl@CS\else\@tdecl@EN\fi}
