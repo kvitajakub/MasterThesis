@@ -63,7 +63,7 @@
 }
 
 %seznam zkratek
-\usepackage[nonumberlist]{glossaries}
+\usepackage[toc,nonumberlist,nopostdot,translate=false]{glossaries} %translate kvuli konfliktu s babelem
 \makeglossaries
 %novy soubor pro seznam zkratek a jejich popis
 \input{glossary}
@@ -198,13 +198,27 @@
   \bibliography{literatura} % viz. literatura.bib
 %  \end{flushleft}
 
+
+
 \ifczech
 	\renewcommand\glossaryname{Seznam zkratek}
 \else
 	\renewcommand\glossaryname{List of Abbreviations}
 \fi
-%\glossarystyle{long}
-\printglossaries 
+
+\newglossarystyle{mylong}{%
+    \setglossarystyle{long}% base this style on the long style
+	\renewenvironment{theglossary}%
+	%                                     zkratka            popis           strany 
+	{\begin{longtable}[l]{@{}>{\bfseries}p{0.2\textwidth}p{0.7\textwidth}p{0.1\textwidth}}}%
+	{\end{longtable}}%
+	\renewcommand*{\glsgroupskip}{}%mezery mezi skupinami
+	\renewcommand{\arraystretch}{2}%mezery mezi zaznamy
+}
+
+\glossarystyle{mylong}
+\printglossaries
+
 
 
   % Prilohy

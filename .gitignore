@@ -7,6 +7,8 @@
 *.toc
 *.brf
 *.ptc
+*.glo
 *.glg
 *.gls
 *.ist
+*.lof

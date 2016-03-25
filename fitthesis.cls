@@ -219,39 +219,23 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \newcommand\makeabstract{%
 \thispagestyle{empty}\null%
 
-\ifczech
 \mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
-\else
+
+\vfill
+
 \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
-\fi
 
 \vfill
 
-\ifczech
-\mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
-\else
-\mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
-\fi
-
-\vfill
-
-\ifczech
 \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
-\else
-\mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
-\fi
 
 \vfill
 
-\ifczech
 \mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
-\else
-\mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
-\fi
 
 \vfill
 
-\mktxt@b{16}{\ifczech\@cite@CS\else\@cite@EN\fi}
+\mktxt@b{16}{\@cite@CS}
 \noindent\@author: \@title, \MakeLowercase{\@projecttype@CS}, Brno, FIT VUT v~Brně, \@year
 %===================================================
 \newpage
@@ -262,8 +246,8 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 %-----------------------------------------------------------------------------
 \newcommand\makedeclaration{
 \thispagestyle{empty}%
-%\mktxt@b{21}{\@title}
-\mktxt@b{17}{\@title}
+\mktxt@b{21}{\@title}
+%\mktxt@b{17}{\@title}
 
 \vspace{10mm}
 \mktxt@b{16}{\ifczech\@tdecl@CS\else\@tdecl@EN\fi}
@@ -297,30 +281,22 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \thispagestyle{empty}\null%
 %=====================================================
 \fontfamily{qhv}\selectfont%
-\newsavebox{\@obrlogo}\newsavebox{\@rtext}\newlength{\@vyskartext}\newlength{\@sirkartext}\newlength{\@vyskaobr}\newlength{\@sirkaobr}%
+\newsavebox{\@obrlogo}\newsavebox{\@rtext}\newlength{\@vyskartext}\newlength{\@vyskaobr}%
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/vut-zp2}}%logo VUT
-\savebox{\@rtext}{\vbox{\mkuctxt{18}{\ifczech\@vut@CS\else\@vut@EN\fi}\mkuctxt{11}{\ifczech\@vut@EN\else\@vut@CS\fi}}}%text VUT
+\savebox{\@rtext}{\vbox{\mkuctxt{18}{\@vut@CS}\mkuctxt{11}{\@vut@EN}}}%text VUT
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
-\settowidth{\@sirkaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
-\settowidth{\@sirkartext}{\makebox{\usebox{\@rtext}}}% sirka textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
-\addtolength{\@sirkartext}{-\@sirkaobr}\addtolength{\@sirkartext}{-10pt}%sirka textu na radku s obrazkem a odsazenim
 \noindent\usebox{\@obrlogo}\raisebox{\@vyskaobr}{\hspace{10pt}\usebox{\@rtext}}%zvedneme box s textem
 
 \vspace{5mm}
 
 \savebox{\@obrlogo}{\includegraphics[width=3.5cm,keepaspectratio]{fig/fit-zp2}}%logo FIT
 \savebox{\@rtext}{%text FIT, USTAV
-	\vbox{\mkuctxt{14}{\ifczech\@fit@CS\else\@fit@EN\fi}
-		%	  \mkuctxt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}\\
-		\noindent\parbox[l]{\@sirkartext}{{\setfontsize{14}\noindent\MakeUppercase{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}}\vspace\mkspc}
-		\vspace{3mm}\linebreak
-		\mkuctxt{11}{\ifczech\@fit@EN\else\@fit@CS\fi}
-		\mkuctxt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
-	}
-}%
+	\vbox{\mkuctxt{14}{\@fit@CS}\mkuctxt{14}{\@departmentname@CS}
+		\vspace{3mm}
+		\mkuctxt{11}{\@fit@EN}\mkuctxt{11}{\@departmentname@EN}}}%
 \settoheight{\@vyskaobr}{\makebox{\usebox{\@obrlogo}}}% vyska loga
 \settoheight{\@vyskartext}{\makebox{\usebox{\@rtext}}}% vyska textu
 \addtolength{\@vyskaobr}{-\@vyskartext}%odecteme od vysky loga vysku textu
@@ -328,23 +304,23 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 
 \vfill
 
-\mkuctxt{18}{\ifczech\@title@CS\else\@title@EN\fi}
-\mkuctxt{10}{\ifczech\@title@EN\else\@title@CS\fi}
+\mkuctxt{20}{\@title@CS}
+\mkuctxt{10}{\@title@EN}
 
 \vfill
 
-\mkuctxt{14}{\ifczech\@projecttype@CS\else\@projecttype@EN\fi}
-\mkuctxt{10}{\ifczech\@projecttype@EN\else\@projecttype@CS\fi}
+\mkuctxt{14}{\@projecttype@CS}
+\mkuctxt{10}{\@projecttype@EN}
 
 \vspace{5mm}
 
-\mktxt{14}{\MakeUppercase{\ifczech\@author@CS\else\@author@EN\fi} \hfill \get@author}
-\mkuctxt{10}{\ifczech\@author@EN\else\@author@CS\fi}
+\mktxt{14}{\MakeUppercase{\@author@CS} \hfill \get@author}
+\mkuctxt{10}{\@author@EN}
 
 \vspace{5mm}
 
-\mktxt{14}{\MakeUppercase{\ifczech\@supervisor@CS\else\@supervisor@EN\fi} \hfill \get@supervisor}
-\mkuctxt{10}{\ifczech\@supervisor@EN\else\@supervisor@CS\fi}
+\mktxt{14}{\MakeUppercase{\@supervisor@CS} \hfill \get@supervisor}
+\mkuctxt{10}{\@supervisor@EN}
 
 \vspace{10mm}
 
