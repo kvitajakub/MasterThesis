@@ -36,6 +36,6 @@ gnuplot.axis({-3.2,3.2,-1.2,2.4})
 gnuplot.plot(
              {"Softplus",x,softplus(x),'~'},
              {"Tanh",x,torch.tanh(x),'~'},
-             {"Sigmoid",x,sigmoid(x),'~'},
+             {"Logistic",x,sigmoid(x),'~'},
              {"Rectifier",x,relu(x),'-'}
             )

@@ -35,13 +35,17 @@ A combination of these neurons performs a linear transformation of the input vec
 This type of unit is the most basic one. It was part of the Rosenblatt's perceptron~\cite{rosenblatt58a} as well as the boolean function, which later evolved into nonlinear functions, like Rectifier described further in the text.
 
 \subsubsection{Rectifier}
-%https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
 
-%http://www.erogol.com/what-is-special-about-rectifier-neural-units-used-in-nn-learning/
+Combination of linear layers in neural network can result only in another linear layer, which is useless for example on problems of nonlinear separation. To break free from limitations induced, we need to introduce some kind of nonlinearity directly into the network. Most commonly used method is to apply a nonlinear activation function to the output of a linear neuron. As to which function, there are many suitable options, rectifier nowadays being the most popular one.
 
-kombinaci s linear vznikne \gls{relu}.
-
-\todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
+In the context of neural networks, the rectifier is an activation function defined as
+\begin{align}
+f(x) \hspace{7pt}&=\hspace{7pt} max(0,x). \label{eq:rectifier}
+\end{align}
+Rectifier is usually used after a linear unit creating together Rectified Linear Unit (\gls{relu}), which showed improvements in restricted Boltzmann machines~\cite{DBLP:conf/icml/NairH10}, speech processing~\cite{zeiler2013rectified}, and it is also default option in convolutional networks. This unit has several advantages against other functions -- in randomly initialized networks, only about 50\% of units are activated. There are no problems with vanishing gradient in large inputs. Computation of the function is also more efficient than other functions. Issue with this function is non-differentiability at zero, however it is differentiable at any point arbitrarily close to 0 and can be replaced with softplus~\cite{dugas2001incorporating}, which is analytic function smoothly approximating rectifier, with formula
+\begin{align}
+f(x) \hspace{7pt}&=\hspace{7pt} ln(1+e^x). \label{eq:softplus}
+\end{align}
 
 \begin{figure}[!t]
 	\centering
@@ -49,6 +53,8 @@ kombinaci s linear vznikne \gls{relu}.
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
+
+Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute and had to be replaced with polynomials~\cite{lecun2012efficient}. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
 
 \subsubsection{Dropout}
 
@@ -183,7 +189,7 @@ Convolutional layer, which is most important and gave CNN their name is essentia
 
 Subsampling, or max pooling in this version, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
 
-Last type of unit commonly used in CNN is rectified linear unit (\gls{relu}), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09,icml2010_NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
+Last type of unit commonly used in CNN is rectified linear unit (\gls{relu}), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
 
 \begin{figure}[!t]
 	\centering
