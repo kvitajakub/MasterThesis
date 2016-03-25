@@ -42,10 +42,7 @@ In the context of neural networks, the rectifier is an activation function defin
 \begin{align}
 f(x) \hspace{7pt}&=\hspace{7pt} max(0,x). \label{eq:rectifier}
 \end{align}
-Rectifier is usually used after a linear unit creating together Rectified Linear Unit (\gls{relu}), which showed improvements in restricted Boltzmann machines~\cite{DBLP:conf/icml/NairH10}, speech processing~\cite{zeiler2013rectified}, and it is also default option in convolutional networks. This unit has several advantages against other functions -- in randomly initialized networks, only about 50\% of units are activated. There are no problems with vanishing gradient in large inputs. Computation of the function is also more efficient than other functions. Issue with this function is non-differentiability at zero, however it is differentiable at any point arbitrarily close to 0 and can be replaced with softplus~\cite{dugas2001incorporating}, which is analytic function smoothly approximating rectifier, with formula
-\begin{align}
-f(x) \hspace{7pt}&=\hspace{7pt} ln(1+e^x). \label{eq:softplus}
-\end{align}
+Rectifier is usually used after a linear unit creating together Rectified Linear Unit (\gls{relu}), which showed improvements in restricted Boltzmann machines~\cite{DBLP:conf/icml/NairH10}, speech processing~\cite{zeiler2013rectified}, and it is also default option in convolutional networks. This unit has several advantages against other functions -- in randomly initialized networks, only about 50\% of units are activated. There are no problems with vanishing gradient in large inputs. Computation of the function is also more efficient than other functions. Issue with this function is non-differentiability at zero, however it is differentiable at any point arbitrarily close to 0 and can be replaced with softplus~\cite{dugas2001incorporating}, which is analytic function smoothly approximating rectifier. Currently, more variations of \gls{relu} were introduced -- Leaky \gls{relu}, parametric \gls{relu}, etc. and their performance can be even better~\cite{DBLP:journals/corr/XuWCL15} than vanilla \gls{relu}s.
 
 \begin{figure}[!t]
 	\centering
@@ -53,19 +50,21 @@ f(x) \hspace{7pt}&=\hspace{7pt} ln(1+e^x). \label{eq:softplus}
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
-
-Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute and had to be replaced with polynomials~\cite{lecun2012efficient}. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
+Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials~\cite{lecun2012efficient}. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
 
 \subsubsection{Dropout}
 
 %http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html
+%http://arxiv.org/abs/1207.0580
+%http://jmlr.org/papers/v15/srivastava14a.html
 
 \todo[inline]{One of the regularization techniques}
+Dva clanky, oba zpracovavaji to same, ten druhy je novejsi, budu s nima pracovat pohromade.~\cite{DBLP:journals/corr/abs-1207-0580, JMLR:v15:srivastava14a}
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/dropout.pdf}
-	\caption{Applying dropout to neural network.
+	\caption{Applying dropout to neural network. \cite{JMLR:v15:srivastava14a}
 		\label{fig:dropout}}
 \end{figure}
 
