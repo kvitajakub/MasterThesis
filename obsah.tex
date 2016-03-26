@@ -14,9 +14,9 @@ First, in chapter \ref{chp:nn}, I will first introduce neural networks and sever
 \todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
 
 \chapter{Neural networks} \label{chp:nn}
-General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then and also the lack of datasets. Recently (after 2000), neural nets became popular again, under the name of \textquotedblleft deep learning\textquotedblright, to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
+General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
-Nowadays, various useful architectures and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which will be later used in the research.
+Nowadays, various useful architectures, techniques and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which are most significant and will be later used in the research. This chapter is divided into three parts, each focusing on different type of neural nets --~feed-forward, recurrent, and convolutional. However, do not see this division as strict and separating, tools introduced in one part can and will be used in different types of networks.
 
 \section{Feed-forward neural nets}
 
@@ -58,12 +58,6 @@ Dropout~\cite{DBLP:journals/corr/abs-1207-0580, JMLR:v15:srivastava14a} can be c
 
 Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\ some of the unit activations in a layer, that is setting them to zero, during training. This can be interpreted as sampling a neural network from the full neural network, and only updating the parameters of the sampled network for the given data. Visualisation is on the figure \ref{fig:dropout}, parts \emph{a} and \emph{b}. Dropout behaves differently during sampling phase -- all the units are present, but their outputs are multiplied by the same probability used before for dropping them out. See the part \emph{c} and \emph{d} of the figure \ref{fig:dropout}.
 
-This technique should prevent complex co-adaptations, in which unit is only helpful in the context of several other specific units. Each neuron instead learns to detect a feature generally useful for computing the answer.
-
-%http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html
-%http://arxiv.org/abs/1207.0580
-%http://jmlr.org/papers/v15/srivastava14a.html
-
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/dropout.pdf}
@@ -71,6 +65,7 @@ This technique should prevent complex co-adaptations, in which unit is only help
 		\label{fig:dropout}}
 \end{figure}
 
+This technique should prevent complex co-adaptations, in which unit is only helpful in the context of several other specific units. Each neuron instead learns to detect a feature generally useful for computing the answer.
 
 	\section{Recurrent neural nets}
 Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
