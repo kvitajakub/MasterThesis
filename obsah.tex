@@ -18,13 +18,13 @@ General idea of artificial neural networks emerged after World War II. Perceptro
 
 Nowadays, various useful architectures and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which will be later used in the research.
 
-\section{Common layers of feed-forward neural nets}
+\section{Feed-forward neural nets}
 
 \todo[inline]{Nejaky uvod k doprednym sitim, at se neskace po tematech. Mozna pouzit neco z uvodu k RNN.}
 
-There are several types of neurons, each of them with special behavior, like in brain. In this part I will describe few popular options, which are used later in the text. I selected neurons from different families, because many of them have multiple variations with similar approach.
+\todo[inline]{There are several types of neurons, each of them with special behavior, like in brain. In this part I will describe few popular options, which are used later in the text. I selected neurons from different families, because many of them have multiple variations with similar approach.}
 
-\subsubsection{Linear}
+\subsubsection{Linear unit}
 
 In this type of neuron, the output of the unit is simply the weighted sum of its inputs added to a bias term, described by equation
 \begin{align}
@@ -32,9 +32,9 @@ y \hspace{7pt}&=\hspace{7pt} Wx + b. \label{eq:lin}
 \end{align}
 A combination of these neurons performs a linear transformation of the input vector. Ability to perform only linear and affine transformations is also its weakness, as some kind of nonlinear function needs to be added to produce more complicated functions. However it is useful at the beginning and end of the network, to emphasize important features of the input or output and change its dimensionality.
 
-This type of unit is the most basic one. It was part of the Rosenblatt's perceptron~\cite{rosenblatt58a} as well as the boolean function, which later evolved into nonlinear functions, like Rectifier described further in the text.
+This type of unit is the most basic one. It was part of the Rosenblatt's perceptron~\cite{rosenblatt58a} as well as the boolean function, which later evolved into nonlinear functions, like Rectifier described further.
 
-\subsubsection{Rectifier}
+\subsubsection{Rectifier and ReLU}
 
 Combination of linear layers in neural network can result only in another linear layer, which is useless for example on problems of nonlinear separation. To break free from limitations induced, we need to introduce some kind of nonlinearity directly into the network. Most commonly used method is to apply a nonlinear activation function to the output of a linear neuron. As to which function, there are many suitable options, rectifier nowadays being the most popular one.
 
@@ -50,16 +50,19 @@ Rectifier is usually used after a linear unit creating together Rectified Linear
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
-Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials~\cite{lecun2012efficient}. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
+Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
 
 \subsubsection{Dropout}
+
+Dropout~\cite{DBLP:journals/corr/abs-1207-0580, JMLR:v15:srivastava14a} can be considered as one of the biggest recent inventions in the field of neural networks. It is extremely simple and effective technique addressing the problem of overfitting. It can be seen as type of regularization, together with techniques like L1 and L2 regularization, and constraining maximum value of weights.
+
+Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\ some of the unit activations in a layer, that is setting them to zero, during training. This can be interpreted as sampling a neural network from the full neural network, and only updating the parameters of the sampled network for the given data. Visualisation is on the figure \ref{fig:dropout}, parts \emph{a} and \emph{b}. Dropout behaves differently during sampling phase -- all the units are present, but their outputs are multiplied by the same probability used before for dropping them out. See the part \emph{c} and \emph{d} of the figure \ref{fig:dropout}.
+
+This technique should prevent complex co-adaptations, in which unit is only helpful in the context of several other specific units. Each neuron instead learns to detect a feature generally useful for computing the answer.
 
 %http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html
 %http://arxiv.org/abs/1207.0580
 %http://jmlr.org/papers/v15/srivastava14a.html
-
-\todo[inline]{One of the regularization techniques}
-Dva clanky, oba zpracovavaji to same, ten druhy je novejsi, budu s nima pracovat pohromade.~\cite{DBLP:journals/corr/abs-1207-0580, JMLR:v15:srivastava14a}
 
 \begin{figure}[!t]
 	\centering
@@ -67,9 +70,6 @@ Dva clanky, oba zpracovavaji to same, ten druhy je novejsi, budu s nima pracovat
 	\caption{Applying dropout to neural network. \cite{JMLR:v15:srivastava14a}
 		\label{fig:dropout}}
 \end{figure}
-
-\subsubsection{Softmax}
-\todo[inline]{Pridat jako ukazku rovnici nebo graf? Asi hezky graf, rovnice je komplikovana a nic moc z ni nejde videt.}
 
 
 	\section{Recurrent neural nets}
