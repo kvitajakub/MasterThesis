@@ -69,7 +69,7 @@ This technique should prevent complex co-adaptations, in which unit is only help
 	\section{Recurrent neural nets}
 Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
 
-Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time from a starting base caption. More detailed description is further in the following chapters.
+Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time from a starting \textquotedblleft base caption\textquotedblright. More detailed description is further in the following chapters.
 
 \begin{figure}[!t]
 	\centering
@@ -78,12 +78,19 @@ Apart from classification, which can be more precise when using sequences, one o
 		\label{fig:rnn-unroll}}
 \end{figure}
 
-\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called \gls{rnn} unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ \todof{Vice rozpracovat?}(vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the \gls{lstm} described in part \ref{subsec:lstm}, which is most popular now and following research resulting in \gls{gru} described in part \ref{subsec:gru}.
-\todo[inline]{Vice popsat co bude v teto sekci a druha cast o language modelech atd..}
+We can interpret recurrent neural network as very deep forward net with shared weights and same inputs and outputs as before. This process of reinterpreting the network is called \gls{rnn} unrolling and is visualised in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread forward in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time, as we are not bound by time during training.
+
+\todo[inline]{Odstavec o vanishing gradientu, reseni pomoci long short-term memory, ktere bude dale.}
+
+unrolling on long sequences an creation of very deep neural networks manifested the problem of vanishing or exploding gradient... neco o tom, zakoncit to s lstm.
+\todof{Predelat}It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ \todof{Vice rozpracovat?}(vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the Long Short-Term Memory described in part \ref{subsubsec:lstm}.
+
+\todo[inline]{Popis co bude v teto sekci a druha cast o language modelech atd..}
 
 	\subsection{Recurrent units}\label{subsec:recUnits}
 
-	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu... O tom ze se vetsinou pouzivaji komplikovane, opatrne navrhnute unity protoze zvladnou vice nez jednoducha vanilla rekurentni architektura.}
+	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu... Na zacatku se pouzivaly jednoducha vanilla rekurentni architektura, ale mely sve problemy, velmi spatne se trenovaly. pozdeji byly navrzeny komplikovanejsi architektury z nichz v soucasnosti dominuje lstm a jeji derivaty jako je gru, ktere budu popisovat v teto casti. tyto architektury udelaly praci s RNN a jejich trenovani mnohem jednodussi a lehci.}
+	%reference? https://www.reddit.com/r/MachineLearning/comments/2ppojv/implementing_a_deep_lstmrnn_%C3%A0_la_sequence_to/
 
 		\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
 
