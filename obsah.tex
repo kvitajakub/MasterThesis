@@ -10,8 +10,8 @@ Deep machine learning, sometimes under the name of neural networks\footnote{Term
 
 First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
 
-
 \todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
+
 
 \chapter{Neural networks} \label{chp:nn}
 General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
@@ -20,12 +20,11 @@ Nowadays, various useful architectures, techniques and applications of neural ne
 
 \section{Feed-forward neural nets}
 
-\todo[inline]{Nejaky uvod k doprednym sitim, at se neskace po tematech. Mozna pouzit neco z uvodu k RNN.}
+Feed-forward networks are simplest architecture of neural nets, yet they can solve many real world tasks. Most commonly used in classification problems, feed-forward nets showed very promising results, which later proved to be true. Later, they have been replaced by convolutional nets, which are specific type of complex feed-forward neural net. However, simple architectures still have place for utilization.
 
-\todo[inline]{There are several types of neurons, each of them with special behavior, like in brain. In this part I will describe few popular options, which are used later in the text. I selected neurons from different families, because many of them have multiple variations with similar approach.}
+In this part I will cover linear neuron, rectifiers and other nonlinear functions used, and dropout, as they are most important to the following work. Other tools like softmax layer, loss functions, and training algorithms will be skipped. %Dodat neco ze je to mimo zaber teto prace?
 
 \subsubsection{Linear unit}
-
 In this type of neuron, the output of the unit is simply the weighted sum of its inputs added to a bias term, described by equation
 \begin{align}
 y \hspace{7pt}&=\hspace{7pt} Wx + b. \label{eq:lin}
@@ -79,22 +78,23 @@ Apart from classification, which can be more precise when using sequences, one o
 		\label{fig:rnn-unroll}}
 \end{figure}
 
-\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called \gls{rnn} unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ (vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the \gls{lstm} described in part \ref{subsec:lstm}, which is most popular now and following research resulting in \gls{gru} described in part \ref{subsec:gru}.
+\todof{Predelat}We can understand recurrent neural networks as very deep forward nets with shared weights. It is called \gls{rnn} unrolling and it is described in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time. It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ \todof{Vice rozpracovat?}(vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the \gls{lstm} described in part \ref{subsec:lstm}, which is most popular now and following research resulting in \gls{gru} described in part \ref{subsec:gru}.
+\todo[inline]{Vice popsat co bude v teto sekci a druha cast o language modelech atd..}
 
 	\subsection{Recurrent units}\label{subsec:recUnits}
 
-	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu...}
+	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu... O tom ze se vetsinou pouzivaji komplikovane, opatrne navrhnute unity protoze zvladnou vice nez jednoducha vanilla rekurentni architektura.}
 
-		\subsubsection{LSTM -- Long Short-Term Memory}\label{subsubsec:lstm}
+		\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
 
-Long Short-Term Memory nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem~\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
+Long Short-Term Memory (\gls{lstm}) nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem~\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/lstm-peepholes.pdf}
-	\caption{Variation of the LSTM.
+	\caption{Variation of a LSTM.
 		\label{fig:lstm}}
 \end{figure}
 
@@ -116,9 +116,9 @@ LSTM based on these equations is using total of 11 weight matrices and 4 bias ve
 Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
 
 
-		\subsubsection{GRU -- Gated Recurrent Unit}\label{subsubsec:gru}
+		\subsubsection{Gated Recurrent Unit}\label{subsubsec:gru}
 
-Gated Recurrent Unit~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
+Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
 
 \begin{figure}[!t]
 	\centering
@@ -196,7 +196,7 @@ Last type of unit commonly used in CNN is rectified linear unit (\gls{relu}), wh
 
 Scene understanding is one of the fundamental and most difficult tasks of computer vision. Being able to automatically generate image or video captions in regular text could have great effect. However, it is much more complicated than simple classification or object recognition, because the model also need to understand relations between the recognized objects and capture that correctly in the captions.
 
-In this chapter I will do an overview of approaches to this task and more closely describe latest papers on which is this work based (section \ref{sec:related}). Following parts cover datasets (\ref{sec:datasets}) and evaluation procedures (\ref{sec:evaluation}) most commonly used for this task.
+In this chapter I will do an overview of approaches to this task and more closely describe latest papers on which is this work based (part \ref{sec:related}). Following parts cover datasets (part \ref{sec:datasets}) and evaluation procedures (part \ref{sec:evaluation}) most commonly used for this task.
 
 	\section{Related Work}
 	\label{sec:related}
@@ -367,8 +367,8 @@ Last year, metric designed directly to caption evaluation called CIDEr (Consensu
 \chapter{Model design}\label{chp:model}
 
 \todo[inline]{Jak vypada celkovy navrh modelu, velky diagram. Pak jednotlive sekce s tim jak vypadaji casti modelu, klidne zoom velkeho diagramu.}
-\section{Overall architecture}
-\subsection{CNN}
+\section{General architecture}
+\subsection{Convolutional net}
 \subsection{Language model}
 \section{Learning procedure}
 \todo[inline]{Algorithms and data.}
