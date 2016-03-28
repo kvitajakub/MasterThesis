@@ -422,8 +422,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="172.91418"
-     inkscape:cy="253.06479"
+     inkscape:cx="390.3768"
+     inkscape:cy="314.8228"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -498,10 +498,10 @@
        inkscape:export-xdpi="153.33279"
        inkscape:export-ydpi="153.33279" />
     <path
-       sodipodi:nodetypes="cccscsssc"
+       sodipodi:nodetypes="cccsccssc"
        inkscape:connector-curvature="0"
        id="path4572-60"
-       d="m 197.33292,954.39776 -39.54999,3e-4 -45.38361,2.7e-4 c -13.753375,0.65622 -18.089935,-9.70538 -18.089935,-21.27482 l 0,-36.44115 0,-36.44115 c 0,-24.91714 0.36951,-49.77675 0,-74.69115 -0.1728,-11.64714 -2.0019,-31.48871 -16.40433,-31.48871 l -7.59345,0"
+       d="m 197.33292,954.39776 -39.54999,3e-4 -45.38361,2.7e-4 c -13.753375,0.65622 -18.089935,-9.70538 -18.089935,-21.27482 l 0,-36.44115 0,-36.44115 0,-82.69115 c 0,-11.73681 -3.150949,-23.48871 -16.40433,-23.48871 l -7.59345,0"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
        inkscape:export-xdpi="153.33279"
        inkscape:export-ydpi="153.33279" />
@@ -635,10 +635,10 @@
        inkscape:export-ydpi="153.33279" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 394.93068,933.46391 c -0.0486,12.49956 -6.08421,20.74692 -15.41868,20.93442 -13.12431,-3e-5 -14.72748,-9.71514 -15.20262,-21.27482 l 0,-36.44115 0,-36.44115 c 0,-24.91714 0.36951,-49.77675 0,-74.69115 -0.1728,-11.64714 -2.0019,-31.48871 -16.40433,-31.48871 l -7.59345,0"
+       d="m 394.93068,933.46391 c -0.0486,12.49956 -6.08421,20.74692 -15.41868,20.93442 -13.12431,-3e-5 -14.72748,-9.71514 -15.20262,-21.27482 l 0,-36.44115 0,-36.44115 0,-80.69115 c 0,-13.27342 -3.1894,-25.48871 -16.40433,-25.48871 l -7.59345,0"
        id="path22216"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccscsssc"
+       sodipodi:nodetypes="ccsccssc"
        inkscape:export-xdpi="153.33279"
        inkscape:export-ydpi="153.33279" />
     <path

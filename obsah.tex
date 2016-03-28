@@ -14,6 +14,7 @@ First, in chapter \ref{chp:nn}, I will first introduce neural networks and sever
 
 
 \chapter{Neural networks} \label{chp:nn}
+
 General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
 Nowadays, various useful architectures, techniques and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which are most significant and will be later used in the research. This chapter is divided into three sections, each focusing on different type of neural nets --~feed-forward, recurrent, and convolutional. However, do not see this division as strict and separating, tools introduced in one part can and will be used in different types of networks.
@@ -66,7 +67,8 @@ Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\
 
 This technique should prevent complex co-adaptations, in which unit is only helpful in the context of several other specific units. Each neuron instead learns to detect a feature generally useful for computing the answer.
 
-	\section{Recurrent neural nets}
+\section{Recurrent neural nets}
+
 Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
 
 Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time from a starting \textquotedblleft base caption\textquotedblright. More detailed description is further in the following chapters.
@@ -84,26 +86,24 @@ Unrolling the networks on long sequences and creation of very deep neural nets c
 
 Long Short-Term Memory unit and other architectures commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:lmAndEmbedd}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
 
-	\subsection{Recurrent architectures}\label{subsec:recUnits}
+\subsection{Recurrent architectures}\label{subsec:recUnits}
 
 \gls{rnn}s have many different architectures, however, most of them are derived from the basic fully recurrent network. This network do not have units separated into layers, as each of them has a directed connection to every other unit. Rest of the architectures are special cases of this one, as they group neurons into layers and implement only a subset of the connections. Examples of these architectures can be Hopfield~\cite{hopfield1982neural} and Elman~\cite{elman1990finding} networks, and Restricted Boltzmann Machines~\cite{Smolensky:1986:IPD:104279.104290}. Different architectures are trying to connect \gls{rnn} with an external memory resource, which can be a tape in case of Neural Turing Machines~\cite{DBLP:journals/corr/GravesWD14}, a stack in Neural network Pushdown Automata~\cite{Sun:1997:NNP:647638.733213}, etc. During training \gls{rnn} unrolling can be applied to these architectures, although training can be quite difficult, as explained earlier.
 
 From here on in I will focus on an architecture called Long Short-Term Memory and architectures derived from it, as they are very powerful and dominating the current field.These units are carefully designed with the vanishing gradient problem in mind and perform better than most of the other architectures.
 
-		\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
-\todof{Precist a updatovat.}
-Long Short-Term Memory (\gls{lstm}) nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
+\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
 
-The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
+Long Short-Term Memory (\gls{lstm}) is a special type of recurrent network, able to learn long-term dependencies. This architecture was introduced by Hochreiter and Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem, and later refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00}.
 
+\gls{lstm} was designed to remember a value for an arbitrary length of time. It contains gates that determine, when the input is significant enough to remember, when it should keep or forget the value, and when it should copy the value to the output. To understand the flow of data, see the diagram of \gls{lstm} on Figure \ref{fig:lstm}. All the gates can be described by the following equations:
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/lstm-peepholes.pdf}
-	\caption{Variation of a LSTM.
+	\caption{Variation of a \gls{lstm}.
 		\label{fig:lstm}}
 \end{figure}
-
-\belowdisplayskip=24pt
+\belowdisplayskip=18pt
 \begin{align}
 	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}C_{t-1} + b_i) \label{eq:lstm1}\\
 	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}C_{t-1} + b_f) \label{eq:lstm2}\\
@@ -113,32 +113,31 @@ The LSTM unit was designed to remember a value for an arbitrary length of time. 
 	h_t \hspace{7pt}&=\hspace{7pt} o_t\odot \tanh(C_t) \label{eq:lstm6}\\[16pt]
 	\sigma(x) \hspace{7pt}&=\hspace{7pt} \frac{1}{1+e^{-x}} \label{eq:lstm7}
 \end{align}
+In each time slice \gls{lstm} is using current input $ x_t $, last cell state $ C_{t-1} $ and unit output $ h_{t-1} $ to compute next cell state $ C_t $ and output $ h_t $. Variables $ i_t $, $ f_t $, $ o_t $ denote values of in following order input, forget and output gates, which are used to control the information flow. LSTM based on these equations is using total of 11 weight matrices, 4 bias vectors, and a standard logistic function $ \sigma $ defined in Equation \eqref{eq:lstm7}. The operation $ \odot $ denotes element-wise vector product.
 
-In each time slice the unit is using current input $ x_t $, last stored value $ c_{t-1} $ and unit output $ h_{t-1} $ to compute next state $ c_t $ and output $ h_t $. Variables $ i_t $, $ f_t $, $ o_t $ denotes value of input, forget and output gates which are used to control the information flow.
+%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-LSTM based on these equations is using total of 11 weight matrices and 4 bias vectors for computations and sigmoid function $ \sigma $ defined in the equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. Equations described in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting \textquotedblleft peephole connections\textquotedblright, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
+\todo[inline]{Je to hodne pouzivane, jsou ruzne verze.}
+Equations described \todof{redo}in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting\todof{redo} \textquotedblleft peephole connections\textquotedblright ~\cite{DBLP:conf/ijcnn/GersS00}\todof{udelali peepholes}, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
 
-Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
+\todof{ok}Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
 
 
 		\subsubsection{Gated Recurrent Unit}\label{subsubsec:gru}
 
 Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
-
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/gru.pdf}
 	\caption{Variation of a GRU.
 		\label{fig:gru}}
 \end{figure}
-
 \begin{align}
 r_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xr}x_t + W_{hr}h_{t-1} + b_r) \label{eq:gru1}\\
 z_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xz}x_t + W_{hz}h_{t-1} + b_z) \label{eq:gru2}\\
 \widetilde{h}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xh}x_t + W_{hh}(h_{t-1}\odot r_t) + b_h) \label{eq:gru3}\\
 h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}
 \end{align}
-
 Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
 
 Last year, study by Chung~\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to ~\cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
