@@ -16,7 +16,7 @@ First, in chapter \ref{chp:nn}, I will first introduce neural networks and sever
 \chapter{Neural networks} \label{chp:nn}
 General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
-Nowadays, various useful architectures, techniques and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which are most significant and will be later used in the research. This chapter is divided into three parts, each focusing on different type of neural nets --~feed-forward, recurrent, and convolutional. However, do not see this division as strict and separating, tools introduced in one part can and will be used in different types of networks.
+Nowadays, various useful architectures, techniques and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which are most significant and will be later used in the research. This chapter is divided into three sections, each focusing on different type of neural nets --~feed-forward, recurrent, and convolutional. However, do not see this division as strict and separating, tools introduced in one part can and will be used in different types of networks.
 
 \section{Feed-forward neural nets}
 
@@ -80,12 +80,9 @@ Apart from classification, which can be more precise when using sequences, one o
 
 We can interpret recurrent neural network as very deep forward net with shared weights and same inputs and outputs as before. This process of reinterpreting the network is called \gls{rnn} unrolling and is visualised in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread forward in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time, as we are not bound by time during training.
 
-\todo[inline]{Odstavec o vanishing gradientu, reseni pomoci long short-term memory, ktere bude dale.}
+Unrolling the networks on long sequences and creation of very deep neural nets caused manifestation of the vanishing gradient problem, which is one of the most important issues in \gls{rnn}s. The problem occurs during training with gradient-based learning methods like backpropagation. The chain rule in backpropagation multiplies gradients  to compute updates of weights and the traditional activation functions like hyperbolic tangent have gradient in the range of $ (-1, 1) $, are the reasons why, the weights updates decrease exponentially while approaching front layers of the network. The vanishing gradient problem was formally identified by Hochreiter in 1991~\cite{hochreiter1991untersuchungen}, who, after further research, also proposed one of the solutions to this problem in the form of Long Short-Term Memory.
 
-unrolling on long sequences an creation of very deep neural networks manifested the problem of vanishing or exploding gradient... neco o tom, zakoncit to s lstm.
-\todof{Predelat}It also shows that, as very deep networks, they have vanishing or exploding gradient problem, which means that the network is not able to learn long-term dependencies, even though in theory it should. This is a serious issue, which is caused by iterating many times over the weights and the activation function with derivatives $>1$ (exploding gradient) or $<1$ \todof{Vice rozpracovat?}(vanishing gradient). Gradient then dies out and learning stops for distant dependencies. Among others this problem has been solved by the Long Short-Term Memory described in part \ref{subsubsec:lstm}.
-
-\todo[inline]{Popis co bude v teto sekci a druha cast o language modelech atd..}
+Long Short-Term Memory unit and other recurrent units commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:lmAndEmbedd}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
 
 	\subsection{Recurrent units}\label{subsec:recUnits}
 
@@ -94,7 +91,7 @@ unrolling on long sequences an creation of very deep neural networks manifested 
 
 		\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
 
-Long Short-Term Memory (\gls{lstm}) nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem~\cite{hochreiter1991untersuchungen}. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
+Long Short-Term Memory (\gls{lstm}) nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
 
