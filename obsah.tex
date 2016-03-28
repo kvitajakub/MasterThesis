@@ -60,7 +60,7 @@ Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/dropout.pdf}
-	\caption{Applying dropout to neural network. \cite{JMLR:v15:srivastava14a}
+	\caption{Applying dropout to a neural network. \cite{JMLR:v15:srivastava14a}
 		\label{fig:dropout}}
 \end{figure}
 
@@ -82,15 +82,16 @@ We can interpret recurrent neural network as very deep forward net with shared w
 
 Unrolling the networks on long sequences and creation of very deep neural nets caused manifestation of the vanishing gradient problem, which is one of the most important issues in \gls{rnn}s. The problem occurs during training with gradient-based learning methods like backpropagation. The chain rule in backpropagation multiplies gradients  to compute updates of weights and the traditional activation functions like hyperbolic tangent have gradient in the range of $ (-1, 1) $, are the reasons why, the weights updates decrease exponentially while approaching front layers of the network. The vanishing gradient problem was formally identified by Hochreiter in 1991~\cite{hochreiter1991untersuchungen}, who, after further research, also proposed one of the solutions to this problem in the form of Long Short-Term Memory.
 
-Long Short-Term Memory unit and other recurrent units commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:lmAndEmbedd}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
+Long Short-Term Memory unit and other architectures commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:lmAndEmbedd}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
 
-	\subsection{Recurrent units}\label{subsec:recUnits}
+	\subsection{Recurrent architectures}\label{subsec:recUnits}
 
-	\todo[inline]{Nejaky uvod o tom ze jsou ruzne druhy neuronu... Na zacatku se pouzivaly jednoducha vanilla rekurentni architektura, ale mely sve problemy, velmi spatne se trenovaly. pozdeji byly navrzeny komplikovanejsi architektury z nichz v soucasnosti dominuje lstm a jeji derivaty jako je gru, ktere budu popisovat v teto casti. tyto architektury udelaly praci s RNN a jejich trenovani mnohem jednodussi a lehci.}
-	%reference? https://www.reddit.com/r/MachineLearning/comments/2ppojv/implementing_a_deep_lstmrnn_%C3%A0_la_sequence_to/
+\gls{rnn}s have many different architectures, however, most of them are derived from the basic fully recurrent network. This network do not have units separated into layers, as each of them has a directed connection to every other unit. Rest of the architectures are special cases of this one, as they group neurons into layers and implement only a subset of the connections. Examples of these architectures can be Hopfield~\cite{hopfield1982neural} and Elman~\cite{elman1990finding} networks, and Restricted Boltzmann Machines~\cite{Smolensky:1986:IPD:104279.104290}. Different architectures are trying to connect \gls{rnn} with an external memory resource, which can be a tape in case of Neural Turing Machines~\cite{DBLP:journals/corr/GravesWD14}, a stack in Neural network Pushdown Automata~\cite{Sun:1997:NNP:647638.733213}, etc. During training \gls{rnn} unrolling can be applied to these architectures, although training can be quite difficult, as explained earlier.
+
+From here on in I will focus on an architecture called Long Short-Term Memory and architectures derived from it, as they are very powerful and dominating the current field.These units are carefully designed with the vanishing gradient problem in mind and perform better than most of the other architectures.
 
 		\subsubsection{Long Short-Term Memory}\label{subsubsec:lstm}
-
+\todof{Precist a updatovat.}
 Long Short-Term Memory (\gls{lstm}) nets are special kind of recurrent network, capable of learning long-term dependencies. This architecture was introduced by Hochreiter \& Schmidhuber~\cite{Hochreiter:1997:LSM:1246443.1246450} after prior research of vanishing gradient problem. Later architecture was refined and popularized by other researchers~\cite{DBLP:conf/ijcnn/GersS00,DBLP:journals/neco/GersSC00} and nowadays LSTM is most popular RNN architecture used.
 
 The LSTM unit was designed to remember a value for an arbitrary length of time. It contains gates that determine when the input is significant enough to remember, when it should keep or forget the value, and when it should output the value. To understand the flow of data, see the diagram of a simplified LSTM unit on the figure \ref{fig:lstm}. All the gates can be described by the following series of equations.
