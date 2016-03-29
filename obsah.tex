@@ -50,13 +50,13 @@ Rectifier is usually used after a linear unit creating together Rectified Linear
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
-Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at figure \ref{fig:nonlinear}.
+Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at Figure \ref{fig:nonlinear}.
 
 \subsubsection{Dropout}
 
 Dropout~\cite{DBLP:journals/corr/abs-1207-0580, JMLR:v15:srivastava14a} can be considered as one of the biggest recent inventions in the field of neural networks. It is extremely simple and effective technique addressing the problem of overfitting. It can be seen as type of regularization, together with techniques like L1 and L2 regularization, and constraining maximum value of weights.
 
-Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\ some of the unit activations in a layer, that is setting them to zero, during training. This can be interpreted as sampling a neural network from the full neural network, and only updating the parameters of the sampled network for the given data. Visualisation is on the figure \ref{fig:dropout}, parts \emph{a} and \emph{b}. Dropout behaves differently during sampling phase -- all the units are present, but their outputs are multiplied by the same probability used before for dropping them out. See the part \emph{c} and \emph{d} of the figure \ref{fig:dropout}.
+Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\ some of the unit activations in a layer, that is setting them to zero, during training. This can be interpreted as sampling a neural network from the full neural network, and only updating the parameters of the sampled network for the given data. Visualisation is on Figure \ref{fig:dropout}, parts \emph{a} and \emph{b}. Dropout behaves differently during sampling phase -- all the units are present, but their outputs are multiplied by the same probability used before for dropping them out. See the part \emph{c} and \emph{d} of Figure \ref{fig:dropout}.
 
 \begin{figure}[!t]
 	\centering
@@ -80,7 +80,7 @@ Apart from classification, which can be more precise when using sequences, one o
 		\label{fig:rnn-unroll}}
 \end{figure}
 
-We can interpret recurrent neural network as very deep forward net with shared weights and same inputs and outputs as before. This process of reinterpreting the network is called \gls{rnn} unrolling and is visualised in figure \ref{fig:rnn-unroll}. Layers of this very deep net spread forward in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time, as we are not bound by time during training.
+We can interpret recurrent neural network as very deep forward net with shared weights and same inputs and outputs as before. This process of reinterpreting the network is called \gls{rnn} unrolling and is visualised in Figure \ref{fig:rnn-unroll}. Layers of this very deep net spread forward in time, together with the input sequence. This is very innovative idea, which enabled training \gls{rnn} with backpropagation through time, as we are not bound by time during training.
 
 Unrolling the networks on long sequences and creation of very deep neural nets caused manifestation of the vanishing gradient problem, which is one of the most important issues in \gls{rnn}s. The problem occurs during training with gradient-based learning methods like backpropagation. The chain rule in backpropagation multiplies gradients  to compute updates of weights and the traditional activation functions like hyperbolic tangent have gradient in the range of $ (-1, 1) $, are the reasons why, the weights updates decrease exponentially while approaching front layers of the network. The vanishing gradient problem was formally identified by Hochreiter in 1991~\cite{hochreiter1991untersuchungen}, who, after further research, also proposed one of the solutions to this problem in the form of Long Short-Term Memory.
 
@@ -115,17 +115,13 @@ Long Short-Term Memory (\gls{lstm}) is a special type of recurrent network, able
 \end{align}
 In each time slice \gls{lstm} is using current input $ x_t $, last cell state $ C_{t-1} $ and unit output $ h_{t-1} $ to compute next cell state $ C_t $ and output $ h_t $. Variables $ i_t $, $ f_t $, $ o_t $ denote values of in following order input, forget and output gates, which are used to control the information flow. LSTM based on these equations is using total of 11 weight matrices, 4 bias vectors, and a standard logistic function $ \sigma $ defined in Equation \eqref{eq:lstm7}. The operation $ \odot $ denotes element-wise vector product.
 
-%http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+Equations \eqref{eq:lstm1} to \eqref{eq:lstm7} are not the only way how to create an LSTM unit, they are a variation, which was used for implementing the proposed model. As \gls{lstm} is very popular, many different forms were created. For example, original \gls{lstm} from 1997~\cite{Hochreiter:1997:LSM:1246443.1246450} did not included the \textquotedblleft peephole connections\textquotedblright\ $ W_{ci}C_{t-1} $, $ W_{cf}C_{t-1} $, and $ W_{co}C_t $. These were added later in work of Gers and Schmidhuber~\cite{DBLP:conf/ijcnn/GersS00}. Another change is to couple input gate $ i_t $ and forget gate $ f_t $. Instead of separately deciding what to forget and when to input new information, unit only forgets the value when something new is placed in its place. More units based on \gls{lstm} and their comparison is in work of Greff~\cite{DBLP:journals/corr/GreffSKSS15}.
 
-\todo[inline]{Je to hodne pouzivane, jsou ruzne verze.}
-Equations described \todof{redo}in this work are not the only way how to create an LSTM unit, but they will be used later while implementing the proposed model. Some of the versions are omitting\todof{redo} \textquotedblleft peephole connections\textquotedblright ~\cite{DBLP:conf/ijcnn/GersS00}\todof{udelali peepholes}, which allows gates to look at stored value $ C_{t-1} $, $ C_t $ or include only some of them.
+Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
 
-\todof{ok}Training of the LSTM based network can be performed effectively by standard methods like stochastic gradient descend in the form of backpropagation through time. Major problem with vanishing gradients during training described earlier is not an issue as backpropagated error is fed back to each of the gates.
+\subsubsection{Gated Recurrent Unit}\label{subsubsec:gru}
 
-
-		\subsubsection{Gated Recurrent Unit}\label{subsubsec:gru}
-
-Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
+\todof{Prepracovat}Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/gru.pdf}
@@ -138,25 +134,24 @@ z_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xz}x_t + W_{hz}h_{t-1} + b_z) \label{eq
 \widetilde{h}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xh}x_t + W_{hh}(h_{t-1}\odot r_t) + b_h) \label{eq:gru3}\\
 h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}
 \end{align}
-Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
+Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in Equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
 
 Last year, study by Chung~\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to ~\cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
 
 In paper ~\cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's paper~\cite{DBLP:conf/icml/JozefowiczZS15}. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
 
+\subsection{Language models and word embedding}\label{subsec:lmAndEmbedd}
 
-		\subsection{Language models and word embedding}\label{subsec:lmAndEmbedd}
-
-With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
+\todof{Prepracovat}With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
 
 Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the values of $ V $ will be switched off to 0, except $ V_i $, which will be 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
-% TODO \todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
+\todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
 
 At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
 
 To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model~\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
-% TODO \todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
+\todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
 
 %http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
 %https://www.gavagai.se/blog/2015/09/30/a-brief-history-of-word-embeddings/
@@ -166,7 +161,7 @@ Character level models have usually smaller vocabulary size and have to be train
 
 	\section{Convolutional neural nets}
 
-Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
+\todof{Prepracovat}Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
 
 Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. ~\cite{lecun-98}. Different CNN architecture was proposed by Graupe~\cite{graupe1988} for decomposition of one-dimensional EMG signals\footnote{Electromyography (EMG) is an electrodiagnostic medicine technique for evaluating and recording the electrical activity produced by skeletal muscles.}. Convolutional nets can be also used to natural language processing~\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
 

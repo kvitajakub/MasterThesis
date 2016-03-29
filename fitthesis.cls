@@ -57,6 +57,9 @@
   \fi
 \fi
 
+%reference na posledni stranku
+\usepackage{lastpage}
+
 %-----------------------------------------------------------------------------
 %Sazebni obrazec
 %-----------------------------------------------------------------------------
@@ -83,8 +86,6 @@
 \def\@cite@CS{Citace}
 \def\@cite@EN{Citation}
 \def\@copyright@CS{Tato práce vznikla jako školní dílo na Vysokém učení technickém v Brně, Fakultě informačních technologií. 
-Práce je chráněna autorským zákonem a její užití bez udělení oprávnění autorem je nezákonné, s výjimkou zákonem definovaných případů.}
-\def\@copyright@EN{Tato práce vznikla jako školní dílo na Vysokém učení technickém v Brně, Fakultě informačních technologií. 
 Práce je chráněna autorským zákonem a její užití bez udělení oprávnění autorem je nezákonné, s výjimkou zákonem definovaných případů.}
 \def\@tdecl@CS{Prohlášení}
 \def\@tdecl@EN{Declaration}
@@ -236,7 +237,9 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \vfill
 
 \mktxt@b{16}{\@cite@CS}
-\noindent\@author: \@title, \MakeLowercase{\@projecttype@CS}, Brno, FIT VUT v~Brně, \@year
+%\noindent\@author: \@title, \MakeLowercase{\@projecttype@CS}, Brno, FIT VUT v~Brně, \@year
+\noindent KVITA, Jakub. \@title. Brno, \@year. \pageref{LastPage}~s. \@projecttype@CS.  Vysoké učení technické v~Brně, Fakulta informačních technologií. Vedoucí práce Hradiš Michal.
+
 %===================================================
 \newpage
 }
@@ -269,7 +272,7 @@ Práce je chráněna autorským zákonem a její užití bez udělení oprávně
 \vfill
 
 \noindent\copyright\ \@author, \@year.\newline
-{\em \ifczech\@copyright@CS\else\@copyright@EN\fi}
+{\em \@copyright@CS}
 %===================================================
 \newpage
 }
