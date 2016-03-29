@@ -121,7 +121,7 @@ Training of the LSTM based network can be performed effectively by standard meth
 
 \subsubsection{Gated Recurrent Unit}\label{subsubsec:gru}
 
-\todof{Prepracovat}Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the LSTM theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate and removes peephole connections. These changes are simplifying standard LSTM models, but not at the expense of performance, and cause rapid growth in popularity. Diagram of the GRU unit is on the figure \ref{fig:gru}.
+Gated Recurrent Unit (\gls{gru})~\cite{DBLP:journals/corr/ChoMGBSB14} is slightly more dramatic variation on the \gls{lstm} theme. It combines hidden state of the unit $ h_t $ with the saved value $ C_t $, merges input and forget gates into one update gate $ z_t $ and some smaller changes. Compare \gls{gru} diagram on Figure \ref{fig:gru} with the previous \gls{lstm} figure. \gls{gru} is based on following set of equations:
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/gru.pdf}
@@ -134,12 +134,17 @@ z_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xz}x_t + W_{hz}h_{t-1} + b_z) \label{eq
 \widetilde{h}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xh}x_t + W_{hh}(h_{t-1}\odot r_t) + b_h) \label{eq:gru3}\\
 h_t \hspace{7pt}&=\hspace{7pt} (1-z_t)\odot \widetilde{h}_t + z_t\odot h_{t-1} \label{eq:gru4}
 \end{align}
-Equations describe a version of GRU unit used in this work, with sigmoid function $ \sigma $ defined in Equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. While it is using only 4 weight matrices, 3 biases and just 1 state variable, researchers studied whether this can achieve at least same performance as previous LSTM unit.
+On top of the Equations \eqref{eq:gru1} to \eqref{eq:gru4}, \gls{gru} is using the standard logistic function $ \sigma $ defined in Equation \eqref{eq:lstm7}. The operation $ \odot $ again denotes the element-wise vector product. As the unit is using only 4 weight matrices, 3 biases and 1 state variable, researchers studied whether it can achieve the performance on same level as previous \gls{lstm}.
 
-Last year, study by Chung~\cite{DBLP:journals/corr/ChungGCB14} was done, where different types of recurrent units were compared on the polyphonic music datasets. In this task LSTM and GRU were significantly better than all the other architectures, with GRU slightly in the lead. Generally, researchers agree that most of the LSTM variations, including GRU, are roughly on the same performance level. According to ~\cite{DBLP:journals/corr/GreffSKSS15} GRU is an average variation, slightly better than vanilla LSTM, with much simpler architecture.
+In Chung's study~\cite{DBLP:journals/corr/ChungGCB14}, different types of recurrent units were compared on the polyphonic music datasets. \gls{lstm} and \gls{gru} were performing significantly better than all of the other architectures, with \gls{gru} slightly in the lead. According to~\cite{DBLP:journals/corr/GreffSKSS15} on the other hand, \gls{gru} is an average variation, slightly better than vanilla \gls{lstm}, with much simpler architecture.
 
-In paper ~\cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's paper~\cite{DBLP:conf/icml/JozefowiczZS15}. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.
+\todof{Cele predelat. Rozebrat clanek}In paper~\cite{DBLP:conf/icml/JozefowiczZS15}, which emphasized variety of tasks and the data, GRU outperformed LSTM unit on all tasks with the exception of language modeling. There are multiple approaches to model languages and in this work I will explore different type than the one mentioned in Jozefowicz's paper~\cite{DBLP:conf/icml/JozefowiczZS15}. More will be explained in following chapters. Interestingly they also found that LSTM nearly matched the GRU's performance, when its forget gate bias was initialized to 1 and not to naive initialization around 0.\todof{Proc?}
 It is also worth mentioning that Jozefowicz in his paper discovered several architectures similar to GRU, but with slightly better general performance. They were found by evolutionary algorithm working on candidate architectures  represented by the computational graph.
+
+\todo[inline]{Zaver, jestli ma cenu pro me modelovani pouzit i gru? Neodkazovat se na dalsi praci v textu zatim.}
+
+Generally, researchers agree that most of the \gls{lstm} variations, including \gls{gru}, are roughly on the same performance level.
+These changes are simplifying the standard \gls{lstm} model, in spite of performing on the same level. and cause rapid growth in popularity.
 
 \subsection{Language models and word embedding}\label{subsec:lmAndEmbedd}
 
