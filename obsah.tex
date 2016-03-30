@@ -162,32 +162,35 @@ Character level models have usually smaller vocabulary size and have to be train
 
 	\section{Convolutional neural nets}
 
-\todof{Prepracovat}Feed-forward neural nets together with backpropagation algorithm showed very useful for range of tasks and it has even been proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they were not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the next layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these problems are manifesting even in image processing with only two dimensions. Convolutional neural nets (CNN) were introduced as a solution to reduce the number of parameters involved, while exploiting spatial constraints in the input.
+Feed-forward neural nets together with backpropagation algorithm have showed very useful for range of tasks and it has been even proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they are not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the previous layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these issues are becoming apparent even in image processing, which has only two dimensions. Convolutional neural nets (\gls{cnn}) were introduced as a way to reduce the number of parameters involved, while exploiting the spatial constraints of the input.
 
-Ideas of convolutional nets took inspiration from neurobiology, more precisely from the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20} to process temporal signal. Later their design was improved by LeCun et al. ~\cite{lecun-98}. Different CNN architecture was proposed by Graupe~\cite{graupe1988} for decomposition of one-dimensional EMG signals\footnote{Electromyography (EMG) is an electrodiagnostic medicine technique for evaluating and recording the electrical activity produced by skeletal muscles.}. Convolutional nets can be also used to natural language processing~\cite{DBLP:journals/corr/Kim14f} and to analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (eg. 3D medical scans), but that is not as common as image processing.
+\gls{cnn} ideas took inspiration from neurobiology, more precisely the organisation of neurons in visual cortex of the cat. They were first used in the work of Homma~\cite{NIPS1987_20}, to process a temporal signal, and their design was later improved by LeCun et al.~\cite{lecun-98}. Different \gls{cnn} architecture was proposed by Graupe~\cite{graupe1988} for decomposing one-dimensional EMG signals\footnote{Electromyography (EMG) is an electrodiagnostic medicine technique for evaluating and recording the electrical activity produced by muscles.}. Convolutional nets can be also used in natural language processing~\cite{DBLP:journals/corr/Kim14f} and analysis of three-dimensional data like videos~\cite{10.1109/TPAMI.2012.59} or volumetric data (e.g. 3D medical scans), but that is not as common as image processing.
 
-Basic architecture of CNN can be described as the following process:
+Basic architecture of \gls{cnn} can be described by the following process:
 
 \vspace{8mm}
 \begin{minipage}{0.9\textwidth}
 \begin{enumerate}
 	\item Convolve several small filters on the input.
 	\item Subsample this space of filter activations.
-	\item Repeat steps 1 and 2 until you are left with a sufficiently high level features.
-	\item Use a standard feed-forward neural net to solve the task, using the features as input.
+	\item Repeat steps 1 and 2 until you are left with a sufficiently high level features.\label{itm:features}
+	\item Use a standard feed-forward neural net to solve the task, using the features from step \ref{itm:features} as input.
 \end{enumerate}
 \end{minipage}
 \vspace{1cm}
 
-Convolutional layer, which is most important and gave CNN their name is essentially the same as mathematical convolution used elsewhere. Here it means to apply a 'filter' over an input at all possible offsets. This filter - in image processing and computer vision called kernel - has a layer of connection weights with the same dimensionality as the input, but with much smaller size. Despite the fact that there is many connections, which are even overlapping, the weights are tied together and during training only handful of parameters per filter need to be updated. It is also possible to stack filters on top of each other to create more powerful architectures, but as they do not reduce dimensionality significantly, output has the same size as the input. Second type of a layer has been introduced to improve it - subsampling.
+\todo[inline]{Podle procesu cnn obsahuje stridajici se konvolucni a subsampling vrstvy, za kterymi jjsou plne propojene, ktere se vetsinou skladaji z relu ktere ma dobry vykon. Vetsinou se take pouziva dropout. Nejaky popis ze dale budu mluvit o konvolucich a subsampl.}
+\todo[inline]{Last type of unit commonly used in CNN is \gls{relu}, which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. }
+\todof{Prepracovat}Convolutional layer, which is most important and gave CNN their name, is essentially the same as mathematical convolution used elsewhere. Here it means to apply a 'filter' over an input at all possible offsets. This filter - in image processing and computer vision called kernel - has a layer of connection weights with the same dimensionality as the input, but with much smaller size. Despite the fact that there is many connections, which are even overlapping, the weights are tied together and during training only handful of parameters per filter need to be updated. It is also possible to stack filters on top of each other to create more powerful architectures, but as they do not reduce dimensionality significantly, output has the same size as the input. Second type of a layer has been introduced to improve it - subsampling.
 
-Subsampling, or max pooling in this version, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
+Subsampling, or in this version max pooling, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
 
-Last type of unit commonly used in CNN is rectified linear unit (\gls{relu}), which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
+\todo[inline]{Uzavirajici odstavec o cnn.}
+One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=\textwidth]{./fig/lenet-architecture.png}
+	\includegraphics[width=\textwidth]{./fig/lenet.pdf}
 	\caption{Architecture of famous \gls{cnn} \textquotedblleft LeNet-5\textquotedblright.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
