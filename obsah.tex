@@ -61,7 +61,7 @@ Dropout works with the idea of \textquotedblleft dropping out\textquotedblright\
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/dropout.pdf}
-	\caption{Applying dropout to a neural network. \cite{JMLR:v15:srivastava14a}
+	\caption{Applying dropout to a neural network.
 		\label{fig:dropout}}
 \end{figure}
 
@@ -179,14 +179,7 @@ Basic architecture of \gls{cnn} can be described by the following process:
 \end{minipage}
 \vspace{1cm}
 
-\todo[inline]{Podle procesu cnn obsahuje stridajici se konvolucni a subsampling vrstvy, za kterymi jjsou plne propojene, ktere se vetsinou skladaji z relu ktere ma dobry vykon. Vetsinou se take pouziva dropout. Nejaky popis ze dale budu mluvit o konvolucich a subsampl.}
-\todo[inline]{Last type of unit commonly used in CNN is \gls{relu}, which provides nonlinearity and improves overall performance~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. }
-\todof{Prepracovat}Convolutional layer, which is most important and gave CNN their name, is essentially the same as mathematical convolution used elsewhere. Here it means to apply a 'filter' over an input at all possible offsets. This filter - in image processing and computer vision called kernel - has a layer of connection weights with the same dimensionality as the input, but with much smaller size. Despite the fact that there is many connections, which are even overlapping, the weights are tied together and during training only handful of parameters per filter need to be updated. It is also possible to stack filters on top of each other to create more powerful architectures, but as they do not reduce dimensionality significantly, output has the same size as the input. Second type of a layer has been introduced to improve it - subsampling.
-
-Subsampling, or in this version max pooling, is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can detect higher level features than without it.
-
-\todo[inline]{Uzavirajici odstavec o cnn.}
-One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Architecture of version of LeNet called \textquotedblleft LeNet-5\textquotedblright\ is on the figure \ref{fig:lenet}.
+Thus the \gls{cnn} consist of alternating convolutional and subsampling layers, followed by fully connected feed-forward network. Diagram of the simple \gls{cnn} architecture is on Figure \ref{fig:lenet}. I will now go through the individual network segments and describe them.
 
 \begin{figure}[!t]
 	\centering
@@ -194,6 +187,14 @@ One of the first and most famous examples of convolutional neural net is LeNet\f
 	\caption{Architecture of famous \gls{cnn} \textquotedblleft LeNet-5\textquotedblright.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
+
+Convolutional layer, which is most important and gave \gls{cnn}s their name, is essentially the same as mathematical convolution used elsewhere. Here it means to apply a 'filter' over an input at all possible offsets. This filter - in image processing and computer vision called kernel - has a layer of connection weights with the same dimensionality as the input, but with much smaller size. Despite the fact that there is many connections in one convolution, which are even overlapping, the weights are tied together and only handful of parameters per filter need to be updated during training. Usually, several filters, ranging from 5 to 100, are applied to the input simultaneously in one layer. The main reason why it is possible to use this architecture is the ability to stack convolutions on top of each other to create more high-level from low-level features, while keeping the proportions of input.
+
+As the output of the network usually do not have same dimensions of the input, ability to directly control size of the features is needed. In \gls{cnn}s it is provided by subsampling, or in this version max pooling, layer. It is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can scale the current feature tensor and detect higher level features than without it.
+
+Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting rectifiers after convolutions, as they have excellent performance, surpassing any other unit~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. In the second, fully connected, part mix of linear units and \gls{relu}s is commonly used, with applying dropout to these layers. Connection between convolutional and fully connected part is provided by a layer converting higher-dimensional output data from convolutions to a one-dimensional input vector.
+
+\gls{cnn}s are useful in applications, where data has a spatial structure, which is useful to capture in the model. Among these data belongs image processing and speech recognition. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Figure \ref{fig:lenet} shows the architecture of LeNet, version called \textquotedblleft LeNet-5\textquotedblright.
 
 \chapter{Image caption generation}\label{chp:captions}
 
