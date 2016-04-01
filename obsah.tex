@@ -146,6 +146,7 @@ Generally, researchers agree that most of the \gls{lstm} variations, including \
 
 With the addition of \gls{lstm}, recurrent neural nets quickly showed great potential in many different types of sequence processing like speech recognition, signal prediction and modeling languages. These result were further improved when researchers started stacking \gls{lstm}s on top of each other. Language modeling has several ways to process input text and feed it to the network. In this chapter, I will describe word and character level models, which are most commonly used.
 
+%http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
 Word level representation of the text is used by most of the state-of-the-art models, have been enhanced by many features and proved very effective for English. In this method, each word is encoded to a vector of a constant length. The neural network then works only with these encodings and does not have direct access to the word and its form. The advantage of this approach is no need to teach the model exact spelling of the words, which also means the model is not going to be confused by homographs\footnote{A \emph{homograph} is a word that shares the same written form as another word but has a different meaning.}. The benefit also is that encoded sequences are much shorter than sequences based on dividing text by character. On the other hand, the disadvantage of this approach is that modeling non-word text, like punctuation and long numbers, can be complicated.
 
 All that is left, is to decide specific encoding for model to use.  Simple way that comes to mind is one-hot\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').} or one-from-k encoding, which has its advantages, however, there are several issues with it in this application. The task vocabulary often exceeds 100 000 records, which means each input vector would be incredibly long. So long, issues with time complexity of computations would appear. Luckily set of techniques called \emph{word embedding} were developed. 
@@ -157,15 +158,11 @@ W(window) \hspace{7pt}&=\hspace{7pt} (0.0,\ 0.6,\ 0.1,\ 0.9,\ \dots). \label{eq:
 \end{align}
 Vectors are usually randomly initialized and then trained to capture structure of the input data to perform some task. An example can be skip-gram model~\cite{DBLP:journals/corr/abs-1301-3781}, which mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them. Word embeddings show many interesting properties, like encoding analogies between words as differences between their vectors~\cite{export:189726}, but I am not going to cover them in more detail in this work.
 
-%http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
+Character level modeling has been considered as an alternative to word-level, but so far had worse performance. Regardless, it is still considered as an option, because of the much simpler representation of  the input and output. Consider roughly $ 45 $ characters in English text and over $ 100 000 $ words created from them. Same input can be modeled in character level by simple one hot encoding, instead of creating whole field of the word embeddings. These models are also more suited for Czech, Russian, and other fusional\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.} languages, which heavily use prefixes and suffixes to create new words. 
 
-\todo[inline]{character level, simple 1 from k, ukazky asi nejsou potreba}
-Character level modeling has been considered and used as an alternative to word-level, but so far had slightly worse performance. Regardless, it is still considered as an option, because it has much simpler representation of input and output. Consider roughly $ 45 $ characters in English text and over $ 50 000 $ words created from them. Character level network is also more suited for Czech or Russian and other fusional\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.} languages, which heavily use prefixes and suffixes to create new words. This is also an ability, which cannot be overlooked, as it is not available for word level.
-Character level models have usually smaller vocabulary size and have to be trained longer, as they need to learn spelling of the words on top of the same features of word level. With the properly trained character level model we can benefit from its much greater generative abilities, than we can achieve with word-level.
+Character level models usually have smaller vocabulary size and tend to take more time for training, as they need to learn spelling of the words and structure of a sentence, on top of the same features of word level. However, with the properly trained character level model, we can benefit from its greater generative abilities, on top of the very simple input and output of the model.
 
-\todo[inline]{Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the values of $ V $ will be switched off to 0, except $ V_i $, which will be 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.}
-
-	\section{Convolutional neural nets}
+\section{Convolutional neural nets}
 
 Feed-forward neural nets together with backpropagation algorithm have showed very useful for range of tasks and it has been even proven~\cite{cybenko:mcss,journals/nn/Hornik91} they can approximate any continuous function. However, they are not very good in recognizing objects presented visually. As every unit is connected to large amount of units in the previous layer (or all of them in fully-connected layers), the number of weights grows rapidly with the size of the problem and even more with the dimensionality. All these issues are becoming apparent even in image processing, which has only two dimensions. Convolutional neural nets (\gls{cnn}) were introduced as a way to reduce the number of parameters involved, while exploiting the spatial constraints of the input.
 
@@ -173,16 +170,16 @@ Feed-forward neural nets together with backpropagation algorithm have showed ver
 
 Basic architecture of \gls{cnn} can be described by the following process:
 
-\vspace{8mm}
 \begin{minipage}{0.9\textwidth}
 \begin{enumerate}
+	\setlength\itemsep{4mm}
 	\item Convolve several small filters on the input.
 	\item Subsample this space of filter activations.
 	\item Repeat steps 1 and 2 until you are left with a sufficiently high level features.\label{itm:features}
 	\item Use a standard feed-forward neural net to solve the task, using the features from step \ref{itm:features} as input.
 \end{enumerate}
 \end{minipage}
-\vspace{1cm}
+\vspace{9mm}
 
 Thus the \gls{cnn} consist of alternating convolutional and subsampling layers, followed by fully connected feed-forward network. Diagram of the simple \gls{cnn} architecture is on Figure \ref{fig:lenet}. I will now go through the individual network segments and describe them.
 
