@@ -103,7 +103,7 @@ Long Short-Term Memory (\gls{lstm}) is a special type of recurrent network, able
 	\caption{Variation of a \gls{lstm}.
 		\label{fig:lstm}}
 \end{figure}
-\belowdisplayskip=18pt
+\belowdisplayskip=16pt
 \begin{align}
 	i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1} + W_{ci}C_{t-1} + b_i) \label{eq:lstm1}\\
 	f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1} + W_{cf}C_{t-1} + b_f) \label{eq:lstm2}\\
@@ -142,23 +142,28 @@ Jozefowicz's study~\cite{DBLP:conf/icml/JozefowiczZS15} tried to determine wheth
 
 Generally, researchers agree that most of the \gls{lstm} variations, including \gls{gru}, are roughly on the same performance level. As the changes introduced in \gls{gru} are simplifying the standard \gls{lstm} model even though keeping the performance level, \gls{gru} has been growing increasingly popular.
 
-\subsection{Language models and word embedding}\label{subsec:lmAndEmbedd}
+\subsection{Modeling languages}\label{subsec:languageModels}
 
-\todof{Prepracovat}With the addition of LSTM units, recurrent neural nets quickly showed good performance in many different types of sequence processing like speech recognition from sound waves, signal prediction and language modeling. These result were further improved when researchers started stacking LSTMs on top of each other like pancakes.
+With the addition of \gls{lstm}, recurrent neural nets quickly showed great potential in many different types of sequence processing like speech recognition, signal prediction and modeling languages. These result were further improved when researchers started stacking \gls{lstm}s on top of each other. Language modeling has several ways to process input text and feed it to the network. In this chapter, I will describe word and character level models, which are most commonly used.
 
-Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').}. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the values of $ V $ will be switched off to 0, except $ V_i $, which will be 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.
-\todof{pridat ukazky vektoru a pravdepodobnostniho rozlozeni}
+Word level representation of the text is used by most of the state-of-the-art models, have been enhanced by many features and proved very effective for English. In this method, each word is encoded to a vector of a constant length. The neural network then works only with these encodings and does not have direct access to the word and its form. The advantage of this approach is no need to teach the model exact spelling of the words, which also means the model is not going to be confused by homographs\footnote{A \emph{homograph} is a word that shares the same written form as another word but has a different meaning.}. The benefit also is that encoded sequences are much shorter than sequences based on dividing text by character. On the other hand, the disadvantage of this approach is that modeling non-word text, like punctuation and long numbers, can be complicated.
 
-At this point it is necessary to decide what will classes and defined vectors represent. In most cases, text prediction is performed at the word level. $ K $ is hence the number of words in the dictionary. This can cause some problems, as in bigger tasks dictionary often exceeds 100 000 records. This many classes require huge amount of training data to properly cover all the cases and high computational cost of the softmax layer is also an issue. This text representation cannot be used for texts not containing separate words, like multi-digit numbers. Nevertheless, state-of-the-art models have been using word-level representation. One of the advantages is no need to teach the net proper forms of the words. The net does not have to remember, how to spell the words properly and can learn other, more useful, features.
+All that is left, is to decide specific encoding for model to use.  Simple way that comes to mind is one-hot\footnote{One-hot encoded vector has exactly one high ('1') value and all the others low ('0').} or one-from-k encoding, which has its advantages, however, there are several issues with it in this application. The task vocabulary often exceeds 100 000 records, which means each input vector would be incredibly long. So long, issues with time complexity of computations would appear. Luckily set of techniques called \emph{word embedding} were developed. 
 
-To solve the problem with extremely long input vectors, set of techniques called \emph{word embedding} were developed. They map words from the vocabulary to suitable vectors of real numbers in high dimensional space (around 50--1000 dimensions). Chosen vectors cannot be random, they are meaningful in order of performing some following task. For example Skip-gram model~\cite{DBLP:journals/corr/abs-1301-3781} mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them.
-\todof{embedding - vice rozebrat, klidne s ukazkama na celou stranku}
+Word embedding~\cite{bengio2003neural} is a tool for mapping words or phrases from the vocabulary to suitable vectors of real numbers in low dimensional space (around 200 -- 500 dimensions) relative to the~vocabulary. For example,
+\begin{align}
+W(horse) \hspace{7pt}&=\hspace{7pt} (0.2,\ 0.4,\ 0.7,\ 0.1,\ \dots), \label{eq:embed1}\\
+W(window) \hspace{7pt}&=\hspace{7pt} (0.0,\ 0.6,\ 0.1,\ 0.9,\ \dots). \label{eq:embed2}
+\end{align}
+Vectors are usually randomly initialized and then trained to capture structure of the input data to perform some task. An example can be skip-gram model~\cite{DBLP:journals/corr/abs-1301-3781}, which mapped 783 millions words to vectors of 300 real numbers, while creating reasonable relationships between them. Word embeddings show many interesting properties, like encoding analogies between words as differences between their vectors~\cite{export:189726}, but I am not going to cover them in more detail in this work.
 
 %http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/
-%https://www.gavagai.se/blog/2015/09/30/a-brief-history-of-word-embeddings/
 
+\todo[inline]{character level, simple 1 from k, ukazky asi nejsou potreba}
 Character level modeling has been considered and used as an alternative to word-level, but so far had slightly worse performance. Regardless, it is still considered as an option, because it has much simpler representation of input and output. Consider roughly $ 45 $ characters in English text and over $ 50 000 $ words created from them. Character level network is also more suited for Czech or Russian and other fusional\footnote{Fusional language is a type of language distinguished by its tendency to overlay many morphemes to denote grammatical, syntactic, or semantic change.} languages, which heavily use prefixes and suffixes to create new words. This is also an ability, which cannot be overlooked, as it is not available for word level.
 Character level models have usually smaller vocabulary size and have to be trained longer, as they need to learn spelling of the words on top of the same features of word level. With the properly trained character level model we can benefit from its much greater generative abilities, than we can achieve with word-level.
+
+\todo[inline]{Text is represented by discrete values and is usually presented to network in form of input vectors with one-hot encoding. If we have a task with $ K $ classes, class $ i $ will be represented by a vector $ V $ of length $ K $. All the values of $ V $ will be switched off to 0, except $ V_i $, which will be 1. Vector $ V $ is simultaneously a degenerated multinomial probability distribution of the current input. If the output has the same shape as input, it can be simply created by softmax function at the output layer. Result will be proper multinomial distribution of next value, given current value.}
 
 	\section{Convolutional neural nets}
 
@@ -250,7 +255,7 @@ x_t     \hspace{7pt}&=\hspace{7pt} W_eS_t,\hspace{15pt} t\in\{0\ldots N-1\}  \la
 p_{t+1} \hspace{7pt}&=\hspace{7pt} LSTM(x_t),\hspace{15pt} t\in\{0\ldots N-1\}  \label{eq:showmodel3}
 \end{align}
 
-Each word is represented as a one-hot vector $ S_t $ of the size equal to size of the dictionary. Special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are also present. Both the image and the words are mapped to the same space. Input image embedding is fed to the LSTM only once, at $ t=-1 $.
+Each word is represented as a one-hot vector $ S_t $ of the size equal to size of the vocabulary. Special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are also present. Both the image and the words are mapped to the same space. Input image embedding is fed to the LSTM only once, at $ t=-1 $.
 
 The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using stochastic gradient descent with fixed learning rate and no momentum. For the embeddings and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
 
