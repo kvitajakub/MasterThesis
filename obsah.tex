@@ -200,14 +200,13 @@ Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting r
 
 \chapter{Image caption generation}\label{chp:captions}
 
-Scene understanding is one of the fundamental and most difficult tasks of computer vision. Being able to automatically generate image or video captions in regular text could have great effect. However, it is much more complicated than simple classification or object recognition, because the model also need to understand relations between the recognized objects and capture that correctly in the captions.
+Scene understanding is one of the fundamental, but also most difficult tasks of computer vision and ability to automatically generate text captions of an image or video can have a great impact on lives of many. However, it is much more complicated than simple classification or object recognition tasks, because the model also need to understand relations between the recognized objects and encode that relationship correctly in the caption.
 
-In this chapter I will do an overview of approaches to this task and more closely describe latest papers on which is this work based (part \ref{sec:related}). Following parts cover datasets (part \ref{sec:datasets}) and evaluation procedures (part \ref{sec:evaluation}) most commonly used for this task.
+In this chapter, I have done an overview of state-of-the-art approaches to the image captioning task and more closely describe latest studies, which are the basis of this work (section \ref{sec:related}). Following section \ref{sec:datasets} cover popular datasets. Last section \ref{sec:evaluation} covers evaluation procedures, which are most commonly used for this task.
 
-	\section{Related Work}
-	\label{sec:related}
+\section{Related Work}\label{sec:related}
 
-Currently, neural networks are most heavily used to generate captions. Before them two main approaches were common. The first one used caption templates, which were filled by detected objects and relations. Second was based on retrieving similar captions from database and modifying them to fit current image. Question of similarity ranking has been addressed by many papers, which are based on the idea of joint embedding vector space for both images and captions~\cite{DBLP:journals/corr/KarpathyF14}. Similar descriptions are in this space close to each other.
+\todof{Predelat}Currently, neural networks are most heavily used to generate captions. Before them two main approaches were common. The first one used caption templates, which were filled by detected objects and relations. Second was based on retrieving similar captions from database and modifying them to fit current image. Question of similarity ranking has been addressed by many papers, which are based on the idea of joint embedding vector space for both images and captions~\cite{DBLP:journals/corr/KarpathyF14}. Similar descriptions are in this space close to each other.
 
 Both approaches above usually included generalization step to remove information relevant only to current image, for example names. They are quite successful in describing images, but they are heavily hand-designed and their text-generation power is fixed on the database/embedding and is not able to describe previously unseen compositions of objects. Over time these approaches fell out of favor to now dominant neural network methods.
 
@@ -217,11 +216,9 @@ The introduced encoder--decoder architecture is important to the captioning task
 
 One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
 
-%\todo[inline]{nejlepsi clanky se ucastni ms coco.}
+\subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 
-		\subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
-
-Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in \gls{coco} Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
+\todof{Predelat}Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in \gls{coco} Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 
 Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the RNN decoder that generates word sequences. The decoder part of the network is made of LSTM units based on the following equations:
 
@@ -256,9 +253,9 @@ Each word is represented as a one-hot vector $ S_t $ of the size equal to size o
 
 The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using stochastic gradient descent with fixed learning rate and no momentum. For the embeddings and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
 
-		\subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
+\subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
 
-This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
+\todof{Predelat}This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
 
 Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (\gls{me}) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to ~\cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
 
@@ -273,9 +270,9 @@ Third, candidate captions are re-ranked using Minimum Error Rate Training~\cite{
 
 Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper ~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
 
-		\subsubsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
+\subsubsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 
-Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
+\todof{Predelat}Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
 
 Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in~\cite{DBLP:journals/corr/BahdanauCB14}. It gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
 
@@ -297,9 +294,9 @@ Paper is also showing how we can gain insight and interpret the results of the m
 
 CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam~\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 
-		\subsubsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
+\subsubsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
-The research group from Berkeley in paper ~\cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output).
+\todof{Predelat}The research group from Berkeley in paper ~\cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output).
 
 Architecture of the proposed model is similar to the one from part \ref{subsec:showtell}, only output of the CNN is fed to the LSTM in each time step. According to the task specification model can use separate convolutional networks, different for each time step, each with specific input or single CNN through all the time steps. Example is on the figure \ref{fig:LRCN}.
 
@@ -310,9 +307,9 @@ Architecture of the proposed model is similar to the one from part \ref{subsec:s
 		\label{fig:LRCN}}
 \end{figure}
 
-	\section{Datasets}
-	\label{sec:datasets}
-Big datasets are necessary requirement in training recurrent neural nets, together with sufficient computing power. As access to machines and hardware suitable for training has been made extremely easy, obtaining enough data become the biggest problem. All the descriptions in the image captioning datasets have to be human generated, which is very expensive. This is one of the reasons, not many specialized datasets are created.
+\section{Datasets}\label{sec:datasets}
+
+\todof{Predelat}Big datasets are necessary requirement in training recurrent neural nets, together with sufficient computing power. As access to machines and hardware suitable for training has been made extremely easy, obtaining enough data become the biggest problem. All the descriptions in the image captioning datasets have to be human generated, which is very expensive. This is one of the reasons, not many specialized datasets are created.
 
 There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
 
@@ -356,11 +353,11 @@ Flickr8k~\cite{dataset-flickr8k} was one of the first datasets created for this 
 	\end{longtable}
 \end{center}
 
-	\section{Evaluation}
-	\label{sec:evaluation}
-Recent progress in fields like machine translation, which are very similar to image captioning, caused spike of interest in evaluating regular text output accuracy. Although it is sometimes not clear if a description of an image is best option available, some degree of assessment is possible. The best results can be obtained by asking live raters to give a score on the usefulness of each description. Subjective scores can vary, but it can be averaged by giving same description to multiple raters. However this method consumes tremendous amount of time and usually external raters are necessary. Tools like Amazon Mechanical Turk can be used to great extent, but need for automated tools is evident.
+\section{Evaluation}\label{sec:evaluation}
 
-		\subsection{Automated metrics}
+\todof{Predelat}Recent progress in fields like machine translation, which are very similar to image captioning, caused spike of interest in evaluating regular text output accuracy. Although it is sometimes not clear if a description of an image is best option available, some degree of assessment is possible. The best results can be obtained by asking live raters to give a score on the usefulness of each description. Subjective scores can vary, but it can be averaged by giving same description to multiple raters. However this method consumes tremendous amount of time and usually external raters are necessary. Tools like Amazon Mechanical Turk can be used to great extent, but need for automated tools is evident.
+
+\subsection{Automated metrics}
 
 Assuming that one has access to human generated captions, which is ground truth in our case, completely automated metrics exists. Even though all of them compute how alike are generated to human descriptions, different approaches are used. One metric can use several different settings with slight changes in the algorithm. This raises the question, how can we compare results of different works, despite using the \textquotedblleft same\textquotedblright \ evaluation method. Microsoft group of researchers addresses this issue in ~\cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{MS COCO evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.} which has many automated metrics, with several configurations, including all mentioned here. It will serve as a reference point for comparing image captioning models.
 
