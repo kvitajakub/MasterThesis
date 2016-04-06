@@ -214,9 +214,9 @@ Many of the new methods, which use neural nets, are inspired by the success in t
 
 The introduced encoder--decoder architecture is important to the captioning task, because image description problem can be interpreted as a translation from an image to a sentence. In this case, encoder part of the model is usually a convolutional neural net, as they are excellent in the image classification~\cite{DBLP:journals/corr/SzegedyLJSRAEVR14}. Decoder part is the similar to the one in machine translation models -- an \gls{rnn} or a type of \gls{lstm}, as the output for both tasks is essentially the same.
 
-Following the encoder--decoder idea, current image captioning field is shifting towards models, which are trained end-to-end with some type of stochastic gradient descent (\gls{sgd}) algorithm.
-\todo[inline]{Nejaky dalsi obecny popis toho jak vypadaji modely, ze se je videt vseobecny trend k modelum end-to-end trenovatelnym pomoci SGD, pak ze se naprosta vetsina ucastni coco a ze ted podrobne popisu nejuspesnejsi coco prace z roku 2014.}
-One of the most interesting event in this field is MS COCO Captioning Challenge\footnote{MS COCO Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} in which many of the state-of-the-art researchers compete directly against each other. Most of the works described further have participated in this challenge.
+Following the encoder--decoder idea, current image captioning research is shifting towards models, which are trained end-to-end with some type of stochastic gradient descent (\gls{sgd}) algorithm. The reasons for the shift can be simplicity and a lot less hand design than in other methods. Different type of the state-of-the-art models are based on proven pipeline of key-word detection, sentence generation, and ranking, which exploit the power of embedded neural networks, which specialize in single task. This approach is more closely described in section discussing article \emph{From Captions to Visual Concepts and Back}.
+
+The current field is consolidating, thanks to Microsoft COCO Captioning Challenge\footnote{Microsoft COCO Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} and dataset created for this challenge. Simple public access to the necessary data makes model creation easier and the best researchers can compete directly against each other by using Microsoft COCO evaluation server. In the rest of this section, I describe several works, which were submitted to the challenge in 2015 and had the best performance. Microsoft COCO dataset is described, together with other datasets, in following section \ref{sec:datasets}.
 
 \subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 
@@ -315,7 +315,7 @@ Architecture of the proposed model is similar to the one from part \ref{subsec:s
 
 There are two main options how to get images and captions. First, using user-generated data from an online service, most commonly Flicker. However, captions are not made specifically for the task and could be prone to error. Second option is to create captions directly for use in the dataset. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace to perform tasks that computers are currently unable to do.} is heavily used for this task. All datasets mentioned here are created this way.
 
-Flickr8k~\cite{dataset-flickr8k} was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. MS COCO~\cite{DBLP:journals/corr/ChenFLVGDZ15} is dataset created by Microsoft for their captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric.
+Flickr8k~\cite{dataset-flickr8k} was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. MS COCO~\cite{DBLP:journals/corr/ChenFLVGDZ15} is dataset created by Microsoft for their captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in following section \ref{sec:evaluation}.
 
 \def\arraystretch{1.2}%  1 is the default, change whatever you need
 %\setlength\extrarowheight{20pt}%add points to the row height
@@ -332,18 +332,18 @@ Flickr8k~\cite{dataset-flickr8k} was one of the first datasets created for this 
 	   	\hline \hline
 		\endhead
 
-	   	Flickr8k\footnote{Flickr8k project: \url{http://nlp.cs.illinois.edu/HockenmaierGroup/8k-pictures.html}} &
-		   	\multicolumn{1}{r|}{8 092} &
-		   	\multicolumn{1}{c|}{5} &
-		   	Focused on people or animals (mainly dogs) performing some specific action. \\ \hline
-	   	Flickr30k\footnote{Flickr30k project: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} &
-		   	\multicolumn{1}{r|}{31 783} &
-		   	\multicolumn{1}{c|}{5-6} &
-		   	An extension of Flickr8k dataset. \\ \hline
 	   	MS COCO\footnote{MS COCO project: \url{http://mscoco.org/dataset/}} &
 		   	\multicolumn{1}{r|}{120 000} &
 		   	\multicolumn{1}{c|}{5} &
 		   	Images are divided - 80 000 for training and 40 000 for testing purposes. \\ \hline
+	   	Flickr30k\footnote{Flickr30k project: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} &
+		   	\multicolumn{1}{r|}{31 783} &
+		   	\multicolumn{1}{c|}{5-6} &
+		   	An extension of Flickr8k dataset. \\ \hline
+	   	Flickr8k\footnote{Flickr8k project: \url{http://nlp.cs.illinois.edu/HockenmaierGroup/8k-pictures.html}} &
+		   	\multicolumn{1}{r|}{8 092} &
+		   	\multicolumn{1}{c|}{5} &
+		   	Focused on people or animals (mainly dogs) performing some specific action. \\ \hline
 	   	PASCAL-50S\footnote{\label{ft:cider}PASCAL-50S and ABSTRACT-50S: \url{http://ramakrishnavedantam928.github.io/cider/}} &
 		   	\multicolumn{1}{r|}{1 000} &
 		   	\multicolumn{1}{c|}{50} &
