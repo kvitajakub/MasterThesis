@@ -216,7 +216,7 @@ The introduced encoder--decoder architecture is important to the captioning task
 
 Following the encoder--decoder idea, current image captioning research is shifting towards models, which are trained end-to-end with some type of stochastic gradient descent (\gls{sgd}) algorithm. The reasons for the shift can be simplicity and a lot less hand design than in other methods. Different type of the state-of-the-art models are based on proven pipeline of key-word detection, sentence generation, and ranking, which exploit the power of embedded neural networks, which specialize in single task. This approach is more closely described in section discussing article \emph{From Captions to Visual Concepts and Back}.
 
-The current field is consolidating, thanks to \gls{coco} Captioning Challenge\footnote{\gls{coco} Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} and dataset created for it. Simple public access to the necessary data makes model creation easier and the best researchers can compete directly against each other by using \gls{coco} evaluation server. In the rest of this section, I describe several works, which were submitted to the challenge in 2015 and had the best performance. \gls{coco} dataset is described, together with other datasets, in following section \ref{sec:datasets}.
+The current field is consolidating, thanks to \gls{coco} Captioning Challenge\footnote{\gls{coco} Captioning Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} and dataset created for it. Simple public access to the necessary data makes model creation easier and the best researchers can compete directly against each other by using \gls{coco} evaluation server. In the rest of this section, I describe several works, which were submitted to the challenge in 2015 and had the best performance. \gls{coco} dataset is described, together with other datasets, in following section \ref{sec:datasets}.
 
 \subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 
@@ -231,7 +231,7 @@ C_t \hspace{7pt}&=\hspace{7pt} f_t\odot C_{t-1} + i_t\odot \widetilde{C}_t \labe
 o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1}) \label{eq:showlstm5}\\
 h_t \hspace{7pt}&=\hspace{7pt} o_t\odot C_t \label{eq:showlstm6}
 \end{align}
-Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logistic function defined in Equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. It is worth noticing, that\todof{rozdily mezi druhou kapitolou}
+Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logistic function defined in Equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. It is worth noticing the \gls{lstm} version used do not have \textquotedblleft peephole connections\textquotedblright. Several more changes were added~-- the second evaluation of hyperbolic tangens in Equation \eqref{eq:showlstm6} is missing, as well as biases in all equations.
 
 \begin{figure}[!t]
 	\centering
@@ -240,18 +240,15 @@ Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logi
 		\label{fig:showmodel}}
 \end{figure}
 
-RNN produces output on the word level, using word embedding vectors~\cite{DBLP:journals/corr/abs-1301-3781}, one at a time. Complete procedure and architecture of the model with the unrolled RNN, word embeddings and \emph{softmax} layer is on the figure \ref{fig:showmodel}. Computing procedure of the model equal to the image is on the following equations:
-
-\belowdisplayskip=24pt
+The language model is working on the word-level, part of the \gls{rnn} is word embedding~\cite{DBLP:journals/corr/abs-1301-3781}, which is trained together with the model. \gls{cnn}, which is used to generate a configuration vector from the image, is connected to the \gls{rnn} at the beginning as the first input before the generated sequence. Overall structure of the model is visualized on Figure \ref{fig:showmodel} and can be represented by following equations:
 \begin{alignat}{3}
 x_{-1}  \hspace{7pt}&=\hspace{7pt} CNN(I)& \label{eq:showmodel1}\\
 x_t     \hspace{7pt}&=\hspace{7pt} W_eS_t \hspace{20pt} & t\in\{0\ldots N-1\}  \label{eq:showmodel2}\\
 p_{t+1} \hspace{7pt}&=\hspace{7pt} LSTM(x_t) \hspace{20pt} & t\in\{0\ldots N-1\}  \label{eq:showmodel3}
 \end{alignat}
+As the image and word encodings are used in the same way, model is effectively mapping both images and words into the same vector space. During the sequence input, special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are used.
 
-Each word is represented as a one-hot vector $ S_t $ of the size equal to size of the vocabulary. Special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are also present. Both the image and the words are mapped to the same space. Input image embedding is fed to the LSTM only once, at $ t=-1 $.
-
-The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using stochastic gradient descent with fixed learning rate and no momentum. For the embeddings and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
+The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using \gls{sgd} with fixed learning rate and no momentum. For the embeddings vector and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
 
 \subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
 
