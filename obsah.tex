@@ -4,7 +4,7 @@
 
 \todo[inline]{Prepsat.}
 
-When does a machine \textquotedblleft understand\textquotedblright\ an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
+When does a machine understand an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
 
 Deep machine learning, sometimes under the name of neural networks\footnote{Terms \emph{deep learning} and \emph{neural networks} will be used in this work interchangeably.}, is branch of machine learning based on composing multiple non-linear functions to solve the task. As it is fundamentally different from the standard computer algorithms, it perform well on problems, which are unsuitable these algorithms. For example, neural networks have excellent performance in recognizing speech and images, writing stories and composing music. This work focuses on generating image descriptions in regular English sentences, which is also a task suitable for deep learning.
 
@@ -71,7 +71,7 @@ This technique should prevent complex co-adaptations, in which unit is only help
 
 Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
 
-Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time from a starting \textquotedblleft base caption\textquotedblright. More detailed description is further in the following chapters.
+Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time starting from the \textquotedblleft base caption\textquotedblright. More detailed description is further in the following chapters.
 
 \begin{figure}[!t]
 	\centering
@@ -186,7 +186,7 @@ Thus the \gls{cnn} consist of alternating convolutional and subsampling layers, 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=\textwidth]{./fig/lenet.pdf}
-	\caption{Architecture of famous \gls{cnn} \textquotedblleft LeNet-5\textquotedblright.~\cite{lecun-98}
+	\caption{Architecture of famous \gls{cnn} \emph{LeNet-5}.~\cite{lecun-98}
 		\label{fig:lenet}}
 \end{figure}
 
@@ -196,7 +196,7 @@ As the output of the network usually do not have same dimensions of the input, a
 
 Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting rectifiers after convolutions, as they have excellent performance, surpassing any other unit~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. In the second, fully connected, part mix of linear units and \gls{relu}s is commonly used, with applying dropout to these layers. Connection between convolutional and fully connected part is provided by a layer converting higher-dimensional output data from convolutions to a one-dimensional input vector.
 
-\gls{cnn}s are useful in applications, where data has a spatial structure, which is useful to capture in the model. Among these data belongs image processing and speech recognition. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Figure \ref{fig:lenet} shows the architecture of LeNet, version called \textquotedblleft LeNet-5\textquotedblright.
+\gls{cnn}s are useful in applications, where data has a spatial structure, which is useful to capture in the model. Among these data belongs image processing and speech recognition. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Figure \ref{fig:lenet} shows the architecture of LeNet, version called \emph{LeNet-5}.
 
 \chapter{Image caption generation}\label{chp:captions}
 
@@ -220,36 +220,34 @@ The current field is consolidating, thanks to \gls{coco} Captioning Challenge\fo
 
 \subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
 
-\todof{Predelat}Model from this paper~\cite{DBLP:journals/corr/VinyalsTBE14}, made by Google researchers, tied for the first place in \gls{coco} Captioning Challenge with the following Microsoft model \ref{subsec:fromCaptions}. The main idea for this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with CNN for the encoder part and RNN for the decoder part, as described earlier, which is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
+\emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} is model created by Google researchers, which tied for the first place in \gls{coco} Captioning Challenge with the following model \emph{From Captions to Visual Concepts}. The main idea of this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with \gls{cnn} for the encoder part and \gls{rnn} for the decoder part, as described earlier. Model is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 
-Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the RNN decoder that generates word sequences. The decoder part of the network is made of LSTM units based on the following equations:
-
-\belowdisplayskip=24pt
+Used convolutional neural net has been pre-trained for an image classification task and last hidden layer of this network has been used as an input to the \gls{rnn} decoder. The \gls{rnn} part of the network is made of \gls{lstm} units based on following equations:
 \begin{align}
 i_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xi}x_t + W_{hi}h_{t-1}) \label{eq:showlstm1}\\
 f_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xf}x_t + W_{hf}h_{t-1}) \label{eq:showlstm2}\\
-o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1}) \label{eq:showlstm3}\\
-c_t \hspace{7pt}&=\hspace{7pt} f_t\odot c_{t-1} + i_t\odot\tanh(W_{xc}x_t + W_{hc}h_{t-1}) \label{eq:showlstm4}\\
-h_t \hspace{7pt}&=\hspace{7pt} o_t\odot c_t \label{eq:showlstm5}
+\widetilde{C}_t \hspace{7pt}&=\hspace{7pt} \tanh(W_{xc}x_t + W_{hc}h_{t-1}) \label{eq:showlstm3}\\
+C_t \hspace{7pt}&=\hspace{7pt} f_t\odot C_{t-1} + i_t\odot \widetilde{C}_t \label{eq:showlstm4}\\
+o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1}) \label{eq:showlstm5}\\
+h_t \hspace{7pt}&=\hspace{7pt} o_t\odot C_t \label{eq:showlstm6}
 \end{align}
-
-Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the sigmoid function and the operation $ \odot $ denotes the element-wise vector product.
+Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logistic function defined in Equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. It is worth noticing, that\todof{rozdily mezi druhou kapitolou}
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.4\textwidth]{./fig/show-tell_model.pdf}
-	\caption{\textquotedblleft Show and Tell\textquotedblright\ image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
+	\caption{\emph{Show and Tell} image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
 		\label{fig:showmodel}}
 \end{figure}
 
 RNN produces output on the word level, using word embedding vectors~\cite{DBLP:journals/corr/abs-1301-3781}, one at a time. Complete procedure and architecture of the model with the unrolled RNN, word embeddings and \emph{softmax} layer is on the figure \ref{fig:showmodel}. Computing procedure of the model equal to the image is on the following equations:
 
 \belowdisplayskip=24pt
-\begin{align}
-x_{-1}  \hspace{7pt}&=\hspace{7pt} CNN(I) \label{eq:showmodel1}\\
-x_t     \hspace{7pt}&=\hspace{7pt} W_eS_t,\hspace{15pt} t\in\{0\ldots N-1\}  \label{eq:showmodel2}\\
-p_{t+1} \hspace{7pt}&=\hspace{7pt} LSTM(x_t),\hspace{15pt} t\in\{0\ldots N-1\}  \label{eq:showmodel3}
-\end{align}
+\begin{alignat}{3}
+x_{-1}  \hspace{7pt}&=\hspace{7pt} CNN(I)& \label{eq:showmodel1}\\
+x_t     \hspace{7pt}&=\hspace{7pt} W_eS_t \hspace{20pt} & t\in\{0\ldots N-1\}  \label{eq:showmodel2}\\
+p_{t+1} \hspace{7pt}&=\hspace{7pt} LSTM(x_t) \hspace{20pt} & t\in\{0\ldots N-1\}  \label{eq:showmodel3}
+\end{alignat}
 
 Each word is represented as a one-hot vector $ S_t $ of the size equal to size of the vocabulary. Special start word $ S_0 $ and stop word $ S_N $ designated to mark start and end of the sequence are also present. Both the image and the words are mapped to the same space. Input image embedding is fed to the LSTM only once, at $ t=-1 $.
 
@@ -266,7 +264,7 @@ Third, candidate captions are re-ranked using Minimum Error Rate Training~\cite{
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.5\textwidth]{./fig/from-captions-workflow.png}
-	\caption{\textquotedblleft From Captions to Visual Concepts\textquotedblright\ caption generation process.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
+	\caption{\emph{From Captions to Visual Concepts} caption generation pipeline.~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14}
 		\label{fig:fromCaptionsModel}}
 \end{figure}
 
@@ -361,7 +359,7 @@ Recent progress in fields like machine translation, which are very similar to im
 
 \subsection{Automated metrics}
 
-Assuming that one has access to human-generated captions, which is ground truth in our case, completely automated metrics are available. Even though all of them compute how alike are model descriptions to human-generated, different ratings are used by different metrics and even differences between used settings and implementations of one metric can invalidate the results. This raises the question, how can we compare results of different works, despite them using the \textquotedblleft same\textquotedblright \ evaluation method. Microsoft group of researchers, team responsible for \gls{coco}, addresses this issue in~\cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{\gls{coco} evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.}, which has many automated metrics, with several configurations, including all mentioned here. This server should serve as a reference point for comparison of image captioning models.
+Assuming that one has access to human-generated captions, which is ground truth in our case, completely automated metrics are available. Even though all of them compute how alike are model descriptions to human-generated, different ratings are used by different metrics and even differences between used settings and implementations of one metric can invalidate the results. This raises the question, how can we compare results of different works, despite them using the \textquotedblleft same\textquotedblright\ evaluation method. Microsoft group of researchers, team responsible for \gls{coco}, addresses this issue in~\cite{DBLP:journals/corr/ChenFLVGDZ15}. They created an evaluation server\footnote{\gls{coco} evaluation server: \url{http://mscoco.org/dataset/\#captions-upload}.}, which has many automated metrics, with several configurations, including all mentioned here. This server should serve as a reference point for comparison of image captioning models.
 
 Among the most popular metrics belong \gls{bleu}, \gls{meteor}, and \gls{cider}. The rest of this section is describing and discussing their properties. \gls{bleu} (Bilingual Evaluation Understudy)~\cite{Papineni:2002:BMA:1073083.1073135} has been the most commonly used metric, which was created in 2002 to evaluate quality of machine translated text. Scores are computed on individual segments, usually sentences. \gls{bleu} has high correlation with human judgments and is very popular, even for captioning tasks. However, it is becoming outdated, as according to this metric, automatic methods are now outperforming humans, which is senseless. Four different variations of \gls{bleu} are used in \gls{coco} evaluation server.
 
