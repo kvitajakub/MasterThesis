@@ -261,13 +261,13 @@ This work~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different app
 		\label{fig:fromCaptionsModel}}
 \end{figure}
 
-First, model learns to extract nouns, verbs, and adjectives by applying \gls{cnn} to regions of the image. These words come from the vocabulary constructed with 1000 most common words in the training captions. By running detector on the image regions, model is able to produce a bag of bounding boxes, which represent the location of the appropriate word in the image. \gls{cnn} pretrained on the ImageNet is used for initialization.
+First, model learns to extract nouns, verbs, and adjectives by applying \gls{cnn} to regions of the image. These words come from the vocabulary constructed with 1000 most common words in the training captions. By running detector on the image regions, model is able to produce a bag of bounding boxes, which represent the location of the appropriate word in the image. Network used for the word detection is the 16-layered \gls{cnn}, commonly referred as \gls{vgg}, from a conference paper~\cite{DBLP:journals/corr/SimonyanZ14a}.
 
 Second stage use the extracted words to guide a language model to generate sentences likely  to describe the image. The maximum entropy language model estimates the probability of a word $ w_i $ conditioned on the preceding words as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
 
-In the third stage, candidate captions are re-ranked using Minimum Error Rate Training~\cite{och2003minimum} (\gls{mert}) and the best one is selected. \gls{mert} uses a linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model score, which measures similarity between images and text. The Deep Multimodal Similarity Model has been proposed in this paper and the model trains two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is then sent to \gls{mert}.
+In the third stage, candidate captions are re-ranked using Minimum Error Rate Training~\cite{och2003minimum} (\gls{mert}) and the best one is selected. \gls{mert} uses a linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (\gls{dmsm}) score, which measures similarity between images and text. The \gls{dmsm} has been proposed in this paper and the model trains two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is then sent to \gls{mert}.
 
-\todo[inline]{Dalsi veci z obou paperu. Nejake komentare k modelu a metode.}
+As mentioned earlier, this model is the state-of-the-art on the \gls{coco} Captioning Challenge, as it tied for the first place with the \emph{Show and Tell} work. Their final and best performing model used \gls{vgg}, word detector score in maximum entropy language model, proposed \gls{dmsm} and use finetuned \gls{vgg} features. According to human judgment, generated captions are equal to or better than human-written captions 34\% of the time.
 
 Direct comparison of the \emph{From Captions to Visual Concepts} approach with the \emph{Show and Tell}, which was presented earlier, is in the additional article~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of \gls{rnn} and maximum entropy methods.
 
@@ -374,6 +374,7 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 \todo[inline]{Jak vypada celkovy navrh modelu, velky diagram. Pak jednotlive sekce s tim jak vypadaji casti modelu, klidne zoom velkeho diagramu.}
 \section{General architecture}
 \subsection{Convolutional net}
+reference na sit co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}
 \subsection{Language model}
 \section{Learning algorithm and training}
 \todo[inline]{Algorithms and data.}
