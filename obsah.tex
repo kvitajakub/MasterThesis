@@ -71,7 +71,7 @@ This technique should prevent complex co-adaptations, in which unit is only help
 
 Feedforward neural nets are extremely powerful models, but they can be only applied to problems with inputs and outputs of fixed dimensionality. This is a serious drawback, as many of the real-world problems are defined as sequences with lengths that are unknown to us beforehand. Recurrent neural networks were introduced soon after feed-forward nets and they proved to be very useful in this kind of a task. There is vast amount of recurrent neural network types, many not suitable for sequential tasks, like Hopfield networks~\cite{hopfield1982neural}, which are very successful in what they do, but nevertheless not useful for us now.
 
-Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time starting from the \textquotedblleft base caption\textquotedblright. More detailed description is further in the following chapters.
+Apart from classification, which can be more precise when using sequences, one of the most important tasks is next value prediction. This core task can be then extended very simply to predict arbitrary number of future values. Prediction problems are all around us, from the weather forecast and stock market prediction to the autocomplete in smartphones or web browsers. The image captioning problem, which is the main topic in this work, includes the prediction (or generation) task too, as the caption is generated one character at a time starting from the \textquotedblleft base caption\textquotedblright. Detailed description is in the following chapters.
 
 \begin{figure}[!t]
 	\centering
@@ -84,7 +84,7 @@ We can interpret recurrent neural network as very deep forward net with shared w
 
 Unrolling the networks on long sequences and creation of very deep neural nets caused manifestation of the vanishing gradient problem, which is one of the most important issues in \gls{rnn}s. The problem occurs during training with gradient-based learning methods like backpropagation. The chain rule in backpropagation multiplies gradients  to compute updates of weights and the traditional activation functions like hyperbolic tangent have gradient in the range of $ (-1, 1) $, are the reasons why, the weights updates decrease exponentially while approaching front layers of the network. The vanishing gradient problem was formally identified by Hochreiter in 1991~\cite{hochreiter1991untersuchungen}, who, after further research, also proposed one of the solutions to this problem in the form of Long Short-Term Memory.
 
-Long Short-Term Memory unit and other architectures commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:lmAndEmbedd}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
+Long Short-Term Memory unit and other architectures commonly used in \gls{rnn}s are discussed in following section \ref{subsec:recUnits}. Second half (\ref{subsec:languageModels}) of this part explains how to process text and model languages for applications with \gls{rnn}s.
 
 \subsection{Recurrent architectures}\label{subsec:recUnits}
 
@@ -252,11 +252,7 @@ The CNN component of the model has been initialized to an ImageNet trained model
 
 \subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
 
-\todof{Predelat}This paper~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however both tied for the first place in the competition. This model is not end-to-end, it has three stages. First, it learns to extract nouns, verbs and adjectives from regions in the image. These words come from the vocabulary constructed by using 1000 most common words in the training captions. By running detector on the image regions, model is able to produce bag of bounding boxes. Each bounding box represent location of word in the image. Network pretrained on ImageNet is used for initialization.
-
-Second, these extracted words guide a language model to generate text, which include these words. The maximum entropy (\gls{me}) language model estimates the probability of a word $ w_i $ conditioned on the preceding words, as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search similar to ~\cite{DBLP:journals/corr/cs-CL-0006028} is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
-
-Third, candidate captions are re-ranked using Minimum Error Rate Training~\cite{och2003minimum} (\gls{mert}) and the best one is selected. MERT uses linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model (DMSM) score, which measures similarity between images and text. The DMSM is model proposed in this paper, which learns two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is one of the features fed to MERT.
+This work~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however, both tied for the first place in the captioning competition. This model is not trained end-to-end with a single training algorithm rather it has three connected stages. Full pipeline of the model is on the Figure \ref{fig:fromCaptionsModel} and its description follows.
 
 \begin{figure}[!t]
 	\centering
@@ -265,7 +261,15 @@ Third, candidate captions are re-ranked using Minimum Error Rate Training~\cite{
 		\label{fig:fromCaptionsModel}}
 \end{figure}
 
-Direct comparison of this approach with the first one, presented in the paper description \ref{subsec:showtell}, is in paper ~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of RNN and ME methods.
+First, model learns to extract nouns, verbs, and adjectives by applying \gls{cnn} to regions of the image. These words come from the vocabulary constructed with 1000 most common words in the training captions. By running detector on the image regions, model is able to produce a bag of bounding boxes, which represent the location of the appropriate word in the image. \gls{cnn} pretrained on the ImageNet is used for initialization.
+
+Second stage use the extracted words to guide a language model to generate sentences likely  to describe the image. The maximum entropy language model estimates the probability of a word $ w_i $ conditioned on the preceding words as well the words with high likelihood detections, yet to be mentioned. This encourages all the words to be used, while avoiding repetitions. A left-to-right beam search is used during generation. After extending each sentence with a set of likely words, the top $ N $  sentences are retained and the others pruned away. The process continues until a maximum sentence length $ L $ is reached.
+
+In the third stage, candidate captions are re-ranked using Minimum Error Rate Training~\cite{och2003minimum} (\gls{mert}) and the best one is selected. \gls{mert} uses a linear combination of features computed over the sentence, for example log-likelihood of the sequence or its length. One of the features is Deep Multimodal Similarity Model score, which measures similarity between images and text. The Deep Multimodal Similarity Model has been proposed in this paper and the model trains two neural networks that map images and text fragments to a common vector representation. These vectors are used to compute the cosine similarity score, which is then sent to \gls{mert}.
+
+\todo[inline]{Dalsi veci z obou paperu. Nejake komentare k modelu a metode.}
+
+Direct comparison of the \emph{From Captions to Visual Concepts} approach with the \emph{Show and Tell}, which was presented earlier, is in the additional article~\cite{DBLP:journals/corr/DevlinCFGDHZM15} by the same authors. They examine the issues of both approaches and achieve state-of-the-art performance by combining key aspects of \gls{rnn} and maximum entropy methods.
 
 \subsubsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 
@@ -308,7 +312,7 @@ Architecture of the proposed model is similar to the one from part \ref{subsec:s
 
 Large amounts of data are necessary requirement in training deep neural nets like  \gls{cnn}s and \gls{rnn}s, as well as sufficient computing power. Access to the machines and hardware suitable for training has been made in recent years extremely easy, with the rise of virtualization services. Obtaining enough data is different issue and it is currently the biggest problem. Especially, creation of image captioning datasets is quite complicated. As there is no automatized way to generate data, all the image descriptions have to be human-generated. This is one of the reasons, only few specialized datasets are created.
 
-There are two main options how to get images and captions. First way is, by using user-generated data from an online service, most commonly Flickr\footnote{Flickr is a popular image and video hosting website and an online community. (\url{https://www.flickr.com})}. However, these captions are not made specifically for the task and could be prone to error. Second option is to gather only images, again from Flickr or other online services, and create captions for direct use in the dataset manually. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace for tasks that computers are currently unable to do. (\url{https://www.mturk.com})} is heavily used for this task.
+There are two main options how to get images and captions. First way is, by using user-generated data from an online service, most commonly Flickr\footnote{Flickr is a popular image hosting website and an online community. (\url{https://www.flickr.com})}. However, these captions are not made specifically for the task and could be prone to error. Second option is to gather only images, again from Flickr or other online services, and create captions for direct use in the dataset manually. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace for tasks that computers are currently unable to do. (\url{https://www.mturk.com})} is heavily used for this task.
 
 The following table \ref{tab:datasets} lists the most popular datasets. All these datasets were created directly for the image captioning task, with captions generated through Amazon Mechanical Turk. Flickr8k~\cite{dataset-flickr8k}, from 2013, was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. The biggest dataset is Microsoft Common Objects in Context (\gls{coco})~\cite{DBLP:journals/corr/ChenFLVGDZ15}, created for the \gls{coco} captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in section \ref{sec:evaluation}.
 
@@ -328,9 +332,9 @@ The following table \ref{tab:datasets} lists the most popular datasets. All thes
 		\endhead
 
 	   	MS COCO\footnote{MS COCO project: \url{http://mscoco.org/dataset/}} &
-		   	\multicolumn{1}{r|}{120 000} &
+		   	\multicolumn{1}{r|}{123 287} &
 		   	\multicolumn{1}{c|}{5} &
-		   	Images are divided - 80 000 for training and 40 000 for testing purposes. \\ \hline
+		   	Images are divided - 82 783 for training and 40 504 for testing purposes. \\ \hline
 	   	Flickr30k\footnote{Flickr30k project: \url{http://shannon.cs.illinois.edu/DenotationGraph/}} &
 		   	\multicolumn{1}{r|}{31 783} &
 		   	\multicolumn{1}{c|}{5-6} &
@@ -366,6 +370,7 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 
 \chapter{Model design}\label{chp:model}
 
+\todo[inline]{Co jsme doposud zjistili, k cemu je to dobre a co s tim ted budeme delat. Co bude v teto kapitole.}
 \todo[inline]{Jak vypada celkovy navrh modelu, velky diagram. Pak jednotlive sekce s tim jak vypadaji casti modelu, klidne zoom velkeho diagramu.}
 \section{General architecture}
 \subsection{Convolutional net}
