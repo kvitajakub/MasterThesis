@@ -235,7 +235,7 @@ Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logi
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.4\textwidth]{./fig/show-tell_model.pdf}
+	\includegraphics[width=0.6\textwidth]{./fig/show-tell_model.pdf}
 	\caption{\emph{Show and Tell} image captioning model.~\cite{DBLP:journals/corr/VinyalsTBE14}
 		\label{fig:showmodel}}
 \end{figure}
@@ -273,27 +273,27 @@ Direct comparison of the \emph{From Captions to Visual Concepts} approach with t
 
 \subsubsection{Show, Attend and Tell: Neural Image Caption Generation with Visual Attention}
 
-\todof{Predelat}Work ~\cite{DBLP:journals/corr/XuBKCCSZB15} of researchers from universities in Toronto and Montreal was inspired by recent work in machine translation and introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture. Encoder part use a convolutional neural network to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. Features from a lower convolutional layer are used to obtain a correspondence between them.
-
-Decoder part is a LSTM network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus for producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in~\cite{DBLP:journals/corr/BahdanauCB14}. It gives the relative importance of the location by blending values for all annotation vectors together. This method is fully trainable by standard back-propagation methods.
+\emph{Show, Attend and Tell}~\cite{DBLP:journals/corr/XuBKCCSZB15} is method, made by researchers from universities in Toronto and Montreal, which introduced an attention based model. Attention is one of the most interesting parts of the human visual system. Rather than compressing an entire image into a static representation, attention allows for salient features to dynamically come to the forefront as needed. Proposed model has encoder-decoder architecture with feedback connections for attention. Overall structure of the model is on Figure \ref{fig:attendmodel}. Encoder part use a \gls{cnn} to extract set of feature/annotation vectors (not just one). Each of the vectors correspond to a part of image. To obtain a correspondence between them, features from a lower convolutional layer are used.
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-correct.pdf}
-	\caption{Examples of attending the correct object while generating the word.~\cite{DBLP:journals/corr/XuBKCCSZB15}
-		\label{fig:attendmodelcorrect}}
+	\includegraphics[width=0.7\textwidth]{./fig/show-attend-tell_model.pdf}
+	\caption{\emph{Show, Attend and Tell} model architecture.~\cite{DBLP:journals/corr/XuBKCCSZB15}
+		\label{fig:attendmodel}}
 \end{figure}
+
+Decoder part is a \gls{lstm} network working of the word level, which generates, apart from the word of the output, a context vector - a dynamic representation of the relevant part of the image at time $ t $. The paper explored two attention mechanisms computing the context vector from the annotation vectors. First is the stochastic \textquotedblleft hard\textquotedblright\ mechanism, which interprets the values in the context vector as the probability that corresponding location is the right place to focus, while producing the next word. Second is deterministic \textquotedblleft soft\textquotedblright\ mechanism introduced in~\cite{DBLP:journals/corr/BahdanauCB14}, which gives the relative importance of the location by blending values of all annotation vectors together. This method is fully trainable by the standard \gls{sgd} methods.
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example-wrong.pdf}
-	\caption{We can use attention to understand, what was the model looking at, while generating wrong caption.~\cite{DBLP:journals/corr/XuBKCCSZB15}
-		\label{fig:attendmodelwrong}}
+	\includegraphics[width=0.95\textwidth]{./fig/show-attend-tell_example.pdf}
+	\caption{Examples of \emph{Show, Attend and Tell} attention.~\cite{DBLP:journals/corr/XuBKCCSZB15}
+		\label{fig:attendexample}}
 \end{figure}
 
-Paper is also showing how we can gain insight and interpret the results of the model by visualising where and what the attention was focused on. Examples of the correct visualisations is on the figure \ref{fig:attendmodelcorrect} and the wrong ones on the figure \ref{fig:attendmodelwrong}. Visualisations show that model can attend even \textquotedblleft non-object\textquotedblright\ regions. This adds an extra layer of interpretability to the output. The model learns alignments that correspond very strongly with human intuition. Especially in the examples of mistakes, we can understand why those mistakes were made.
+Article also shows how we can gain insight and interpret the results of the model by visualizing where and on what was the attention focused. Examples of the attention visualizations with both, correct and wrong generations, are on Figure \ref{fig:attendexample}. Visualizations show that the model can attend even a \textquotedblleft non-object\textquotedblright\ regions. This adds an extra layer of interpretability to the output. The model learns alignments that correspond very strongly with human intuition and, even, in the cases of mistakes, we can understand why the captions were generated.
 
-CNN trained on ImageNet without finetuning was used for the decoder part. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam~\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
+Similarly to previous article, \emph{Show, Attend and Tell} used \gls{vgg}~\cite{DBLP:journals/corr/SimonyanZ14a}, a \gls{cnn} trained on the ImageNet, which was not finetuned. Model was trained with several algorithms and researchers found that for Flickr8k dataset, RMSProp worked best, while for Flickr30k and MSCOCO datasets, Adam~\cite{DBLP:journals/corr/KingmaB14} algorithm was used. Performance during training was also improved by creating minibatches of sentences with same length, which greatly improved convergence speed.
 
 \subsubsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
@@ -535,6 +535,8 @@ As the number of community packages is enormous, I will list just a few, which a
 
 \subsubsection{Pretraining language model}
 \subsubsection{Combined model}
+
+\section{Training hardware}
 
 \chapter{Experiments and results}
 
