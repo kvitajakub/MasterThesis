@@ -218,7 +218,7 @@ Following the encoder--decoder idea, current image captioning research is shifti
 
 The current field is consolidating, thanks to \gls{coco} Captioning Challenge\footnote{\gls{coco} Captioning Challenge: \url{http://mscoco.org/dataset/\#captions-challenge2015}} and dataset created for it. Simple public access to the necessary data makes model creation easier and the best researchers can compete directly against each other by using \gls{coco} evaluation server. In the rest of this section, I describe several works, which were submitted to the challenge in 2015 and had the best performance. \gls{coco} dataset is described, together with other datasets, in following section \ref{sec:datasets}.
 
-\subsubsection{Show and Tell: A Neural Image Caption Generator} \label{subsubsec:showtell}
+\subsubsection{Show and Tell: A Neural Image Caption Generator}
 
 \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} is model created by Google researchers, which tied for the first place in \gls{coco} Captioning Challenge with the following model \emph{From Captions to Visual Concepts}. The main idea of this work is to use recent advancements in machine translation and apply them for image captioning. Model uses encoder--decoder architecture, with \gls{cnn} for the encoder part and \gls{rnn} for the decoder part, as described earlier. Model is trained to maximize the likelihood $ p(S|I) $ of producing a target sequence of words $ S = \{S_1,S_2,...\} $ given an input image $ I $.
 
@@ -250,7 +250,7 @@ As the image and word encodings are used in the same way, model is effectively m
 
 The CNN component of the model has been initialized to an ImageNet trained model, which helped quite a lot in terms of generalization. Word embeddings were left uninitialized (initialized randomly) as they did not observed significant gains while using large corpus. Dropout and ensebling used during training gave minor improvements. Model has been trained using \gls{sgd} with fixed learning rate and no momentum. For the embeddings vector and the LSTM memory 512 dimensions were used. During the inference, beam search has been used to improve the results.
 
-\subsubsection{From Captions to Visual Concepts and Back} \label{subsubsec:fromCaptions}
+\subsubsection{From Captions to Visual Concepts and Back}
 
 This work~\cite{DBLP:journals/corr/FangGISDDGHMPZZ14} took quite a different approach than a previous one, however, both tied for the first place in the captioning competition. This model is not trained end-to-end with a single training algorithm rather it has three connected stages. Full pipeline of the model is on the Figure \ref{fig:fromCaptionsModel} and its description follows.
 
@@ -297,16 +297,18 @@ Similarly to previous article, \emph{Show, Attend and Tell} used \gls{vgg}~\cite
 
 \subsubsection{Long-term Recurrent Convolutional Networks for Visual Recognition and Description}
 
-\todof{Predelat}The research group from Berkeley in paper ~\cite{DBLP:journals/corr/DonahueHGRVSD14} presented long-term recurrent convolutional network (LRCN), which combines convolutional and long-range temporal layers for several tasks. It is possible to apply the introduced network to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output).
-
-Architecture of the proposed model is similar to the one from part \ref{subsec:showtell}, only output of the CNN is fed to the LSTM in each time step. According to the task specification model can use separate convolutional networks, different for each time step, each with specific input or single CNN through all the time steps. Example is on the figure \ref{fig:LRCN}.
+The research group from Berkeley presented \emph{Long-term Recurrent Convolutional Networks} (\gls{lrcn})~\cite{DBLP:journals/corr/DonahueHGRVSD14}, which combines network  with convolutional and long-range temporal layers for several tasks. It is possible to apply \gls{lrcn} to recognize activity performed on the video (sequential input $ \mapsto $ fixed output), generate description  of the image (fixed input $ \mapsto $ sequential output) or describe video (sequential input $ \mapsto $ sequential output).
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.95\textwidth]{./fig/long-term-rec-con.pdf}
-	\caption{Task-specific instantiations of the LRCN model.~\cite{DBLP:journals/corr/DonahueHGRVSD14}
-		\label{fig:LRCN}}
+	\includegraphics[width=0.65\textwidth]{./fig/long-term-rec-con_architecture.pdf}
+	\caption{Architecture of the \gls{lrcn} model.~\cite{DBLP:journals/corr/DonahueHGRVSD14}
+		\label{fig:lrcn}}
 \end{figure}
+
+Architecture of the proposed model, see Figure \ref{fig:lrcn}, is similar to the \emph{Show, Attend and Tell}, as image is processed by \gls{cnn} and sent to the input of the \gls{lstm} in each time step. Feedback attention connections are missing in this model. According to the task specification, method can use separate convolutional networks, different for each time step with specific input, or single \gls{cnn} throughout all the time steps.
+
+\gls{lrcn} tied with \emph{Show, Attend and Tell} in \gls{coco} Captioning Challenge for the third place. However, this does not mean the models are equal in general performance, as each of them focuses on different research topic.
 
 \section{Datasets}\label{sec:datasets}
 
@@ -375,6 +377,7 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 \section{General architecture}
 \subsection{Convolutional net}
 reference na sit co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}
+popis konkretni vrstvy za kterou jsem to zapojil, plus nejaka diskuze o adapteru
 \subsection{Language model}
 \section{Learning algorithm and training}
 \todo[inline]{Algorithms and data.}
