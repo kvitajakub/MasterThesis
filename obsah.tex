@@ -372,23 +372,38 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 
 \chapter{Model design}\label{chp:model}
 
-\todo[inline]{Co jsme doposud zjistili, k cemu je to dobre a co s tim ted budeme delat. Co bude v teto kapitole.}
-\todo[inline]{Jak vypada celkovy navrh modelu, velky diagram. Pak jednotlive sekce s tim jak vypadaji casti modelu, klidne zoom velkeho diagramu.}
-\section{General architecture}
-\subsection{Convolutional net}
-reference na sit co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}
-popis konkretni vrstvy za kterou jsem to zapojil, plus nejaka diskuze o adapteru
-\subsection{Language model}
-\section{Learning algorithm and training}
-\todo[inline]{Algorithms and data.}
-As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
+\todo[inline]{Co jsme doposud zjistili, k cemu je to dobre a co s tim ted budeme delat. Co bude v teto kapitole. ze jsme zatim probrali teorii a podobne situace na ktere byla aplikovana, a ze v teto kapitole zkusime vlastni jiny navrh.}
+\todo[inline,color=magenta]{Popsat ze se ty veci udelaly a uz jsou hotove, ale neresit jak se to implementovalo a konkretne spoustelo.}
 
+\section{General architecture}
+\todo[inline]{Jak vypada celkovy navrh modelu, velky diagram.}
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.75\textwidth]{./fig/proposed-model.pdf}
+	\includegraphics[width=0.5\textwidth]{./fig/proposed-model.pdf}
 	\caption{Architecture of the proposed model.
 		\label{fig:proposedModel}}
 \end{figure}
+
+\subsection{Language model}
+\todo[inline]{Popis rekurentni site generujici popisky po jednotlivych pismenech. kodovani pismen. Kolik vrstev, jake vrstvy, na konci softmax...}
+
+\subsection{Hidden state initialization}
+\todo[inline]{reference na CNN co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}}
+\todo[inline]{Hidden state, protoze neni ani na vstupu ani na vystupu, podobne jako hidden layer, nema souvislost s hidden markov models.}
+\todo[inline]{popis konkretni vrstvy za kterou jsem zapojil adapter, nejaka diskuze o adapteru, jak to ma vypadat jakych hodnot nabyva cell state u lstm- -+2, k jakym vrstvam se ma adapter pripojit}
+
+\section{Training procedure}
+\todo[inline]{Jak vypada celkovy postup treninku, dve casti, kazda rozepsana.}
+
+\subsubsection{Pretraining \gls{rnn}}
+\todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
+\todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
+
+\subsubsection{Full model training}
+
+\todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
+
+As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
 
 First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
 
@@ -396,24 +411,10 @@ Model will work with one-hot character level encoding, with two extra special ch
 
 Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
-%\chapter{Implementation}
-%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
-%
-%	\section{Torch framework}
-%\todo[inline]{Popis Torche, ruznych druhu modulu ktere ma, ktere jsem pouzil ja.}
-%
-%	\section{Parallelization}
-%\todo[inline]{Nejaky popis toho ze to lze trenovat na gpu, jak se to dela v Torchi..}
-%
-%\chapter{Results and model evaluation}
-%\todo[inline, color=cyan!60]{Bude az v diplomce, ne semestralnim projektu}
-%\todo[inline]{Performance, analysis,... spravne pojmenovat}
-%\todo[inline]{Kde se trenovalo? Na jakych strojich? Jak to bylo rychle? Jak to bylo na cpu pomale?}
-%
-%	\section{Speed}
-%\todo[inline]{Jak bylo trenovani rychle, }
 
 \chapter{Implementation}
+
+\todo[inline]{Pridat text.}
 
 	\section{Tools}\label{chp:exper}
 
@@ -467,83 +468,22 @@ As the number of community packages is enormous, I will list just a few, which a
 \end{minipage}
 \vspace{3mm}
 
-%\section{Predicting next character in sequence}
-%
-%\todo[inline]{Tohle prijde asi odstranit.}
-%As an application of the Torch library, I created a model predicting next character in a text, as described in part \ref{subsec:lmAndEmbedd}. Compilation of all Shakespeare's works have been used as an input data, as in Karpathy's post.
-%
-%Models used one-hot encoding for the input and probability distribution of the next character in sequence as an output. Networks have four recurrent layers (LSTM or GRU), each with 300 nodes, followed by linear and logarithmic softmax layer. Architectures are on the images \ref{fig:chargen1} and \ref{fig:chargen2}.
-%
-%\begin{figure}[htb]
-%	\begin{minipage}{.47\textwidth}
-%		\centering
-%		\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model1.pdf}
-%		\caption{Architecture of the LSTM model.
-%			\label{fig:chargen1}}
-%	\end{minipage}
-%	\hfill
-%	\begin{minipage}{.47\textwidth}
-%		\centering
-%		\includegraphics[width=0.7\textwidth]{./fig/char-rnn-model2.pdf}
-%		\caption{Architecture of the GRU model.
-%			\label{fig:chargen2}}
-%	\end{minipage}
-%\end{figure}
-%
-%LSTM model was trained with stochastic gradient descent with Nesterov's momentum on minibatches of 20 subsequences, each with 40 characters. GRU model was trained with SGD without momentum, however, weight decay was used. After couple of hours, models were producing following samples:
-%
-%\begin{center}
-%	\begin{longtable}{|l|m{11cm}|}
-%		\caption{Predictions of the models.} \label{tab:predictions}\\
-%
-%		\hline
-%		\textbf{LSTM model}&
-%		\begin{lstlisting}
-%QUEEN ELIZABETH:
-%Whyou art me yough to hell three,
-%?gecT blswance'd wv reign Mantuas arm onB could hold thy anurrem tranioh  newhful heart
-%chnermwer than you are devnrcewMrnistCman yeT Norusezood with my chance?
-%
-%CAMILLO:
-%Sirrah, that Is, my state now a haaaticaply.
-%
-%PETRUCHIO:
-%Fellow me to never ae my tru sin someth
-%		\end{lstlisting}\\ \hline
-%		\textbf{GRU model}&
-%		\begin{lstlisting}
-%GLOUCESTER:
-%An ambatch the rest persure of methink
-%Be father, a damned, skish a thy daughed, let tites an oar that your angpules dis cur,'t, my pl
-%easons now many he tnoon king not what you must his duke, on to jello comforts of the welceful
-%are whyself. Ty succemence, conves, our son, to choot this nimneat?
-%
-%First Muldiagoud Regerand:
-%We'll not of a hates, I not have naturing at worthy Dore on Euncus, let my gental till rap it l
-%ake, against thee, who was the labour tillows Henry: welcome.
-%
-%DUKE OF YORK:
-%It is not amiss, is that close, shows do not, agoing told his cold
-%and with their torety, you and then, your minds, as I waily
-%low a jewel
-%		\end{lstlisting}
-%\\ \hline
-%	\end{longtable}
-%\end{center}
-%
-%It is obvious that the models are not perfectly trained, but they have been able to pick up the form of text (names of speakers in upper case, followed by colon) and most of the short English words. Training was using only single desktop CPU and only for several hours. As I am arranging access to the GPU nodes, models are expected to improve simply by prolonging the training times, without changing the parameters.
-
-\section{File structure and workflow}
-\todo[inline]{Nejaky popis jake soubory jsem udelal, co delaji, jak je spoustet pri trenovani a pri samplovani... odstavec o tom na jakem hardwaru se trenovalo, jak dlouho to trvalo atd.}
+\section{Design implementation}
+\todo[inline]{Vlastne velmi podobne jako kapitola design modelu, ale z implementacniho hlediska.}
+\todo[inline]{Popis jake soubory jsem udelal, jak vypada implementace architektury z minule kapitoly.}
 
 \subsubsection{Pretraining language model}
-\subsubsection{Combined model}
+\todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
 
-\section{Training hardware}
+\subsubsection{Combined model}
+\todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
+
+\section{Hardware}
+\todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
+\todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
 
 \chapter{Experiments and results}
 
-\todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry.}
 \section{Language model initialization variations}
 \section{Evaluation}
 \section{Analysis of results}
