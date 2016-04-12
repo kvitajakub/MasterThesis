@@ -2,16 +2,11 @@
 
 \chapter{Introduction}
 
-\todo[inline]{Prepsat.}
+When does a machine understand an image? One definition could be the following sentence: \emph{A machine understand an image, when it can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but, being properly trained, they can evaluate correctly even yet unseen situations.
 
-When does a machine understand an image? One definition could be the following sentence: \emph{A machine understand an image, when in can describe important content of the image.} This description should include present objects, their attributes and relation to each other. Determining the important content of the image can be quite difficult, even for humans, which have been trained for this task since they were born. However, deep learning techniques are proving to be quite successful in this kind of tasks. Similarly to people, these models require large amounts of training data, but later they can evaluate correctly even yet unseen situations.
+Neural networks, sometimes mentioned under the name of deep learning, are a branch of machine learning based on composing multiple non-linear functions to solve the task. As it is fundamentally different from the standard computer algorithms, it perform well on problems, which are unsuitable for traditional solutions. For example, neural networks have excellent performance in recognizing speech and images, writing stories and composing music. This work focuses on generating image descriptions in regular English sentences, which is also a task suitable for deep learning.
 
-Deep machine learning, sometimes under the name of neural networks\footnote{Terms \emph{deep learning} and \emph{neural networks} will be used in this work interchangeably.}, is branch of machine learning based on composing multiple non-linear functions to solve the task. As it is fundamentally different from the standard computer algorithms, it perform well on problems, which are unsuitable these algorithms. For example, neural networks have excellent performance in recognizing speech and images, writing stories and composing music. This work focuses on generating image descriptions in regular English sentences, which is also a task suitable for deep learning.
-
-First, in chapter \ref{chp:nn}, I will first introduce neural networks and several key concepts which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key papers will be presented. I will list most popular frameworks and libraries for implementation of deep learning models and mention my experiments with them in the chapter \ref{chp:exper}. Using knowledge of previous chapters I will propose an image captioning model in chapter \ref{chp:model}. Expectations of this proposal will be discussed in the concluding chapter \ref{chp:conclusion}.
-
-\todo[inline]{V opravdu dobrém textu mezi nadpisy bude vždy nějaký text a to ne jen jeden řádek. Před každým informačním blokem (kapitolou, podkapitolou) může být shrnutí co se čtenář dozvěděl v minulém textu a uvedení, proč právě teď je ten správný okamžik se pustit do následujícího tématu, jak navazuje na předchozí, jak čtenáře posune v pochopení celého řešení a proč se na následující informace má těšit.}
-
+First, chapter \ref{chp:nn} introduces neural networks and several key concepts, which are used later in this work. In chapter \ref{chp:captions} current state-of-the-art in the field of image captioning and summary of the key works will be presented. Equipped by knowledge from previous chapters, I will propose an image captioning model in chapter \ref{chp:design}. Overview of the programming tools used for implementing neural nets is in chapter \ref{chp:implementation}, as well as description of implementation of my model. Chapter \ref{chp:experiments} discusses experiments performed with my model, their results, and evaluation of the proposed solution. The concluding chapter \ref{chp:conclusion} serves as summary of the thesis and the important findings.
 
 \chapter{Neural networks} \label{chp:nn}
 
@@ -302,7 +297,7 @@ The research group from Berkeley presented \emph{Long-term Recurrent Convolution
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.65\textwidth]{./fig/long-term-rec-con_architecture.pdf}
-	\caption{Architecture of the \gls{lrcn} model.~\cite{DBLP:journals/corr/DonahueHGRVSD14}
+	\caption{The \gls{lrcn} model architecture for video processing.~\cite{DBLP:journals/corr/DonahueHGRVSD14}
 		\label{fig:lrcn}}
 \end{figure}
 
@@ -316,7 +311,7 @@ Large amounts of data are necessary requirement in training deep neural nets lik
 
 There are two main options how to get images and captions. First way is, by using user-generated data from an online service, most commonly Flickr\footnote{Flickr is a popular image hosting website and an online community. (\url{https://www.flickr.com})}. However, these captions are not made specifically for the task and could be prone to error. Second option is to gather only images, again from Flickr or other online services, and create captions for direct use in the dataset manually. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace for tasks that computers are currently unable to do. (\url{https://www.mturk.com})} is heavily used for this task.
 
-The following table \ref{tab:datasets} lists the most popular datasets. All these datasets were created directly for the image captioning task, with captions generated through Amazon Mechanical Turk. Flickr8k~\cite{dataset-flickr8k}, from 2013, was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. The biggest dataset is Microsoft Common Objects in Context (\gls{coco})~\cite{DBLP:journals/corr/ChenFLVGDZ15}, created for the \gls{coco} captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in section \ref{sec:evaluation}.
+The following table \ref{sets} lists the most popular datasets. All these datasets were created directly for the image captioning task, with captions generated through Amazon Mechanical Turk. Flickr8k~\cite{dataset-flickr8k}, from 2013, was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. The biggest dataset is Microsoft Common Objects in Context (\gls{coco})~\cite{DBLP:journals/corr/ChenFLVGDZ15}, created for the \gls{coco} captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in section \ref{sec:evaluation}.
 
 \def\arraystretch{1.2}%  1 is the default, change whatever you need
 %\setlength\extrarowheight{20pt}%add points to the row height
@@ -370,12 +365,12 @@ Among the most popular metrics belong \gls{bleu}, \gls{meteor}, and \gls{cider}.
 
 Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based Image Description Evaluation)~\cite{Vedantam_2015_CVPR} was introduced in 2015. This is still a very new metric, but with growing popularity as it correlate well with human judgment. Main idea of this metric is improving quality of the metric with growing number of captions for the single image. This can be observed on datasets introduced with it (see section \ref{sec:datasets}).
 
-\chapter{Model design}\label{chp:model}
+\chapter{Model design}\label{chp:design}
 
 \todo[inline]{Co jsme doposud zjistili, k cemu je to dobre a co s tim ted budeme delat. Co bude v teto kapitole. ze jsme zatim probrali teorii a podobne situace na ktere byla aplikovana, a ze v teto kapitole zkusime vlastni jiny navrh.}
 \todo[inline,color=magenta]{Popsat ze se ty veci udelaly a uz jsou hotove, ale neresit jak se to implementovalo a konkretne spoustelo.}
 
-\section{General architecture}
+\section{Overall architecture}
 \todo[inline]{Jak vypada celkovy navrh modelu, velky diagram.}
 \begin{figure}[!t]
 	\centering
@@ -383,7 +378,6 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 	\caption{Architecture of the proposed model.
 		\label{fig:proposedModel}}
 \end{figure}
-
 \subsection{Language model}
 \todo[inline]{Popis rekurentni site generujici popisky po jednotlivych pismenech. kodovani pismen. Kolik vrstev, jake vrstvy, na konci softmax...}
 
@@ -400,23 +394,22 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 \todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
 
 \subsubsection{Full model training}
-
 \todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
 
 As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
 
-First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part \ref{subsec:gru}.
+First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part.
 
 Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
 
 Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
 
-\chapter{Implementation}
+\chapter{Implementation}\label{chp:implementation}
 
 \todo[inline]{Pridat text.}
 
-	\section{Tools}\label{chp:exper}
+\section{Tools}\label{chp:exper}
 
 In this chapter I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
 
@@ -482,7 +475,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
 
-\chapter{Experiments and results}
+\chapter{Experiments and results}\label{chp:experiments}
 
 \section{Language model initialization variations}
 \section{Evaluation}
