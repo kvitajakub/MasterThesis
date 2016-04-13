@@ -407,13 +407,9 @@ Training will be performed on MS COCO and Flickr datasets, mentioned in part \re
 
 \chapter{Implementation}\label{chp:implementation}
 
-This chapter describes methods for implementing neural network models.
+With the necessary background and knowledge discussed in previous text, this chapter contains an overview of computer programming tools used for implementing neural network models (section \ref{sec:tools}). Then, in the second part of this chapter (sections \ref{sec:designimplem} and \ref{sec:hardware}), I describe a specific implementation of the image captioning model proposed in chapter \ref{chp:design}, which was created for this thesis.
 
-mage captioning model was proposed and designed. 
-
-\todo[inline]{Pridat text.}
-
-\section{Tools}\label{chp:exper}
+\section{Tools}\label{sec:tools}
 
 Recent popularity of deep learning caused creation of many programming tools and frameworks, which can implement and alter neural network models. This section is a short overview of these tools. \emph{Torch} framework is more thoroughly described in separate part of the text, as it is tool of my choice and has been used for implementing the proposed image captioning model.
 
@@ -464,7 +460,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \end{minipage}
 \vspace{3mm}
 
-\section{Design implementation}
+\section{Design implementation} \label{sec:designimplem}
 \todo[inline]{Vlastne velmi podobne jako kapitola design modelu, ale z implementacniho hlediska.}
 \todo[inline]{Popis jake soubory jsem udelal, jak vypada implementace architektury z minule kapitoly.}
 
@@ -474,7 +470,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \subsubsection{Combined model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
 
-\section{Hardware}
+\section{Hardware}\label{sec:hardware}
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
 
