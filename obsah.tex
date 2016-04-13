@@ -407,11 +407,15 @@ Training will be performed on MS COCO and Flickr datasets, mentioned in part \re
 
 \chapter{Implementation}\label{chp:implementation}
 
+This chapter describes methods for implementing neural network models.
+
+mage captioning model was proposed and designed. 
+
 \todo[inline]{Pridat text.}
 
 \section{Tools}\label{chp:exper}
 
-In this chapter I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
+In this section I will describe tools and frameworks, which are used to implement deep learning models. \emph{Torch} will be discussed separately in its own section as it was a tool I used for experimenting with language modeling - predicting next character in text, which is second part of this chapter.
 
 %The landscape of tools for neural networks is changing rapidly, so please bear in mind that if you are reading this several years later, some of the information does not have to be valid anymore.
 
@@ -423,40 +427,41 @@ Python tools with the engine implemented in C/C++ are not the only ones. \emph{C
 
 \subsection{Torch}
 
-\emph{Torch}\footnote{Torch: \url{http://torch.ch/}} is an open source scientific computing framework and machine learning library for the Lua. Underlying implementation is using extremely fast LuaJIT and C, but no need to code in C is required. Torch is not as popular in academic environment as Theano, but it is used by several large companies including Google \& DeepMind, Facebook and IBM, which also contribute to the project. Apart from the companies, Torch has a large ecosystem of community-driven packages\footnote{Wikipage with list of packages: \url{https://github.com/torch/torch7/wiki/Cheatsheet}} with almost every tool needed for machine learning, computer vision and signal processing, and wide range of utilities. In the rest of this section I will describe fundamental Torch packages, which are necessary for my research.
+\emph{Torch}\footnote{Torch: \url{http://torch.ch/}} is an open source scientific computing framework and machine learning library for the Lua programming language. Underlying implementation is using extremely fast LuaJIT and C, but no need to code in C is required. Torch is not as popular in academic environment as Theano, but it is used by several large companies including Google, DeepMind, Facebook, and IBM, which also contribute to the project. Apart from company contributions, Torch has a large ecosystem of community-driven packages\footnote{Wikipage with list of packages: \url{https://github.com/torch/torch7/wiki/Cheatsheet}} with almost every tool needed for machine learning, computer vision, and signal processing, and wide range of utilities. In the rest of this section I will describe fundamental Torch packages, which are relevant to my work.
 
 The core package of Torch is \emph{torch}, which is installed together with the library. It contains data structures for multi-dimensional tensors and operations over them. This is the most important part, as almost every package depends on them. Additionally, it provides many utilities for accessing files, serializing objects, processing command-line parameters and other useful utilities.
 
 \subsubsection{nn, nngraph}
 
-The base Torch provides necessary math structures, but the \emph{nn} package allows simple creation of neural networks with a common \texttt{Module} interface. Module represents a layer of the network, which is the building block of the nets in Torch. Layers have \texttt{forward()} and \texttt{backward()} method and can be joined together by module composites \texttt{Sequential}, \texttt{Parallel} and \texttt{Concat}. These components allows creation of arbitrary graphs.
+The base Torch provides necessary math structures, but the \emph{nn} package allows simple creation of neural networks with a common \texttt{Module} interface. Module represents a layer of the network, which is the building block of the nets in Torch. Few examples can be \texttt{Linear}, \texttt{SoftMax}, \texttt{Dropout}, and \texttt{SpatialConvolution}. Layers have \texttt{forward()} and \texttt{backward()} method and can be joined together by module composites \texttt{Sequential}, \texttt{Parallel} and \texttt{Concat}. These components allows creation of arbitrary graphs.
 
-The \emph{nn} package also contains loss functions, which are subclasses of \texttt{Criterion}. Classes \texttt{ClassNLLCriterion} and \texttt{CrossEntropyCriterion} contain common cross-entropy classification criterion. Other regression and embedding criterions are also available together with simple method to train the network with stochastic gradient descent.
+The \emph{nn} as well contains loss functions, which are subclasses of the \texttt{Criterion}. Classes \texttt{ClassNLLCriterion} and \texttt{CrossEntropyCriterion} contain common cross-entropy classification criterion. Other regression and embedding criterions are also available together with simple method to train the network with stochastic gradient descent.
 
-Creating networks with complex graphs is quite complicated with the \emph{nn}. To make it easier, \emph{nngraph} package has been introduced. \emph{nngraph} bundles \emph{nn} modules into graph nodes, which are linked together by specifying inputs and outputs. Graphs can be visualized by \texttt{dot()} method and exported to vector graphics.
+Creating networks with complex graphs is quite complicated and tedious with the \emph{nn}. To make it easier, \emph{nngraph} package has been introduced, which is build on the \emph{nn}. the \emph{nngraph} bundles \emph{nn} modules into graph nodes, which are linked together by specifying inputs and outputs. Graphs can be visualized by \texttt{dot()} method and exported to vector graphics.
 
-Both packages are sufficient and provide even advanced features like weight-sharing or weight-tying. They are mainly focused on feed-forward and convolutional networks. Creating RNNs is possible, however it is very complicated and labor-intensive.
+Both packages are sufficient in network creation and provide even advanced features like weight-sharing or weight-tying. However, they are mainly focused on feed-forward and convolutional networks. Creating \gls{rnn}s is possible, but it is very labor-intensive, as the concept of unrolling has not been introduced in the \emph{nngraph}.
 
-\subsubsection{rnn}\label{subsec:torch-rnn}
+\subsubsection{rnn, dpnn}\label{subsec:torch-rnn}
 
-Torch's \emph{rnn}~\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, LSTM and GRU layers, and so on. The package handles the unrolling of a network and provides several options how to train a network. One of the ways is to use \texttt{backwardOnline()}, call \texttt{forward()} method repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate model with \texttt{Sequencer} and feed the sequence to the network with only one \texttt{forward()} and one \texttt{backward()} call.
+Torch's \emph{rnn}~\cite{DBLP:journals/corr/LeonardWW15} package extends \emph{nn} can be used to build recurrent neural nets, \gls{lstm}s, \gls{gru}s, and so on. The package handles the unrolling of a network and provides several options how to train a \gls{rnn}. One of the ways is to use \texttt{backwardOnline()} method, which calls \texttt{forward()} repeatedly and then go \texttt{backward()} in the opposite order. Other option is to decorate the model with \texttt{Sequencer} and feed the sequence to the network in the form of Lua table. This way, only one \texttt{forward()} and one \texttt{backward()} call is necessary.
 
-Package also provide module for implementing attention model~\cite{DBLP:journals/corr/MnihHGK14}. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
+\emph{rnn} also provides module \texttt{RecurrentAttention} for implementing attention model~\cite{DBLP:journals/corr/MnihHGK14} and \texttt{MaskZero}, which handles minibatches of sequences with different length. It is worth mentioning that creating complex recurrent networks with the \emph{nngraph} package might be difficult, as both packages are altering \emph{nn} functionality and may collide.
+
+Package \emph{dpnn} provides many useful features that are not part of the main \emph{nn} package. These include decorators, with ability to change the behavior of an encapsulated module, like \texttt{Serial}, which makes serialization of modules much more compact. Previously mentioned \texttt{Sequencer} and \texttt{MaskZero} are also decorators based on this package. Other nice tool is \texttt{OneHot} layer, providing simple conversion of the input to one-hot encoding. The \emph{dpnn} package is imported with and used by \emph{rnn}.
 
 \subsubsection{Other packages}
 
-\todof{Predelat, pridat baliky.}
 As the number of community packages is enormous, I will list just a few, which are commonly used and related to the topic of this work:
 
 \vspace{5mm}
 \begin{minipage}{0.9\textwidth}
 	\begin{itemize}
-		\item \emph{optim} --- Optimization library with SGD, AdaGrad, RMSProp and more.
-		\item \emph{nninit} --- Weight initialisation schemes for nn modules
+		\item \emph{optim} --- Optimization library with algorithms like SGD, Adam, and more.
 		\item \emph{image} --- Routines to load/save and manipulate images as \emph{torch} tensors.
-		\item \emph{word2vec} --- Pre-trained word embeddings and the distance metric.
-		\item \emph{cunn}, \emph{clnn} --- CUDA and OpenCL backends for \emph{nn} package.
+		\item \emph{cunn}, \emph{clnn} --- CUDA and OpenCL backends for the \emph{nn} package.
 		\item \emph{loadcaffe} --- Method for loading Caffe models in Torch.
+		\item \emph{tds} --- Way to overcome LuaJIT memory limitations, by allocating outside Lua-managed memory.
+		\item \emph{word2vec} --- Pre-trained word embeddings and the distance metric.
 	\end{itemize}
 \end{minipage}
 \vspace{3mm}
