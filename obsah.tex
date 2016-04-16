@@ -367,27 +367,41 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 
 \chapter{Model design}\label{chp:design}
 
-\todo[inline]{Co jsme doposud zjistili, k cemu je to dobre a co s tim ted budeme delat. Co bude v teto kapitole. ze jsme zatim probrali teorii a podobne situace na ktere byla aplikovana, a ze v teto kapitole zkusime vlastni jiny navrh.}
-\todo[inline,color=magenta]{Popsat ze se ty veci udelaly a uz jsou hotove, ale neresit jak se to implementovalo a konkretne spoustelo.}
+So far, I have laid down the basics of creating neural networks, with special focus on \gls{rnn} units like \gls{lstm} and \gls{gru}, and \gls{cnn}s. Chapter \ref{chp:nn} also included description of trends in language modeling with \gls{rnn}s - word and character level models. Following chapter \ref{chp:captions} described the current approaches to image captioning and how are state-of-the-art models designed. Chapter also introduced most popular image captioning datasets and evaluation metrics in a short list.
 
-\section{Overall architecture}
-\todo[inline]{Jak vypada celkovy navrh modelu, velky diagram.}
+Equipped with the knowledge of previous chapters. In is chapter I will propose the architecture of an image captioning model and describe in detail each part and their connections (section \ref{sec:overallArch}). Second part of this chapter (section \ref{sec:training}) is about training procedure of the proposed model - which algorithms and datasets are used, and other details.
+
+\section{Overall architecture} \label{sec:overallArch}
+
+As a result of the previous research, I designed an image captioning model with the encoder--decoder architecture, slightly based on the \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} model. In this section I describe the \gls{cnn} encoder part of the model, then, in separate sections \ref{subsec:designLangMod} and \ref{subsec:initialization}, \gls{rnn} modeling language and how to feed the image encoding to the \gls{rnn}. Throughout the section, all the descriptions refer to the diagram on Figure \ref{fig:proposedModel}, as each of them discuss different parts of the image.
+
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.9\textwidth]{./fig/proposed-model.pdf}
+	\includegraphics[width=\textwidth]{./fig/proposed-model.pdf}
 	\caption{Architecture of the proposed model.
 		\label{fig:proposedModel}}
 \end{figure}
-\subsection{Language model}
+
+\todo[inline]{Popsat CNN, ze je to VGG jako v clancich blabla, ze jsem odstranil pouze posledni vrstvu, vetsi popis toho jak vypada VGG, jaky zere vstup, jaky ma vystup, kolik ma vrstev...}
+\todo[inline]{Ze sit vytvari podobne jako v ostatnich resenich jakesi kodovani obrazku, ktere ovsem neposilame primo do rnn, ale musi se jeste predzpracovat.}
+
+Encoder part of the model consists of \gls{cnn} and an adapter, converting the output of \gls{cnn} to the input of decoder \gls{rnn}.
+
+
+\subsection{Language model} \label{subsec:designLangMod}
 \todo[inline]{Popis rekurentni site generujici popisky po jednotlivych pismenech. kodovani pismen. Kolik vrstev, jake vrstvy, na konci softmax...}
 
-\subsection{Hidden state initialization}
+\subsection{Hidden state initialization} \label{subsec:initialization}
+\todo[inline]{Adapter - konverze .}
+
 \todo[inline]{reference na CNN co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}}
 \todo[inline]{Hidden state, protoze neni ani na vstupu ani na vystupu, podobne jako hidden layer, nema souvislost s hidden markov models.}
 \todo[inline]{popis konkretni vrstvy za kterou jsem zapojil adapter, nejaka diskuze o adapteru, jak to ma vypadat jakych hodnot nabyva cell state u lstm- -+2, k jakym vrstvam se ma adapter pripojit}
 
-\section{Training procedure}
+\section{Training procedure} \label{sec:training}
 \todo[inline]{Jak vypada celkovy postup treninku, dve casti, kazda rozepsana.}
+
+Model is end-to-end trainable by standard gradient descent methods.
 
 \subsubsection{Pretraining \gls{rnn}}
 \todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
@@ -402,7 +416,7 @@ First question, this architecture is supposed to answer, is, whether model witho
 
 Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
 
-Training will be performed on MS COCO and Flickr datasets, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
+Training will be performed on MS COCO dataset, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
 
 \chapter{Implementation}\label{chp:implementation}
