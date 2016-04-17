@@ -18,7 +18,7 @@ Nowadays, various useful architectures, techniques and applications of neural ne
 
 Feed-forward networks are simplest architecture of neural nets, yet they can solve many real world tasks. Most commonly used in classification problems, feed-forward nets showed very promising results, which later proved to be true. Later, they have been replaced by convolutional nets, which are specific type of complex feed-forward neural net. However, simple architectures still have place for utilization.
 
-In this part I will cover linear neuron, rectifiers and other nonlinear functions used, and dropout, as they are most important to the following work. Other tools like softmax layer, loss functions, and training algorithms will be skipped. %Dodat neco ze je to mimo zaber teto prace?
+In this part I will cover linear neuron, rectifiers and other nonlinear functions used, and dropout, as they are most important to the following work. Other tools like softmax layer, loss functions, and training algorithms will be skipped.
 
 \subsubsection{Linear unit}
 In this type of neuron, the output of the unit is simply the weighted sum of its inputs added to a bias term, described by equation
@@ -367,13 +367,13 @@ Metric designed directly to caption evaluation -- \gls{cider} (Consensus-based I
 
 \chapter{Model design}\label{chp:design}
 
-So far, I have laid down the basics of creating neural networks, with special focus on \gls{rnn} units like \gls{lstm} and \gls{gru}, and \gls{cnn}s. Chapter \ref{chp:nn} also included description of trends in language modeling with \gls{rnn}s - word and character level models. Following chapter \ref{chp:captions} described the current approaches to image captioning and how are state-of-the-art models designed. Chapter also introduced most popular image captioning datasets and evaluation metrics in a short list.
+In the previous chapters, the basics of creating neural networks have been laid down, with special focus on \gls{rnn} units like \gls{lstm} and \gls{gru}, and \gls{cnn}s. Chapter \ref{chp:nn} also included description of trends in language modeling with \gls{rnn}s - word and character level models. Following chapter \ref{chp:captions} described the current approaches to image captioning and how are state-of-the-art models designed. Chapter also introduced most popular image captioning datasets and evaluation metrics in a short list.
 
 Equipped with the knowledge of previous chapters. In is chapter I will propose the architecture of an image captioning model and describe in detail each part and their connections (section \ref{sec:overallArch}). Second part of this chapter (section \ref{sec:training}) is about training procedure of the proposed model - which algorithms and datasets are used, and other details.
 
 \section{Overall architecture} \label{sec:overallArch}
 
-As a result of the previous research, I designed an image captioning model with the encoder--decoder architecture, slightly based on the \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} model. In this section I describe the \gls{cnn} encoder part of the model, then, in separate sections \ref{subsec:designLangMod} and \ref{subsec:initialization}, \gls{rnn} modeling language and how to feed the image encoding to the \gls{rnn}. Throughout the section, all the descriptions refer to the diagram on Figure \ref{fig:proposedModel}, as each of them discuss different parts of the image.
+As a result of the previous research, I designed an image captioning model with the encoder--decoder architecture, slightly based on the \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14}  and \emph{Show, Tell and Attend}~\cite{DBLP:journals/corr/XuBKCCSZB15} models. In this section I describe the \gls{cnn} encoder part of the model, then, in separate sections \ref{subsec:designLangMod} and \ref{subsec:initialization}, \gls{rnn} modeling language and how to feed the image encoding to the \gls{rnn}. Throughout the section, all the descriptions refer to the diagram on Figure \ref{fig:proposedModel}, as each of them discuss different parts of the image.
 
 \begin{figure}[!t]
 	\centering
@@ -382,11 +382,12 @@ As a result of the previous research, I designed an image captioning model with 
 		\label{fig:proposedModel}}
 \end{figure}
 
-\todo[inline]{Popsat CNN, ze je to VGG jako v clancich blabla, ze jsem odstranil pouze posledni vrstvu, vetsi popis toho jak vypada VGG, jaky zere vstup, jaky ma vystup, kolik ma vrstev...}
-\todo[inline]{Ze sit vytvari podobne jako v ostatnich resenich jakesi kodovani obrazku, ktere ovsem neposilame primo do rnn, ale musi se jeste predzpracovat.}
+The \gls{cnn} used in this model is \gls{vgg}~\cite{DBLP:journals/corr/SimonyanZ14a} - a 16-layer network trained on ImageNet. The same one as the one in \emph{From Captions to Visual Concepts} and \emph{Show, Attend and Tell} papers. Input of the \gls{cnn} is a fixed-size $ 224 \times 224 $ RGB image, which passes through a stack of convolutional layers with very small receptive fields: $ 3 \times 3 $, and rectifiers. Throughout the network, some of the convolutional layers are followed by max-pooling. 
 
-Encoder part of the model consists of \gls{cnn} and an adapter, converting the output of \gls{cnn} to the input of decoder \gls{rnn}.
+Original network produces probability distribution over 1000 ImageNet classes. For my purposes, I removed ...
+\todo[inline]{Popsat co jsem odstranil z CNN, co dale pouzivam.}
 
+The image encoding produced by \gls{cnn} has to be preprocessed before entering the \gls{rnn}. For this purpose, several feed-forward layers in the \emph{Adapter} are present, between \gls{cnn} and \gls{rnn}. \emph{Adapter} consists of three fully connected Linear layers and two evaluations of hyperbolic tangens in the middle. As the \gls{cnn} does not have to be finetuned for the task, this should provide basic ability to adapt the encoding to current purpose and to give the vector the proper size, as required by hidden state initialization algorithm, described in section \ref{subsec:initialization}.
 
 \subsection{Language model} \label{subsec:designLangMod}
 \todo[inline]{Popis rekurentni site generujici popisky po jednotlivych pismenech. kodovani pismen. Kolik vrstev, jake vrstvy, na konci softmax...}
@@ -477,6 +478,8 @@ As the number of community packages is enormous, I will list just a few, which a
 \section{Design implementation} \label{sec:designimplem}
 \todo[inline]{Vlastne velmi podobne jako kapitola design modelu, ale z implementacniho hlediska.}
 \todo[inline]{Popis jake soubory jsem udelal, jak vypada implementace architektury z minule kapitoly.}
+Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
+
 
 \subsubsection{Pretraining language model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
