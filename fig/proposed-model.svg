@@ -1549,9 +1549,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2237762"
-     inkscape:cx="709.09268"
-     inkscape:cy="412.19142"
+     inkscape:zoom="1.7306809"
+     inkscape:cx="191.31442"
+     inkscape:cy="335.83848"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4165,44 +4165,44 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="536.52887"
+       x="548.15973"
        y="653.59082"
        id="text13671"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
          id="tspan13673"
-         x="536.52887"
+         x="548.15973"
          y="653.59082"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">log p(S<tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">p(S<tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64.99999762%;font-family:FreeSans;-inkscape-font-specification:FreeSans;baseline-shift:sub"
    id="tspan13675">1</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="685.50745"
+       x="697.14783"
        y="653.59082"
        id="text13671-9"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
          id="tspan13673-2"
-         x="685.50745"
+         x="697.14783"
          y="653.59082"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">log p(S<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">p(S<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
    id="tspan13732">2</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="834.52893"
+       x="846.17883"
        y="653.59082"
        id="text13671-3"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
-         id="tspan13673-6"
-         x="834.52893"
+         x="846.17883"
          y="653.59082"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">log p(S<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans"
+         id="tspan5319">p(S<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
    id="tspan13734">3</tspan>)</tspan></text>
     <text
        xml:space="preserve"
@@ -4246,5 +4246,106 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">S<tspan
    style="font-size:64.99999762%;baseline-shift:sub"
    id="tspan13793">2</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="543.99426"
+       y="694.948"
+       id="text5324"
+       sodipodi:linespacing="279%"><tspan
+         sodipodi:role="line"
+         id="tspan5326"
+         x="543.99426"
+         y="694.948"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">Linear</tspan></text>
+    <text
+       sodipodi:linespacing="279%"
+       id="text5336"
+       y="694.948"
+       x="692.97284"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans"
+         y="694.948"
+         x="692.97284"
+         id="tspan5338"
+         sodipodi:role="line">Linear</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="841.99426"
+       y="694.948"
+       id="text5340"
+       sodipodi:linespacing="279%"><tspan
+         sodipodi:role="line"
+         id="tspan5342"
+         x="841.99426"
+         y="694.948"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">Linear</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="854.89319"
+       y="-276.2417"
+       id="text5324-1"
+       sodipodi:linespacing="279%"
+       transform="matrix(0,1,-1,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan5326-5"
+         x="854.89319"
+         y="-276.2417"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">Linear</tspan></text>
+    <text
+       transform="matrix(0,1,-1,0,0,0)"
+       sodipodi:linespacing="279%"
+       id="text5362"
+       y="-344.2417"
+       x="854.89319"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans"
+         y="-344.2417"
+         x="854.89319"
+         id="tspan5364"
+         sodipodi:role="line">Linear</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="854.89319"
+       y="-410.2417"
+       id="text5366"
+       sodipodi:linespacing="279%"
+       transform="matrix(0,1,-1,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan5368"
+         x="854.89319"
+         y="-410.2417"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">Linear</tspan></text>
+    <text
+       transform="matrix(0,1,-1,0,0,0)"
+       sodipodi:linespacing="279%"
+       id="text5370"
+       y="-310.50479"
+       x="861.79095"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans"
+         y="-310.50479"
+         x="861.79095"
+         id="tspan5372"
+         sodipodi:role="line">tanh</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="861.93542"
+       y="-378.43259"
+       id="text5374"
+       sodipodi:linespacing="279%"
+       transform="matrix(0,1,-1,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan5376"
+         x="861.93542"
+         y="-378.43259"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">tanh</tspan></text>
   </g>
 </svg>

@@ -390,7 +390,12 @@ Original network produces probability distribution over 1000 ImageNet classes. F
 The image encoding produced by \gls{cnn} has to be preprocessed before entering the \gls{rnn}. For this purpose, several feed-forward layers in the \emph{Adapter} are present, between \gls{cnn} and \gls{rnn}. \emph{Adapter} consists of three fully connected Linear layers and two evaluations of hyperbolic tangens in the middle. As the \gls{cnn} does not have to be finetuned for the task, this should provide basic ability to adapt the encoding to current purpose and to give the vector the proper size, as required by hidden state initialization algorithm, described in section \ref{subsec:initialization}.
 
 \subsection{Language model} \label{subsec:designLangMod}
-\todo[inline]{Popis rekurentni site generujici popisky po jednotlivych pismenech. kodovani pismen. Kolik vrstev, jake vrstvy, na konci softmax...}
+
+Language modeling \gls{rnn} of this model is based on the section \ref{subsec:languageModels}. Captions are generated on character level, without any embeddings. Inputs and outputs of the \gls{rnn} are the same one-hot encoding. Set of characters, created from the whole training dataset, is completed with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of the caption.
+
+Structure of the recurrent network is sequential and can be considered small in comparison of other networks commonly used. See Figure \ref{fig:proposedModel}. Core of the network is stack of \gls{lstm} layers - experiments were performed on networks with 2 to 5 recurrent layers. Size of \gls{lstm}s range from 200 to 500 units per layer, as networks with 150-250 units are able to generate text on character level, without grammatical errors. Size of the network is then increased to accommodate the need to generate correct captions and to distinguish between them. One Linear layer is following \gls{lstm}s, transforming the output of the \gls{lstm} to the size of the used one-hot encoding. On the very end of the network is a softmax layer, generating the probability distribution of next character in the sequence.
+
+The sequence generation starts by feeding the \gls{rnn} with \texttt{<start>} symbol. Forward pass through the network is computed and generated character is sampled from the probability distribution. Sampled character is then sent to the network as input in the next time step. This procedure is repeated until the \texttt{<stop>} symbol is sampled from the distribution.
 
 \subsection{Hidden state initialization} \label{subsec:initialization}
 \todo[inline]{Adapter - konverze .}
@@ -404,20 +409,14 @@ The image encoding produced by \gls{cnn} has to be preprocessed before entering 
 
 Model is end-to-end trainable by standard gradient descent methods.
 
+Training will be performed on MS COCO dataset, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
+
 \subsubsection{Pretraining \gls{rnn}}
 \todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
 \todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
 
 \subsubsection{Full model training}
 \todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
-
-As a result of the previous research, I propose a model for the image captioning, which has a encoder--decoder architecture. Image is encoded by a convolutional neural network into a vector, which is passed to a first recurrent layer. The decoder is created by several LSTM or GRU layers. Image vector will be saved as value in memory of the LSTM unit. Sentence will be generated on character level, without embeddings. Architecture is on the figure \ref{fig:proposedModel}.
-
-First question, this architecture is supposed to answer, is, whether model without the support of embeddings can compete with other contemporary solutions. Second is, how much will the model improve, if LSTM units are set with a large bias, as described in ~\cite{DBLP:conf/icml/JozefowiczZS15} and in part.
-
-Model will work with one-hot character level encoding, with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of sequence. Size of the first LSTM layer will be between $ 100-1000 $ items, number similar to the image embedding models mentioned in ~\cite{DBLP:journals/corr/VinyalsTBE14, DBLP:journals/corr/FangGISDDGHMPZZ14}.
-
-Training will be performed on MS COCO dataset, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
 
 
 \chapter{Implementation}\label{chp:implementation}
@@ -480,6 +479,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \todo[inline]{Popis jake soubory jsem udelal, jak vypada implementace architektury z minule kapitoly.}
 Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
 
+Preprocessing obrazku do VGG, jaky format ocekava.
 
 \subsubsection{Pretraining language model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
