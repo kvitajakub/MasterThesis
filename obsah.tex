@@ -45,7 +45,7 @@ Rectifier is usually used after a linear unit creating together Rectified Linear
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
-Before \gls{relu}, popular functions were hyperbolic tangens and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials. Hyperbolic tangens was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at Figure \ref{fig:nonlinear}.
+Before \gls{relu}, popular functions were hyperbolic tangent and standard logistic function. However, these functions are costly to compute, even though they can be replaced with polynomials. Hyperbolic tangent was preferred as better version of logistic function~\cite{lecun2012efficient}. See how the discussed functions look at Figure \ref{fig:nonlinear}.
 
 \subsubsection{Dropout}
 
@@ -176,7 +176,7 @@ Basic architecture of \gls{cnn} can be described by the following process:
 \end{minipage}
 \vspace{9mm}
 
-Thus the \gls{cnn} consist of alternating convolutional and subsampling layers, followed by fully connected feed-forward network. Diagram of the simple \gls{cnn} architecture is on Figure \ref{fig:lenet}. I will now go through the individual network segments and describe them.
+Thus the \gls{cnn} consist of alternating convolutional and subsampling layers, followed by fully-connected feed-forward network. Diagram of the simple \gls{cnn} architecture is on Figure \ref{fig:lenet}. I will now go through the individual network segments and describe them.
 
 \begin{figure}[!t]
 	\centering
@@ -189,7 +189,7 @@ Convolutional layer, which is most important and gave \gls{cnn}s their name, is 
 
 As the output of the network usually do not have same dimensions of the input, ability to directly control size of the features is needed. In \gls{cnn}s it is provided by subsampling, or in this version max pooling, layer. It is a simple operation that takes small non-overlapping grid of the input tensor and outputs the maximum value of each part. By putting this operation in between the convolutional layers, we can scale the current feature tensor and detect higher level features than without it.
 
-Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting rectifiers after convolutions, as they have excellent performance, surpassing any other unit~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. In the second, fully connected, part mix of linear units and \gls{relu}s is commonly used, with applying dropout to these layers. Connection between convolutional and fully connected part is provided by a layer converting higher-dimensional output data from convolutions to a one-dimensional input vector.
+Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting rectifiers after convolutions, as they have excellent performance, surpassing any other unit~\cite{jarrett-iccv-09, DBLP:conf/icml/NairH10}. In the second, fully-connected part, mix of linear units and \gls{relu}s is commonly used, with applying dropout to these layers. Connection between convolutional and fully-connected part is provided by a layer converting higher-dimensional output data from convolutions to a one-dimensional input vector.
 
 \gls{cnn}s are useful in applications, where data has a spatial structure, which is useful to capture in the model. Among these data belongs image processing and speech recognition. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Figure \ref{fig:lenet} shows the architecture of LeNet, version called \emph{LeNet-5}.
 
@@ -226,7 +226,7 @@ C_t \hspace{7pt}&=\hspace{7pt} f_t\odot C_{t-1} + i_t\odot \widetilde{C}_t \labe
 o_t \hspace{7pt}&=\hspace{7pt} \sigma(W_{xo}x_t + W_{ho}h_{t-1}) \label{eq:showlstm5}\\
 h_t \hspace{7pt}&=\hspace{7pt} o_t\odot C_t \label{eq:showlstm6}
 \end{align}
-Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logistic function defined in Equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. It is worth noticing the \gls{lstm} version used do not have \textquotedblleft peephole connections\textquotedblright. Several more changes were added~-- the second evaluation of hyperbolic tangens in Equation \eqref{eq:showlstm6} is missing, as well as biases in all equations.
+Notation is same as in the chapter \ref{chp:nn}, $ \sigma $ is the standard logistic function defined in Equation \eqref{eq:lstm7} and the operation $ \odot $ denotes the element-wise vector product. It is worth noticing the \gls{lstm} version used do not have \textquotedblleft peephole connections\textquotedblright. Several more changes were added~-- the second evaluation of hyperbolic tangent in Equation \eqref{eq:showlstm6} is missing, as well as biases in all equations.
 
 \begin{figure}[!t]
 	\centering
@@ -311,7 +311,7 @@ Large amounts of data are necessary requirement in training deep neural nets lik
 
 There are two main options how to get images and captions. First way is, by using user-generated data from an online service, most commonly Flickr\footnote{Flickr is a popular image hosting website and an online community. (\url{https://www.flickr.com})}. However, these captions are not made specifically for the task and could be prone to error. Second option is to gather only images, again from Flickr or other online services, and create captions for direct use in the dataset manually. Amazon Mechanical Turk\footnote{Amazon Mechanical Turk is crowdsourced Internet marketplace for tasks that computers are currently unable to do. (\url{https://www.mturk.com})} is heavily used for this task.
 
-The following table \ref{sets} lists the most popular datasets. All these datasets were created directly for the image captioning task, with captions generated through Amazon Mechanical Turk. Flickr8k~\cite{dataset-flickr8k}, from 2013, was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. The biggest dataset is Microsoft Common Objects in Context (\gls{coco})~\cite{DBLP:journals/corr/ChenFLVGDZ15}, created for the \gls{coco} captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in section \ref{sec:evaluation}.
+Following Table \ref{tab:datasets} lists the most popular datasets. All these datasets were created directly for the image captioning task, with captions generated through Amazon Mechanical Turk. Flickr8k~\cite{dataset-flickr8k}, from 2013, was one of the first datasets created for this purpose. It has been later expanded into Flickr30k~\cite{dataset-flickr30k}. The biggest dataset is Microsoft Common Objects in Context (\gls{coco})~\cite{DBLP:journals/corr/ChenFLVGDZ15}, created for the \gls{coco} captioning challenge. CIDEr~\cite{Vedantam_2015_CVPR} datasets PASCAL-50S, ABSTRACT-50S are youngest mentioned, designed specifically for evaluation with the CIDEr metric discussed in section \ref{sec:evaluation}.
 
 \def\arraystretch{1.2}%  1 is the default, change whatever you need
 %\setlength\extrarowheight{20pt}%add points to the row height
@@ -384,10 +384,9 @@ As a result of the previous research, I designed an image captioning model with 
 
 The \gls{cnn} used in this model is \gls{vgg}~\cite{DBLP:journals/corr/SimonyanZ14a} - a 16-layer network trained on ImageNet. The same one as the one in \emph{From Captions to Visual Concepts} and \emph{Show, Attend and Tell} papers. Input of the \gls{cnn} is a fixed-size $ 224 \times 224 $ RGB image, which passes through a stack of convolutional layers with very small receptive fields: $ 3 \times 3 $, and rectifiers. Throughout the network, some of the convolutional layers are followed by max-pooling. 
 
-Original network produces probability distribution over 1000 ImageNet classes. For my purposes, I removed ...
-\todo[inline]{Popsat co jsem odstranil z CNN, co dale pouzivam.}
+Original network produces a probability distribution over 1000 ImageNet classes. For my purposes, I removed the last \emph{softmax} layer, as well as last fully-connected layer \emph{fc8}, which is the approach used by \emph{From Captions to Visual Concepts}. Thus, output of the \gls{cnn} has size of 4096, which is then propagated to the rest of the model.
 
-The image encoding produced by \gls{cnn} has to be preprocessed before entering the \gls{rnn}. For this purpose, several feed-forward layers in the \emph{Adapter} are present, between \gls{cnn} and \gls{rnn}. \emph{Adapter} consists of three fully connected Linear layers and two evaluations of hyperbolic tangens in the middle. As the \gls{cnn} does not have to be finetuned for the task, this should provide basic ability to adapt the encoding to current purpose and to give the vector the proper size, as required by hidden state initialization algorithm, described in section \ref{subsec:initialization}.
+The image encoding produced by \gls{cnn} has to be preprocessed before entering the \gls{rnn}. For this purpose, I introduced an \textquotedblleft adapter\textquotedblright\ network, which solves problems with the hidden state initialization algorithm. Both, the adapter and algorithm are described in section \ref{subsec:initialization}.
 
 \subsection{Language model} \label{subsec:designLangMod}
 
@@ -398,11 +397,14 @@ Structure of the recurrent network is sequential and can be considered small in 
 The sequence generation starts by feeding the \gls{rnn} with \texttt{<start>} symbol. Forward pass through the network is computed and generated character is sampled from the probability distribution. Sampled character is then sent to the network as input in the next time step. This procedure is repeated until the \texttt{<stop>} symbol is sampled from the distribution.
 
 \subsection{Hidden state initialization} \label{subsec:initialization}
-\todo[inline]{Adapter - konverze .}
 
-\todo[inline]{reference na CNN co jsem pouzil \cite{DBLP:journals/corr/SimonyanZ14a}}
-\todo[inline]{Hidden state, protoze neni ani na vstupu ani na vystupu, podobne jako hidden layer, nema souvislost s hidden markov models.}
-\todo[inline]{popis konkretni vrstvy za kterou jsem zapojil adapter, nejaka diskuze o adapteru, jak to ma vypadat jakych hodnot nabyva cell state u lstm- -+2, k jakym vrstvam se ma adapter pripojit}
+As the both necessary parts, \textquotedblleft encoder\textquotedblright\ and \textquotedblleft decoder\textquotedblright, have been described, the way of connecting them is now required. Sending the image encoding to \gls{rnn} as first input, similarly to \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} is not possible, because character encoding of the caption alters input significantly. Fortunately, \gls{lstm}s have a hidden state, a \textquotedblleft cell\textquotedblright, which requires initialization. As \emph{Show and Tell}~\cite{DBLP:journals/corr/VinyalsTBE14} demonstrated, showing the image encoding to the \gls{rnn} at the beginning of caption generation is enough, therefore, initialization of the \gls{lstm}'s hidden state with proper image encoding based vector should suffice.
+
+Hidden state of the \gls{lstm} is denoted in Equations \eqref{eq:lstm1} to \eqref{eq:lstm6} as vector $ C_t $. As the sequence processing, starting with input $ x_1 $ requires $ C_0 $, which has no specific value\footnote{Altough \gls{lstm} vector $ C_0 $ does not have a specific value, random initialization is usually performed.}, recurrent layers can be initialized by injecting a new state vector. Vector $ C $ has a definite size for each \gls{lstm} layer, which is equal to the layer size and the output vector. For example, in the \gls{lstm} with 200 units, although input vector being unrestrained,  output and hidden state vectors size will always be 200. Throughout time, the hidden state usually takes values in range between $ [-2 , 2] $, which align well to initialization around $ 0 $.
+
+Output of the \gls{cnn} is not suitable to be directly inserted to \gls{rnn}, for several reasons. First, it has a different size $ (4096) $, which is much more than necessary for \gls{lstm}. Second, \gls{cnn} uses \gls{relu}s as nonlinearity, which do not produce negative output. This limits the \gls{lstm} state space significantly. Both issues are possible to solve by introducing an \textquotedblleft adapter\textquotedblright\ network between the \gls{cnn} and \gls{rnn} in the model. The adapter can be very small network, as solving the above mentioned problems is the only task required. In my model, visualized on Figure \ref{fig:proposedModel}, I created a network with one linear layer for adjusting size of the output, followed by hyperbolic tangent and second linear layer, which should solve the negative numbers issue.
+
+Last question to cover in the initialization procedure is, how many of the \gls{rnn}'s stacked \gls{lstm} layers will be initialized by the adapter and how many will stay unbounded. Possible solutions can range from initializing only the first recurrent layer to all the recurrent layers in the network, or any count between them. While initializing multiple layers, matter of whether all the layers will have the same input or each of them its own, has to be discussed. As I have not found any adequate solutions and research to this topic, it is covered in Chapter \ref{chp:experiments}, as part of experiments with the model. 
 
 \section{Training procedure} \label{sec:training}
 \todo[inline]{Jak vypada celkovy postup treninku, dve casti, kazda rozepsana.}
@@ -487,9 +489,12 @@ Preprocessing obrazku do VGG, jaky format ocekava.
 \subsubsection{Combined model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
 
-\section{Hardware}\label{sec:hardware}
+\subsubsection{Hardware}
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
+
+\section{Training with \gls{coco}}
+\todo[inline]{Jaky ma format, popsat json, odkud se stahlo,...}
 
 \chapter{Experiments and results}\label{chp:experiments}
 
