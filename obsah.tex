@@ -193,7 +193,7 @@ Nowadays, most popular way to introduce nonlinearity to \gls{cnn} is inserting r
 
 \gls{cnn}s are useful in applications, where data has a spatial structure, which is useful to capture in the model. Among these data belongs image processing and speech recognition. One of the first and most famous examples of convolutional neural net is LeNet\footnote{Demos and examples of LeNet: \url{http://yann.lecun.com/exdb/lenet/}}~\cite{lecun-98}, which recognize handwritten digits from the MNIST database\footnote{MNIST database website: \url{http://yann.lecun.com/exdb/mnist/}}. Figure \ref{fig:lenet} shows the architecture of LeNet, version called \emph{LeNet-5}.
 
-\chapter{Image caption generation}\label{chp:captions}
+\chapter{Image Captioning}\label{chp:captions}
 
 Scene understanding is one of the fundamental, but also most difficult tasks of computer vision and ability to automatically generate text captions of an image or video can have a great impact on lives of many. However, it is much more complicated than simple classification or object recognition tasks, because the model also need to understand relations between the recognized objects and encode that relationship correctly in the caption.
 
@@ -390,7 +390,7 @@ The image encoding produced by \gls{cnn} has to be preprocessed before entering 
 
 \subsection{Language model} \label{subsec:designLangMod}
 
-Language modeling \gls{rnn} of this model is based on the section \ref{subsec:languageModels}. Captions are generated on character level, without any embeddings. Inputs and outputs of the \gls{rnn} are the same one-hot encoding. Set of characters, created from the whole training dataset, is completed with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of the caption.
+Language modeling \gls{rnn} of this model is based on the section \ref{subsec:languageModels}. Captions are generated on character level, without any embeddings. Inputs and outputs of the \gls{rnn} are the same one-hot encoding. Set of characters, created from the whole training dataset, is completed with two extra special characters \texttt{<start>} and \texttt{<stop>}, which respectively mark beginning and the end of the caption. Since caption can be any sentence, its length is unbounded.
 
 Structure of the recurrent network is sequential and can be considered small in comparison of other networks commonly used. See Figure \ref{fig:proposedModel}. Core of the network is stack of \gls{lstm} layers - experiments were performed on networks with 2 to 5 recurrent layers. Size of \gls{lstm}s range from 200 to 500 units per layer, as networks with 150-250 units are able to generate text on character level, without grammatical errors. Size of the network is then increased to accommodate the need to generate correct captions and to distinguish between them. One Linear layer is following \gls{lstm}s, transforming the output of the \gls{lstm} to the size of the used one-hot encoding. On the very end of the network is a softmax layer, generating the probability distribution of next character in the sequence.
 
@@ -406,20 +406,24 @@ Output of the \gls{cnn} is not suitable to be directly inserted to \gls{rnn}, fo
 
 Last question to cover in the initialization procedure is, how many of the \gls{rnn}'s stacked \gls{lstm} layers will be initialized by the adapter and how many will stay unbounded. Possible solutions can range from initializing only the first recurrent layer to all the recurrent layers in the network, or any count between them. While initializing multiple layers, matter of whether all the layers will have the same input or each of them its own, has to be discussed. As I have not found any adequate solutions and research to this topic, it is covered in Chapter \ref{chp:experiments}, as part of experiments with the model. 
 
-\section{Training procedure} \label{sec:training}
-\todo[inline]{Jak vypada celkovy postup treninku, dve casti, kazda rozepsana.}
+\section{Training} \label{sec:training}
 
-Model is end-to-end trainable by standard gradient descent methods.
+Training is, together with architecture, one of the most important things in deep learning models. Specific training procedure can decide, how fast can model learn the task and whether it can learn the task at all. Proposed image captioning model is relatively simple, from training point of view, as it is end-to-end trainable by standard gradient descent methods. Training will be performed on training part of MS COCO dataset, mentioned in section \ref{sec:datasets}, which consists of 82 783 images and 5 captions per image.
 
-Training will be performed on MS COCO dataset, mentioned in part \ref{sec:datasets}. I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} and several other optimization algorithms.
+Complete procedure is divided into two parts. First part works only with the language model and train the \gls{lstm} layers to produce proper English words and sentences. In the second stage, the encoder part of network - \gls{cnn} and \emph{adapter}, is connected to the model and adds more constraints to the caption generation. Both training stages have appropriate sections in the following text, describing them more thoroughly.
 
 \subsubsection{Pretraining \gls{rnn}}
 \todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
 \todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
+I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} optimization algorithm.
+\todo[inline]{Jakou pouzivam loss funkci. - rovnice - bez obrazku, pak s obrazkem.- minimizing negative log likelihood}
 
 \subsubsection{Full model training}
 \todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
 
+\subsubsection{Inference}
+
+\todo[inline]{Jak se generovaly vety. Normalne samplovanim z  probability distribution. jednoduche rozsireni by bylo pridat pojem teploty, ale neni to potreba protoze to generovalo dobre.}
 
 \chapter{Implementation}\label{chp:implementation}
 
@@ -470,7 +474,7 @@ As the number of community packages is enormous, I will list just a few, which a
 		\item \emph{image} --- Routines to load/save and manipulate images as \emph{torch} tensors.
 		\item \emph{cunn}, \emph{clnn} --- CUDA and OpenCL backends for the \emph{nn} package.
 		\item \emph{loadcaffe} --- Method for loading Caffe models in Torch.
-		\item \emph{tds} --- Way to overcome LuaJIT memory limitations, by allocating outside Lua-managed memory.
+		\item \emph{tds} --- Way to exceed LuaJIT memory limitations, by allocating outside Lua-managed memory.
 		\item \emph{word2vec} --- Pre-trained word embeddings and the distance metric.
 	\end{itemize}
 \end{minipage}
@@ -482,6 +486,8 @@ As the number of community packages is enormous, I will list just a few, which a
 Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
 
 Preprocessing obrazku do VGG, jaky format ocekava.
+
+%https://github.com/torch/nn/blob/master/doc/criterion.md#nn.ClassNLLCriterion
 
 \subsubsection{Pretraining language model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}

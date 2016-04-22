@@ -1549,9 +1549,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.86534045"
-     inkscape:cx="476.55888"
-     inkscape:cy="252.67236"
+     inkscape:zoom="1.2237762"
+     inkscape:cx="687.82895"
+     inkscape:cy="379.47967"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -3267,7 +3267,7 @@
        rx="3.9279802" />
     <g
        id="g7353"
-       transform="translate(152.37334,-415.30315)">
+       transform="translate(152.67527,-415.30315)">
       <rect
          rx="5.9242859"
          ry="6.1285715"
@@ -3471,7 +3471,7 @@
        id="rect10078"
        width="76.217117"
        height="25.569164"
-       x="675.88043"
+       x="676.17761"
        y="636.88373" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7765-20-2)"
@@ -3630,7 +3630,7 @@
        rx="3.9279802" />
     <rect
        y="636.88373"
-       x="824.90192"
+       x="825.19434"
        height="25.569164"
        width="76.217117"
        id="rect10174"
@@ -3824,43 +3824,43 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="548.15973"
+       x="536.83081"
        y="653.59082"
        id="text13671"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
          id="tspan13673"
-         x="548.15973"
+         x="536.83081"
          y="653.59082"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">p(S<tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">log p(S<tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64.99999762%;font-family:FreeSans;-inkscape-font-specification:FreeSans;baseline-shift:sub"
    id="tspan13675">1</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="697.14783"
+       x="685.81415"
        y="653.59082"
        id="text13671-9"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
          id="tspan13673-2"
-         x="697.14783"
+         x="685.81415"
          y="653.59082"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">p(S<tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans">log p(S<tspan
    style="font-size:64.99999762%;baseline-shift:sub"
    id="tspan13732">2</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.5px;line-height:278.99999619%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="846.17883"
+       x="834.84039"
        y="653.59082"
        id="text13671-3"
        sodipodi:linespacing="279%"><tspan
          sodipodi:role="line"
-         x="846.17883"
+         x="834.84039"
          y="653.59082"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:FreeSans;-inkscape-font-specification:FreeSans"
-         id="tspan5319">p(S<tspan
+         id="tspan5319">log p(S<tspan
    style="font-size:64.99999762%;baseline-shift:sub"
    id="tspan13734">3</tspan>)</tspan></text>
     <text
