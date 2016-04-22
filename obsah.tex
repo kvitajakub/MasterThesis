@@ -416,24 +416,20 @@ Complete procedure is divided into two parts. First part works only with the lan
 
 As mentioned earlier, it is useful to train the language model, to the point it can generate English words and sequences, because words are often repeated across captions and sentences generally have the same structure. This can be seen in the training dataset, as it contains only ~25 000 different words. Pretraining the \gls{rnn} speed up the training and we can also verify \gls{rnn} trained properly before connecting it with the other parts of the model.
 
-Loss function used in this work is the sum of the negative log likelihood of the correct character at each step as follows:
+Loss function used in this work is the sum of the negative log likelihood of the character at each step as follows:
 \begin{align}
 L(S) \hspace{7pt}&=\hspace{7pt} -\sum\limits_{t=1}^N log\hspace{4pt}p_t(S_t).  \label{eq:loss1}
 \end{align}
-During pretraining, the above loss is minimized with respect to all the parameters of the \gls{rnn}. Algorithm minimizing this loss is...
-
-
-\todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
-\todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
-I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} optimization algorithm.
-\todo[inline]{Jakou pouzivam loss funkci. - rovnice - bez obrazku, pak s obrazkem.- minimizing negative log likelihood}
+During pretraining, the above loss is minimized with respect to all the parameters of the \gls{rnn}. Method used to minimize this loss is Adam~\cite{DBLP:journals/corr/KingmaB14}, with parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $ and learning rate $ \alpha = 0.001 $. Training used minibatches of size 15, which is number selected mostly for implementation reasons further discussed in chapter \ref{chp:implementation}.
 
 \subsubsection{Full model training}
 \todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
-
+\todo[inline]{Jakou pouzivam loss funkci. - rovnice - bez obrazku, pak s obrazkem.- minimizing negative log likelihood}
 \subsubsection{Inference}
 
-\todo[inline]{Jak se generovaly vety. Normalne samplovanim z  probability distribution. jednoduche rozsireni by bylo pridat pojem teploty, ale neni to potreba protoze to generovalo dobre.}
+There are multiple approaches that can be used to generate a sentence given an image. The first one is simple \emph{Sampling}, which just samples the first character according to $ p_1 $, encode the character and provide it as input, sample $ p_2 $ and continue like this until the special \texttt{<stop>} symbol is reached.
+
+Second approach is called \emph{BeamSearch}, which iteratively considers the set of the $ k $ best sentences up to time $ t $ as candidates to generate sentences of size $ t + 1 $, and keep only the resulting best $ k $ of them. This method can provide better results, but in this thesis, only \emph{Sampling} was used.
 
 \chapter{Implementation}\label{chp:implementation}
 
@@ -514,6 +510,7 @@ Preprocessing obrazku do VGG, jaky format ocekava.
 
 \chapter{Experiments and results}\label{chp:experiments}
 
+\todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
 \section{Language model initialization variations}
 \section{Evaluation}
 \section{Analysis of results}
