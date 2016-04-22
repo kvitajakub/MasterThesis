@@ -413,6 +413,16 @@ Training is, together with architecture, one of the most important things in dee
 Complete procedure is divided into two parts. First part works only with the language model and train the \gls{lstm} layers to produce proper English words and sentences. In the second stage, the encoder part of network - \gls{cnn} and \emph{adapter}, is connected to the model and adds more constraints to the caption generation. Both training stages have appropriate sections in the following text, describing them more thoroughly.
 
 \subsubsection{Pretraining \gls{rnn}}
+
+As mentioned earlier, it is useful to train the language model, to the point it can generate English words and sequences, because words are often repeated across captions and sentences generally have the same structure. This can be seen in the training dataset, as it contains only ~25 000 different words. Pretraining the \gls{rnn} speed up the training and we can also verify \gls{rnn} trained properly before connecting it with the other parts of the model.
+
+Loss function used in this work is the sum of the negative log likelihood of the correct character at each step as follows:
+\begin{align}
+L(S) \hspace{7pt}&=\hspace{7pt} -\sum\limits_{t=1}^N log\hspace{4pt}p_t(S_t).  \label{eq:loss1}
+\end{align}
+During pretraining, the above loss is minimized with respect to all the parameters of the \gls{rnn}. Algorithm minimizing this loss is...
+
+
 \todo[inline]{Jak vypadal trenink jazykoveho modelu, jaky algoritmus, s jakymi parametry, jake minibatches.. atd.}
 \todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
 I would also like to explore Adam~\cite{DBLP:journals/corr/KingmaB14} optimization algorithm.
