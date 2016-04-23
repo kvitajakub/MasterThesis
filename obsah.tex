@@ -420,16 +420,23 @@ Loss function used in this work is the sum of the negative log likelihood of the
 \begin{align}
 L(S) \hspace{7pt}&=\hspace{7pt} -\sum\limits_{t=1}^N log\hspace{4pt}p_t(S_t).  \label{eq:loss1}
 \end{align}
-During pretraining, the above loss is minimized with respect to all the parameters of the \gls{rnn}. Method used to minimize this loss is Adam~\cite{DBLP:journals/corr/KingmaB14}, with parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $ and learning rate $ \alpha = 0.001 $. Training used minibatches of size 15, which is number selected mostly for implementation reasons further discussed in chapter \ref{chp:implementation}.
+During pretraining, the above loss is minimized with respect to all the parameters of the \gls{rnn}. Method used to minimize this loss is Adam~\cite{DBLP:journals/corr/KingmaB14}, with parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $, and learning rate $ \alpha = 0.001 $. Training used minibatches of size 15, which is number selected mostly for implementation reasons further discussed in chapter \ref{chp:implementation}.
 
 \subsubsection{Full model training}
-\todo[inline]{Jak vypadal trenink celeho modelu se vsemi castmi. Popsat volitelny finetuning CNN.}
-\todo[inline]{Jakou pouzivam loss funkci. - rovnice - bez obrazku, pak s obrazkem.- minimizing negative log likelihood}
+
+With the language model trained to generate random sentences, it is very easy to connect the rest of the model to it to perform full model training. Most of the information described in this part is same to the pretraining, for example, loss function is virtually the same negative log likelihood:
+\begin{align}
+L(I,S) \hspace{7pt}&=\hspace{7pt} -\sum\limits_{t=1}^N log\hspace{4pt}p_t(S_t).  \label{eq:loss2}
+\end{align}
+However, the loss is minimized with respect to all the parameters of \gls{rnn} as well as the \emph{adapter} and \gls{cnn}. Gradients propagated to the initial state of \gls{rnn} are copied to the other part of the network. Each part (\gls{cnn}, \emph{adapter}, \gls{rnn}) has its own instance of gradient descent algorithm, but Adam~\cite{DBLP:journals/corr/KingmaB14}, with same parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $, and learning rate $ \alpha = 0.001 $ is used for all three options. Minibatch size 15 was used.
+
+During full model training, finetuning of \gls{cnn} is optional. Finetuning can provide some improvements in results, but it also greatly expands the number of training parameters. Not training \gls{cnn} increase training speed and allows easier localization of potential mistakes related to input of the \emph{adapter} or \gls{rnn}.
+
 \subsubsection{Inference}
 
 There are multiple approaches that can be used to generate a sentence given an image. The first one is simple \emph{Sampling}, which just samples the first character according to $ p_1 $, encode the character and provide it as input, sample $ p_2 $ and continue like this until the special \texttt{<stop>} symbol is reached.
 
-Second approach is called \emph{BeamSearch}, which iteratively considers the set of the $ k $ best sentences up to time $ t $ as candidates to generate sentences of size $ t + 1 $, and keep only the resulting best $ k $ of them. This method can provide better results, but in this thesis, only \emph{Sampling} was used.
+Second approach is called \emph{BeamSearch}, which iteratively considers the set of the $ k $ best sentences up to time $ t $ as candidates to generate sentences of size $ t + 1 $, and keep only the resulting best $ k $ of them. This method can provide better results, however, in this thesis, only \emph{Sampling} was used.
 
 \chapter{Implementation}\label{chp:implementation}
 
