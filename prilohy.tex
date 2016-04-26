@@ -22,11 +22,48 @@
 	\label{tab:cdcontent}
 \end{table}
 
+\chapter{\gls{coco} Annotation format} \label{chp:jsonAnnotation}
+\begin{lstlisting}[language=json,firstnumber=1]
+	{
+		"info"		: info,
+		"images"		: [image],
+		"annotations"	: [annotation],
+		"licenses"	: [license]
+	}
+	info {
+		"year"		: int,
+		"version"	: str,
+		"description"	: str,
+		"contributor"	: str,
+		"url"		: str,
+		"date_created"	: datetime
+	}
+	image {
+		"id"		: int,
+		"width"		: int,
+		"height"		: int,
+		"file_name"	: str,
+		"license"	: int,
+		"flickr_url"	: str,
+		"coco_url"	: str,
+		"date_captured"	: datetime
+	}
+	license {
+		"id"		: int,
+		"name"		: str,
+		"url"		: str
+	}
+	annotation {
+		"id"		: int,
+		"image_id"	: int,
+		"caption"	: str
+	}
+\end{lstlisting}
+
 \chapter{Scripts Manuals}
 
 \todo[inline]{Parametry pro training a sampling.}
 
-%\chapter{Konfigrační soubor}
 %\chapter{RelaxNG Schéma konfiguračního soboru}
 %\chapter{Plakat}
 

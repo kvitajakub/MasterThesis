@@ -66,6 +66,30 @@
 	belowskip=0pt
 }
 
+\definecolor{punct}{RGB}{200,40,40}
+\definecolor{string}{RGB}{15,70,150}
+\lstdefinelanguage{json}{
+	basicstyle=\normalfont\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	frame=single,
+	tabsize=9,
+	stringstyle=\color{string},
+	morestring=[b]",
+	literate=
+	{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{punct}{\{}}}}{1}
+	{\}}{{{\color{punct}{\}}}}}{1}
+	{[}{{{\color{punct}{[}}}}{1}
+	{]}{{{\color{punct}{]}}}}{1}
+}
+
+
 %seznam zkratek
 \usepackage[toc,nonumberlist,nopostdot,translate=false]{glossaries} %translate kvuli konfliktu s babelem
 \makeglossaries

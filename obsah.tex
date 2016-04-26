@@ -493,12 +493,32 @@ As the number of community packages is enormous, I will list just a few, which a
 \end{minipage}
 \vspace{3mm}
 
-\section{Design implementation} \label{sec:designimplem}
-\todo[inline]{Vlastne velmi podobne jako kapitola design modelu, ale z implementacniho hlediska.}
-\todo[inline]{Popis jake soubory jsem udelal, jak vypada implementace architektury z minule kapitoly.}
-Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
+\section{Dataset \gls{coco}}
 
+Any proper implementation of deep learning model needs a lot of data to be implemented and trained. For the model proposed in this thesis, I chose to work with the \gls{coco} dataset. In this section I will describe how to access the dataset and what is the format of the images and captions.
+
+Dataset is available from the project website\footnote{MS COCO project: \url{http://mscoco.org/dataset/}}, in the form of separate archives for training, testing, and validation images and corresponding archives for annotations. As the archives are very large (over 20GB for image archives), dataset is also available through Python API, which is able to provide only requested data and filter by given conditions. More detailed description of the API is on the \gls{coco} website.
+
+Annotations are stored using the JSON\footnote{JavaScript Object Notation is an open-standard format that uses human-readable text to transmit data objects consisting of attribute--value pairs.} file format. File contains separate parts for information about images, like width, height, name, license, and URL address, to download them from the Internet. Caption part contain actual captions directly in the file, together with references to the images described. Captions describing same image are not grouped together in the JSON and they also do not have sequential ID. To get all the captions related to one image, it is necessary to access all the captions and check the image they are describing. Last part of the annotation file are URLs to the licenses used by the images. Full structure of the annotation file is in Appendix \ref{chp:jsonAnnotation}.
+ 
+JSON files can be loaded in Lua with the package \emph{cjson}\footnote{Lua CJSON project page: \url{http://www.kyne.com.au/~mark/software/lua-cjson.php}}, which simplifies parsing of the file and transformation to Lua data structures to simple method \texttt{decode}, and vice versa with \texttt{encode}. Loaded file can be traversed with standard tools as simple Lua table.
+
+Once the annotation file is processed and necessary images are selected, loading is done by Torch package \emph{image} mentioned in previous section. Image files are loaded by method \texttt{load} directly to the Torch tensors with the dimensions according to number of channels, width and height of the image. \emph{image} loads images quite differently than commonly used OpenCV method \texttt{imread}, as order of channels is R G B and value interval is $ [0 , 1] $. This causes additional image preprocessing, when using \gls{cnn} expecting input in different form.
+
+\section{Model implementation} \label{sec:designimplem}
+
+\todo[inline]{Popis souboru nemusi byt, jen popis implementace z hlediska minule kapitoly.}
+
+
+\subsubsection{CNN}
+
+Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
 Preprocessing obrazku do VGG, jaky format ocekava.
+
+\subsubsection{RNN?}
+
+
+\subsection{Training}
 
 %https://github.com/torch/nn/blob/master/doc/criterion.md#nn.ClassNLLCriterion
 
@@ -511,9 +531,6 @@ Preprocessing obrazku do VGG, jaky format ocekava.
 \subsubsection{Hardware}
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
-
-\section{Training with \gls{coco}}
-\todo[inline]{Jaky ma format, popsat json, odkud se stahlo,...}
 
 \chapter{Experiments and results}\label{chp:experiments}
 
