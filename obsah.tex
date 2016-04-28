@@ -499,7 +499,7 @@ Any proper implementation of deep learning model needs a lot of data to be imple
 
 Dataset is available from the project website\footnote{MS COCO project: \url{http://mscoco.org/dataset/}}, in the form of separate archives for training, testing, and validation images and corresponding archives for annotations. As the archives are very large (over 20GB for image archives), dataset is also available through Python API, which is able to provide only requested data and filter by given conditions. More detailed description of the API is on the \gls{coco} website.
 
-Annotations are stored using the JSON\footnote{JavaScript Object Notation is an open-standard format that uses human-readable text to transmit data objects consisting of attribute--value pairs.} file format. File contains separate parts for information about images, like width, height, name, license, and URL address, to download them from the Internet. Caption part contain actual captions directly in the file, together with references to the images described. Captions describing same image are not grouped together in the JSON and they also do not have sequential ID. To get all the captions related to one image, it is necessary to access all the captions and check the image they are describing. Last part of the annotation file are URLs to the licenses used by the images. Full structure of the annotation file is in Appendix \ref{chp:jsonAnnotation}.
+Annotations are stored using the JSON\footnote{JavaScript Object Notation is an open-standard format that uses human-readable text to transmit data objects consisting of attribute-value pairs.} file format. File contains separate parts for information about images, like width, height, name, license, and URL address, to download them from the Internet. Caption part contain actual captions directly in the file, together with references to the images described. Captions describing same image are not grouped together in the JSON and they also do not have sequential ID. To get all the captions related to one image, it is necessary to access all the captions and check the image they are describing. Last part of the annotation file are URLs to the licenses used by the images. Full structure of the annotation file is in Appendix \ref{chp:jsonAnnotation}.
  
 JSON files can be loaded in Lua with the package \emph{cjson}\footnote{Lua CJSON project page: \url{http://www.kyne.com.au/~mark/software/lua-cjson.php}}, which simplifies parsing of the file and transformation to Lua data structures to simple method \texttt{decode}, and vice versa with \texttt{encode}. Loaded file can be traversed with standard tools as simple Lua table.
 
@@ -507,23 +507,30 @@ Once the annotation file is processed and necessary images are selected, loading
 
 \section{Model implementation} \label{sec:designimplem}
 
-\todo[inline]{Popis souboru nemusi byt, jen popis implementace z hlediska minule kapitoly.}
+Model architecture proposed in Chapter \ref{chp:design} has been implemented in Lua and Torch. Code is grouped in form of modular procedures, which operate over the data. Main points of entry are scripts \texttt{training.lua} and \texttt{sampling.lua}, which contain the code connecting the other scripts together. Examples how to use them is in \ref{subsec:training}.
 
+Other scripts contain procedures solving parts of the problem. File \texttt{cocodata.lua} is loading the annotation file, preprocessing images, and encode captions. \texttt{RNN.lua} contains function creating the recurrent network according to the parameters. Other file \texttt{connections.lua} contains functions connecting the output of \emph{adapter} to the \gls{rnn} and sending the computed gradient back to the \emph{adapter}. \texttt{sample.lua} has functions for generating captions with the current model.
+
+Important file is \texttt{OneHotZero.lua}, which is a special type of layer and subclass of the \emph{rnn} package hierarchy. The layer create one-hot encoding of the single number input. On top of that, layer can process zero input, which produces tensor of zeros. This feature is useful for padding shorter captions in the minibatch.
+
+Tools and scripts for pretraining \gls{rnn} are in the subdirectory \texttt{pretrainRNN/}, which follows the same structure as the rest of the implementation. \texttt{pretraining.lua} process the command line parameters and train a \gls{rnn} using scripts for general model training. As the model processing differ significantly, separate \texttt{sample.lua} and \texttt{sampling.lua} scripts were created.
 
 \subsubsection{CNN}
 
-Odkud se stahlo CNN. \gls{vgg} model used in this work are available from the \emph{Caffe Model Zoo}
-Preprocessing obrazku do VGG, jaky format ocekava.
+Processing the \gls{cnn} part of the model is distinctly different, as it is loaded, rather than created from scratch. As mentioned in Chapter \ref{chp:design}, I used \gls{vgg}~\cite{DBLP:journals/corr/SimonyanZ14a} trained for the classification task on ImageNet. Network was downloaded from \emph{Caffe} Model Zoo\footnote{Page describing the \gls{vgg} in \emph{Caffe}: \url{https://gist.github.com/ksimonyan/211839e770f7b538e2d8}} and converted with \emph{loadcaffe} to Torch.
 
-\subsubsection{RNN?}
+Although model is converted to Torch, it has been trained on the format of the input and output, which is very specific and has to be taken into account. The input images are expected to have channels in the B G R order. Images should be zero-centered by mean pixel (rather than mean image) subtraction. The following B G R values should be subtracted: $ [103.939,\ 116.779,\ 123.68] $\footnote{Image color range should be $ [0 , 255] $, which means Torch loaded images have to be multiplied by $ 255 $.}.
 
+Output of the \gls{vgg} is probability distribution over 1000 ImageNet classes. As there is no specification in the network of class order, file with exact order of classes is required to perform image classification. For \emph{Caffe} implementation of \gls{vgg} order file \texttt{synset\_words.txt} is available\footnote{File with order of ImageNet classes available from \url{https://github.com/torch/tutorials/blob/master/7_imagenet_classification/synset_words.txt}}.
 
-\subsection{Training}
+\subsection{Training}\label{subsec:training}
 
 %https://github.com/torch/nn/blob/master/doc/criterion.md#nn.ClassNLLCriterion
 
 \subsubsection{Pretraining language model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
+
+\todo[inline]{Minibatch s sekvencema ruznych delek, ktere jsou padded nulama.}
 
 \subsubsection{Combined model}
 \todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
@@ -531,6 +538,13 @@ Preprocessing obrazku do VGG, jaky format ocekava.
 \subsubsection{Hardware}
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
+
+\subsection{Metrics}
+\todo[inline]{Odkud jsem stahl metriky, jak jsem je zprovoznil, jak to funguje.}
+
+\section{Bag of Words experiments}
+
+\todo[inline]{Nejaky popis toho ze soucasti experimentu bylo bag of words a jak jsem to udelal. Nema moc souvislost s predchozi casti.}
 
 \chapter{Experiments and results}\label{chp:experiments}
 
