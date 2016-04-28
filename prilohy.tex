@@ -62,7 +62,105 @@
 
 \chapter{Scripts Manuals}
 
-\todo[inline]{Parametry pro training a sampling.}
+\section{RNN pretraining}
+
+\subsubsection{Training}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt]
+~/captioning/pretrainRNN$ th pretraining.lua --help  
+Usage: th [options] 
+
+Train a RNN language model for generating image captions.
+
+Options
+-captionFile    JSON file with the input data (captions, image names). [~/COCO/captions_train2014.json]
+
+-recurLayers    Number of recurrent layers. (At least one.) [3]
+-hiddenUnits    Number of units in hidden layers. (At least one.) [300]
+-dropout        Use dropout. [false]
+-batchSize      Minibatch size. [15]
+-printError     Print error once per N minibatches. [10]
+-sample         Try to sample once per N minibatches. [100]
+-saveModel      Save model once per N minibatches. [10000]
+-modelName      Filename of the model and training data. [rnn.torch]
+-modelDirectory Directory where to save the model. [~/RNN/]
+\end{lstlisting}
+\hspace{1cm}
+
+\subsubsection{Sampling}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt]
+~/captioning/pretrainRNN$ th sampling.lua --help
+Usage: th [options] 
+
+Sample a language model for generating image captions.
+
+Options
+-modelName Filename of the model and training data. [~/RNN/rnn.torch]
+-N         How many captions will be generated. [4]
+\end{lstlisting}
+\hspace{1cm}
+
+\section{Full model}
+
+\subsubsection{Training}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt]
+~/captioning$ th training.lua --help
+Usage: th [options] 
+
+Training of the CNN-RNN network for generating image captions.
+
+Options
+-captionFile    JSON file with the input data (captions, image names). [~/COCO/captions_train2014.json]
+-imageDirectory Directory with the images named according to the caption file. [~/COCO/train2014/]
+
+-pretrainedCNN  Path to a ImageNet pretrained CNN in Torch format. [~/CNN/VGG_ILSVRC_16_layers_fc7.torch]
+-ft             Finetune CNN on the dataset. (Enable CNN training.) [false]
+
+-pretrainedRNN  Path to a pretrained RNN. [~/RNN/2.0000__3x300.torch]
+
+-rnnLayers      If no RNN is provided, number of recurrent layers while creating RNN. (At least one.) [3]
+-rnnHidden      If no RNN is provided, number of units in hidden layers while creating RNN. (At least one.) [300]
+-rnnDropout     If no RNN is provided, use dropout while creating RNN. [false]
+
+-initLayers     How many reccurent layers initialize with CNN data. (0 - all of them) [0]
+-batchSize      Minibatch size. [15]
+-printError     Print error once per N minibatches. [10]
+-sample         Try to sample once per N minibatches. [100]
+-saveModel      Save model once per N minibatches. [10000]
+-modelName      File name of the saved or loaded model and training data. [model.torch]
+-modelDirectory Directory where to save the model. [~/combined_model/]
+\end{lstlisting}
+\hspace{1cm}
+
+\subsubsection{Sampling}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt]
+~/captioning$ th sampling.lua --help
+Usage: th [options] 
+
+Generate captions for images with trained model.
+
+Options
+-modelName Name of the model to be loaded. [model.torch]
+-N         How many captions will be generated. [3]
+\end{lstlisting}
+\hspace{1cm}
+
+\section{Bag of Words model}
+
+\subsubsection{Training}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt]
+~/captioning/bagOfWords$ th training.lua --help
+Usage: th [options] 
+
+
+\end{lstlisting}
+\hspace{1cm}
+
+\todo[inline]{Dodelat.}
 
 %\chapter{RelaxNG Schéma konfiguračního soboru}
 %\chapter{Plakat}
