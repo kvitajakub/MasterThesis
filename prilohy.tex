@@ -1,7 +1,5 @@
 \chapter{CD Content}
 
-\todo[inline]{Predelat}
-
 \begin{table}[h]
 	\centering
 	\renewcommand{\arraystretch}{1.2}
@@ -10,13 +8,11 @@
 		Adresář & Obsah  \\
 		\hline
 		\hline
-		LModeler/ & Projekt pro Netbeans bez knihoven. \\
-		LModeler/src/ & Zdrojové soubory LModeleru v Javě. \\
-		lib/ & Knihovny potřebné pro LModeler. \\
-		runnable/ & Spustitelný JAR soubor s aplikací.\\
-		javadoc/ & Vygenerovaná dokumentace. \\
-		text/ & Zdrojové soubory této práce v LaTeXu. \\
-		text/fig/ & Obrázky z této práce. \\
+		captioning/ & Torch scripts for full model training. \\
+		captioning/pretrainRNN/ & Tools for pretraining language model. \\
+		captioning/bagOfWords/ & Tools for experiments with bag of words input. \\
+		text/ & \LaTeX\ source of this text. \\
+		text/fig/ & Figures used in this text. \\
 		\hline
 	\end{tabular}
 	\label{tab:cdcontent}
@@ -58,6 +54,30 @@
 		"image_id"	: int,
 		"caption"	: str
 	}
+\end{lstlisting}
+
+\chapter{Installing Torch}
+
+\begin{lstlisting}[firstnumber=1,breakindent=75pt, language=bash,frame=single]
+# in a terminal, run the commands WITHOUT sudo
+git clone https://github.com/torch/distro.git ~/torch --recursive
+cd ~/torch; bash install-deps;
+./install.sh
+
+# activate Torch in current shell
+. ~/torch/install/bin/torch-activate
+
+# reinstall basic nn package
+luarocks remove nn
+luarocks install nn
+
+# install necessary packages
+luarocks install cunn
+luarocks install cunnx
+luarocks install rnn
+luarocks install tds
+luarocks install image
+
 \end{lstlisting}
 
 \chapter{Scripts Manuals}
@@ -159,6 +179,10 @@ Usage: th [options]
 
 \end{lstlisting}
 \hspace{1cm}
+
+\todo[inline]{Dodelat.}
+
+\subsubsection{Training with grouped captions}
 
 \todo[inline]{Dodelat.}
 
