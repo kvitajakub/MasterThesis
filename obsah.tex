@@ -428,7 +428,7 @@ With the language model trained to generate random sentences, it is very easy to
 \begin{align}
 L(I,S) \hspace{7pt}&=\hspace{7pt} -\sum\limits_{t=1}^N log\hspace{4pt}p_t(S_t).  \label{eq:loss2}
 \end{align}
-However, the loss is minimized with respect to all the parameters of \gls{rnn} as well as the \emph{adapter} and \gls{cnn}. Gradients propagated to the initial state of \gls{rnn} are copied to the other part of the network. Each part (\gls{cnn}, \emph{adapter}, \gls{rnn}) has its own instance of gradient descent algorithm, but Adam~\cite{DBLP:journals/corr/KingmaB14}, with same parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $, and learning rate $ \alpha = 0.001 $ is used for all three options. Minibatch size 15 was used.
+However, the loss is minimized with respect to all the parameters of \gls{rnn} as well as the \emph{adapter} and \gls{cnn}. Gradients propagated to the initial state of \gls{rnn} are copied to the other part of the network. Each part (\gls{cnn}, \emph{adapter}, \gls{rnn}) has its own instance of gradient descent algorithm, however, Adam~\cite{DBLP:journals/corr/KingmaB14}, with same parameters $ \beta_1 = 0.92 $, $ \beta_2 = 0.999 $, and learning rate $ \alpha = 0.001 $ is used for all three options. Minibatch size 15 was used.
 
 During full model training, finetuning of \gls{cnn} is optional. Finetuning can provide some improvements in results, but it also greatly expands the number of training parameters. Not training \gls{cnn} increase training speed and allows easier localization of potential mistakes related to input of the \emph{adapter} or \gls{rnn}.
 
@@ -507,7 +507,7 @@ Once the annotation file is processed and necessary images are selected, loading
 
 \section{Model implementation} \label{sec:designimplem}
 
-Model architecture proposed in Chapter \ref{chp:design} has been implemented in Lua and Torch. Code is grouped in form of modular procedures, which operate over the data. Main points of entry are scripts \texttt{training.lua} and \texttt{sampling.lua}, which contain the code connecting the other scripts together. Examples how to use them is in \ref{subsec:training}.
+Model architecture proposed in Chapter \ref{chp:design} has been implemented in Lua and Torch. Refer to Appendix \ref{chp:installation} on how to install Torch and necessary packages. Code I wrote is grouped in form of modular procedures, which operate over the data. Main points of entry are scripts \texttt{training.lua} and \texttt{sampling.lua}, which contain the code connecting the other scripts together. Examples how to use them is in \ref{subsec:training}.
 
 Other scripts contain procedures solving parts of the problem. File \texttt{cocodata.lua} is loading the annotation file, preprocessing images, and encode captions. \texttt{RNN.lua} contains function creating the recurrent network according to the parameters. Other file \texttt{connections.lua} contains functions connecting the output of \emph{adapter} to the \gls{rnn} and sending the computed gradient back to the \emph{adapter}. \texttt{sample.lua} has functions for generating captions with the current model.
 
@@ -525,26 +525,62 @@ Output of the \gls{vgg} is probability distribution over 1000 ImageNet classes. 
 
 \subsection{Training}\label{subsec:training}
 
-%https://github.com/torch/nn/blob/master/doc/criterion.md#nn.ClassNLLCriterion
+Training is implemented with the parameters discussed in Chapter \ref{chp:design}. Each part of the training is in separate directory, which contains \texttt{training.lua} file. These files load \gls{rnn} for the language model or create it from command line input, as well as \gls{cnn}. Adapter part of network is always created to fit the other parts of the model. Examples on how to use these scripts follows, in dedicated sections for each training. See the manuals in Appendix \ref{chp:manuals}.
+
+For both training phases, the negative log likelihood, which is used as loss function, is implemented in the Torch \emph{nn} package as \texttt{ClassNLLCriterion}. Similarly, Adam optimization algorithm is taken directly from the \emph{optim} package, with no changes.
+
+Training used minibatch approach, with multiple captions processed simultaneously. Captions in the same minibatch have different lengths and shorter ones are padded with zeros to match the longest caption. One-hot encoding used in the model had to be modified to process the padding. Modifications include \texttt{OneHotZero} layer discussed earlier and \texttt{MaskZero} and \texttt{MaskZeroCriterion} decorators from package \emph{rnn}, which alter the behavior of loss function.
 
 \subsubsection{Pretraining language model}
-\todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
 
-\todo[inline]{Minibatch s sekvencema ruznych delek, ktere jsou padded nulama.}
+Training of the language model has been performed with minibatches of size 15. It is possible to select how many \gls{lstm} layers will be included in the model, as well as size of the layer. Usually used numbers are 2--5 layers, each within 200--500 units. Another option is to include dropout after each recurrent layer.
 
-\subsubsection{Combined model}
-\todo[inline]{Popis toho jak se spousti trenovaci a samplovaci skripty, odkaz na manual v priloze.}
+Common way to run the training script is:
+
+\hspace{1cm}
+\begin{lstlisting}[firstnumber=1,breakindent=60pt,frame=single]
+~/captioning/pretrainRNN$ th training.lua -recurLayer 3 -hiddenUnits 300 -printError 20 -sample 100 -saveModel 10000 -modelName 3x300.torch
+\end{lstlisting}
+\hspace{1cm}
+
+Parameters specify the size of the network and per how many minibatches should be error and samples printed. One execution of the training script will train one epoch of training, save the model each N minibatches and after the training finished.
+
+Samples from the pretrained model can be generated by following command, where \emph{N} speficies number of captions generated.
+
+\hspace{1cm}
+\begin{lstlisting}[firstnumber=1,breakindent=60pt,frame=single]
+~/captioning/pretrainRNN$ th sampling.lua -N 5 -modelName ~/RNN/2.0000__3x300.torch
+\end{lstlisting}
+\hspace{1cm}
+
+\subsubsection{Full model}
+
+Training of the full model with the image input was also performed wit minibatches of size 15. Training script has very similar parameters as the pretraining one, with \gls{rnn} properties and printing time. Important is to specify \gls{cnn} and \gls{rnn} models which were saved earlier and are going to be connected, forming the captioning model. 
+
+Common way to run the training script is:
+
+\hspace{1cm}
+\begin{lstlisting}[firstnumber=1,breakindent=60pt,frame=single]
+~/captioning$ th training.lua -pretrainedCNN ~/CNN/VGG_ILSVRC_16_layers_fc7.torch -pretrainedRNN ~/RNN/2.0000__3x300.torch -initLayers 1 -printError 10 -sample 100 -saveModel 10000 -modelName 3x300.torch
+\end{lstlisting}
+\hspace{1cm}
+
+Most important command line option is \texttt{initLayers}, which specify how many recurrent layers will be initialized by the adapted \gls{cnn} output. Option can be also set to 0, which means all the \gls{lstm} layers will have the hidden state initialized.
+
+Samples from the full model can be generated by almost identical \texttt{sampling.lua} call as before:
+
+\hspace{1cm}
+\begin{lstlisting}[firstnumber=1,breakindent=60pt,frame=single]
+~/captioning$ th sampling.lua -N 5 -modelName ~/combined_model/0.7244__3x300_fc7.torch
+\end{lstlisting}
+\hspace{1cm}
 
 \subsubsection{Hardware}
 \todo[inline]{Nejaka poznamka o tom na jakem hardwaru se trenovalo, jake melo gpu a stroj parametry. Nekolik radku o Metacentru?}
 \todo[inline]{Rozebrat rychlosti trenovani zpracovani na GPU, jak dlouho to trvalo, co urychlovalo, co zpomalovalo?}
 
-\subsection{Metrics}
-\todo[inline]{Odkud jsem stahl metriky, jak jsem je zprovoznil, jak to funguje.}
-
 \section{Bag of Words experiments}
-
-\todo[inline]{Nejaky popis toho ze soucasti experimentu bylo bag of words a jak jsem to udelal. Nema moc souvislost s predchozi casti.}
+\todo[inline]{Nejaky popis toho ze soucasti experimentu bylo bag of words a jak jsem to udelal. Nema moc souvislost s predchozi casti. \gls{bow}}
 
 \chapter{Experiments and results}\label{chp:experiments}
 
