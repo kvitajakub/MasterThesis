@@ -584,7 +584,12 @@ Among others MetaVO offers clusters containing machines with 2x 8-core Intel Xeo
 Full model training was performed on node with two available GPUs. First was dedicated to the language model \gls{rnn}, with the same setup as before. Second contained loaded \gls{cnn}, together with adapter, and smaller resources, as there were no issues at this end. Pretraining of the \gls{rnn} took about one or two days. Full model training with \gls{cnn} was significantly slower with speed of two days per epoch.
 
 \section{Bag of Words experiments}
-\todo[inline]{Nejaky popis toho ze soucasti experimentu bylo bag of words a jak jsem to udelal. Nema moc souvislost s predchozi casti. \gls{bow}}
+
+Apart from training with the \gls{cnn}, I have done more experiments with initializing the \gls{rnn} by bag of words (\gls{bow}) created from the caption. In bag of words representation, a text is represented as the bag (multiset) of its words, disregarding grammar and even word order, but keeping multiplicity. \gls{bow} was inserted to the model as input of the \emph{adapter}, instead of the \gls{cnn} output. Images were not used in this experiment.
+
+While generating the dictionary of possible words, its size was reduced by converting all the words to lowercase, as well as removing commas, periods, and quotation marks from the text. The \gls{coco} training dataset, after applying these reductions, has 25917 different words, which were transformed to the tensor of the same size. The \gls{bow} tensor is after creation treated same way as the \gls{cnn} output.
+
+This experiment was performed to ensure that each independent part of the network is working and able to learn relevant mappings from input to the output. However, it has not been very successful, as discussed in following Chapter \ref{chp:experiments}.
 
 \chapter{Experiments and results}\label{chp:experiments}
 
