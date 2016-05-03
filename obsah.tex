@@ -593,22 +593,18 @@ This experiment was performed to ensure that each independent part of the networ
 
 \chapter{Experiments}\label{chp:experiments}
 
-Uvod,graf s delkou sekvenci, kvuli nizkemu poctu dlouhych sekvenci nema cenu pracovat s errory po 70-80 znaku
+In previous chapters I made an overview of deep learning techniques for image captioning. Based on those techniques, I proposed a model architecture, which was then implemented. This chapter contains results of training the model and following discussion in Sections \ref{sec:expretrain} and \ref{sec:exfullmodel}. As the results are not very promising, nor satisfactory, experiments with \gls{bow} initialization follow in Section \ref{sec:exbow}. Each section is concluded with discussion part, which describes how well model performed, its important features and propose possible improvements.
 
-komentare k tomu co bude v kapitole
-
-jak to fungovalo a jak ne a proc komentar v kazde sekci
-
-souhrn v dalsi kapitole?
+This chapter contains multiple graphs plotting average error (negative log likelihood) of character generation relative to its position in the caption. The training dataset contains very large number of captions, however, few captions are longer than others and average errors for the end of these captions vary a lot. Refer to Figure \ref{fig:length} to length distribution of training sequences. Due to a low number of very long sequences, it can be somewhat misleading to pay too much attention to character errors after character on position 80.
 
 \begin{figure}[!b]
 	\centering
-	\includegraphics[width=0.6\textwidth]{fig/sequence_length_distribution.pdf}
+	\includegraphics[width=0.7\textwidth]{fig/sequence_length_distribution.pdf}
 	\caption{Distribution of caption lengths in the training data.
 		\label{fig:length}}
 \end{figure}
 
-\section{Pretraining \gls{rnn}}
+\section{Pretraining \gls{rnn}} \label{sec:expretrain}
 
 ukazky generovani a graf chyb
 
@@ -616,18 +612,18 @@ ukazky generovani a graf chyb
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.6\textwidth]{fig/error_pretraining.pdf}
+	\includegraphics[width=0.7\textwidth]{fig/error_pretraining.pdf}
 	\caption{Error based on character position in sequence in pretrained \gls{rnn}s.
 		\label{fig:error_pretrain}}
 \end{figure}
 
 \subsubsection{Results}
 
-\section{Language model initialization variations}
+\section{Language model initialization variations} \label{sec:exfullmodel}
 
 \subsubsection{Results}
 
-\section{Bag of Words experiments}
+\section{Bag of Words experiments} \label{sec:exbow}
 
 \subsubsection{Results}
 
