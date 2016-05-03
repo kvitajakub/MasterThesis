@@ -21,13 +21,13 @@ require 'gnuplot'
 
 x = torch.linspace(-3.18,3.18,101)
 
-gnuplot.title("")
+gnuplot.pdffigure("nonlinearities.pdf")
+gnuplot.raw('set terminal pdf size 4.5,3')
 
-gnuplot.xlabel("")
-gnuplot.ylabel("")
 
 gnuplot.movelegend('left','top')
-gnuplot.raw('set key font "FreeSerif,18"')
+gnuplot.raw('set key box')
+gnuplot.raw('set key font "Courier,15"')
 
 gnuplot.grid(true)
 
@@ -39,3 +39,5 @@ gnuplot.plot(
              {"Logistic",x,sigmoid(x),'~'},
              {"Rectifier",x,relu(x),'-'}
             )
+
+gnuplot.plotflush()

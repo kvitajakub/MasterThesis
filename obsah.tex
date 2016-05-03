@@ -41,7 +41,7 @@ Rectifier is usually used after a linear unit creating together Rectified Linear
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.5\textwidth]{fig/nonlinearities.pdf}
+	\includegraphics[width=0.6\textwidth]{fig/nonlinearities.pdf}
 	\caption{Nonlinear functions used in neural nets.
 		\label{fig:nonlinear}}
 \end{figure}
@@ -591,12 +591,45 @@ While generating the dictionary of possible words, its size was reduced by conve
 
 This experiment was performed to ensure that each independent part of the network is working and able to learn relevant mappings from input to the output. However, it has not been very successful, as discussed in following Chapter \ref{chp:experiments}.
 
-\chapter{Experiments and results}\label{chp:experiments}
+\chapter{Experiments}\label{chp:experiments}
 
-\todo[inline]{Komentar k tomu jak rychle se to natrenovalo(kolik epoch), ukazka?}
+Uvod,graf s delkou sekvenci, kvuli nizkemu poctu dlouhych sekvenci nema cenu pracovat s errory po 70-80 znaku
+
+komentare k tomu co bude v kapitole
+
+jak to fungovalo a jak ne a proc komentar v kazde sekci
+
+souhrn v dalsi kapitole?
+
+\begin{figure}[!b]
+	\centering
+	\includegraphics[width=0.6\textwidth]{fig/sequence_length_distribution.pdf}
+	\caption{Distribution of caption lengths in the training data.
+		\label{fig:length}}
+\end{figure}
+
+\section{Pretraining \gls{rnn}}
+
+ukazky generovani a graf chyb
+
+\todo[inline]{kolik epoch jsem trenoval}
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=0.6\textwidth]{fig/error_pretraining.pdf}
+	\caption{Error based on character position in sequence in pretrained \gls{rnn}s.
+		\label{fig:error_pretrain}}
+\end{figure}
+
+\subsubsection{Results}
+
 \section{Language model initialization variations}
-\section{Evaluation}
-\section{Analysis of results}
+
+\subsubsection{Results}
+
+\section{Bag of Words experiments}
+
+\subsubsection{Results}
 
 \chapter{Conclusion}\label{chp:conclusion}
 
