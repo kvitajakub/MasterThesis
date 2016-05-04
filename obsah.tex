@@ -665,7 +665,7 @@ SAMPLE ++++Two clocks and a man base and tracks and small hot dogs.
 \vspace{7mm}
 
 \subsubsection{Results}
-\todo[inline]{Udelat}
+\todo[inline]{Zavery a jak model zlepsit nebo jake experimenty dale provest.}
 
 \section{Bag of Words experiments} \label{sec:exbow}
 \todo[inline]{Udelat}
@@ -689,14 +689,24 @@ SAMPLE ++++A leambed grass forhed  red hicker and a umbrella in a park.
 \end{lstlisting}
 \vspace{7mm}
 
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=0.7\textwidth]{fig/error_bow.pdf}
+	\caption{Error of \gls{rnn} initialized with \gls{bow} based on character position in sequence.
+		\label{fig:error_bow}}
+\end{figure}
+
 \subsubsection{Results}
 \todo[inline]{Udelat}
 
 \chapter{Conclusion}\label{chp:conclusion}
 
-\todo[inline]{Predelat}
+Image captioning is problem more difficult than simple classification of images. Nowadays, deep neural networks are dominating the field almost exclusively. In this work I explained several features of neural networks, which are necessary for creation of image captioning models, and created an overview of the state-of-the-art approaches to this problem. Deep learning is research area with a great need of sufficient datasets, therefore I also listed several biggest and most commonly used. Description part was completed by listing several popular evaluation metrics.
 
-Image captioning is problem more difficult than simple classification of images. Nowadays, deep neural networks are dominating the field almost exclusively. In this work I explained several features of neural networks, which are necessary for creation of image captioning models, and created an overview of state-of-the-art approaches to this problem. Deep learning is research area with a great need of data, therefore I also listed several biggest and most commonly used datasets and evaluation methods.
+\todo[inline]{Predelat}
+\todo[inline]{Ohodnoceni navrhnuteho modelu.}
+\todo[inline]{Navrh pro dalsi zmeny ktere by to mohly vylepsit.}
+
 
 Character level prediction models were created as a building block for creating my own image captioning model, based on the information compiled. I proposed an architecture of the model based on several other approaches, with interest in character level language models instead of word embedding. I explore whether this simple architecture can compete with contemporary solutions focused on word level language models.
 
