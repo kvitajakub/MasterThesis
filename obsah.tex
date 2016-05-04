@@ -606,26 +606,91 @@ This chapter contains multiple graphs plotting average error (negative log likel
 
 \section{Pretraining \gls{rnn}} \label{sec:expretrain}
 
-ukazky generovani a graf chyb
+\gls{lstm}-based language model was independently pretrained on captions from the training dataset. Many different versions were trained, varying in count and size of recurrent layers, use of dropout, etc. Most of the variations have similar performance, therefore in this text I will describe only three representative samples. First has two \gls{lstm} layers with 200 units each, second has three layers with 300 units, and third has four layers with 400 units per layer.
 
-\todo[inline]{kolik epoch jsem trenoval}
+All models picked up structure of the text very quickly, generating reasonable English sentences after 50\% of the first epoch. Models were trained for 2 epochs in total, with following captions generated after training:
+\vspace{7mm}
+\begin{lstlisting}
+========SAMPLING=====================================================
+A yellow man eating a box, like back of it in the snow.
+=====================================================================
+========SAMPLING=====================================================
+A bathroom with a plate of food in a counter.
+=====================================================================
+========SAMPLING=====================================================
+A couple of men standing on a covered hill with a ramp.
+=====================================================================
+========SAMPLING=====================================================
+A black dog is getting ready to be a graffiti and tree.
+=====================================================================
+\end{lstlisting}
+\vspace{7mm}
 
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig/error_pretraining.pdf}
-	\caption{Error based on character position in sequence in pretrained \gls{rnn}s.
+	\caption{Pretrained \gls{rnn} error based on character position in sequence.
 		\label{fig:error_pretrain}}
 \end{figure}
 
+Trained models were evaluated on the training dataset by computing average loss for each position of character in the sequence. See the outcomes on Figure \ref{fig:error_pretrain}. Interesting detail on the graph are first three or four positions, which tell that first character of the caption is quite hard to predict, second character is the easiest one and the third most complicated one. This observation can be justified by looking at the training dataset, which has, most of the time, at the beginning the article \textquotedblleft A\textquotedblright\ almost always followed by space \textquotedblleft\ \textquotedblright\ and noun. Space between words is very easy to predict, and on the contrary it is very hard to predict the first character of a word. More general observation is that the error is rising for the first half of the caption and then decline in the second half, as the \gls{rnn} has enough information to predict rest of the sentence.
+
 \subsubsection{Results}
+
+Training multiple character level \gls{rnn} to generate captions, show that smaller networks from two recurrent layers can learn the predictions on the similar level as the larger ones. Larger networks have slight edge in evaluating by negative log likelihood, but have much larger computational cost.
+
+High uncertainty of generation at the beginning of sequence is expected and caused by no prior information about caption being inserted into the network. Generated captions are sometime very unrealistic, but this is again caused by missing knowledge about the real-world. Overall, pretraining \gls{rnn} to random caption generation based on character prediction turned out well, within expected outcomes.
 
 \section{Language model initialization variations} \label{sec:exfullmodel}
 
+\todo[inline]{Udelat}
+
+%th sampling.lua -modelName /storage/brno7-cerit/home/xkvita01/combined_model/0.7244__3x300fc7_1.torch
+\vspace{7mm}
+\begin{lstlisting}[breakindent=58pt]
+========SAMPLING=====================================================
+TARGET ++++A railing in front of the beach with surfboards leaning on it.
++++++++++++
+SAMPLE ++++there is a suntoking court building is tocmed sestocars lices playing door.
+------------------------------------------------------------
+TARGET ++++A white and blue train under some palm trees in a city.
++++++++++++
+SAMPLE ++++A desk next to a person standing in the field.
+------------------------------------------------------------
+TARGET ++++A couple of men in a boat going through water, waving at the camera.
++++++++++++
+SAMPLE ++++Two clocks and a man base and tracks and small hot dogs.
+=====================================================================
+\end{lstlisting}
+\vspace{7mm}
+
 \subsubsection{Results}
+\todo[inline]{Udelat}
 
 \section{Bag of Words experiments} \label{sec:exbow}
+\todo[inline]{Udelat}
+
+%th sampling.lua -modelName /storage/brno7-cerit/home/xkvita01/combined_model/1.0000__3x300bag1.torch
+\vspace{7mm}
+\begin{lstlisting}[breakindent=58pt]
+========SAMPLING=====================================================
+TARGET ++++A person on some skis jumping in the air.
++++++++++++
+SAMPLE ++++A person laying at a table with marhorot demilded ebattresss.
+------------------------------------------------------------
+TARGET ++++A baseball player who just hit the ball running in a baseball game.
++++++++++++
+SAMPLE ++++A baseball player in the sliwer ride the board airding a red is parked as their holding the skateboard.
+------------------------------------------------------------
+TARGET ++++A kitchen with furniture and kitchen accessories and other items.
++++++++++++
+SAMPLE ++++A leambed grass forhed  red hicker and a umbrella in a park.
+=====================================================================
+\end{lstlisting}
+\vspace{7mm}
 
 \subsubsection{Results}
+\todo[inline]{Udelat}
 
 \chapter{Conclusion}\label{chp:conclusion}
 
