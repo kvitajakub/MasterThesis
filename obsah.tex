@@ -684,7 +684,10 @@ According to Figure \ref{fig:error_cnn} initializing the first \gls{lstm} layer 
 In the end, all the initialization variations based on the \gls{cnn} output degraded performance severely. As the works described in Chapter \ref{chp:captions} use the same components and have significantly better performance, it is necessary to do more thorough research of the proposed connection to identify the best solution, if it exists. This research would include experiments with larger \gls{rnn}s and deeper \gls{cnn} layers used for initialization. Other solutions could include adding the missing key component, something like word embeddings from other works.
 
 \section{Bag of Words experiments} \label{sec:exbow}
-\todo[inline]{Udelat}
+
+Full model training failure caused me to investigate, whether the initialized \gls{rnn} can produce right captions at all. This evaluation should have been done preferably without the interference of \gls{cnn}, therefore the experiment with initialization by \gls{bow} created from the target caption has been created.
+
+Two variations of \gls{bow} models have been trained, with adapted \gls{bow} code initializing either all \gls{lstm} layers or only the first one. Sampling examples of the one layer initialization variation:
 
 %th sampling.lua -modelName /storage/brno7-cerit/home/xkvita01/combined_model/1.0000__3x300bag1.torch
 \vspace{7mm}
@@ -705,6 +708,8 @@ SAMPLE ++++A leambed grass forhed  red hicker and a umbrella in a park.
 \end{lstlisting}
 \vspace{7mm}
 
+Samples show partial success of training, with correct phrases at the beginning of the caption. However, at some cases \gls{rnn} reaches state, in which the nonsensical words start to appear. That can be caused by the short training stage.
+
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig/error_bow.pdf}
@@ -712,15 +717,19 @@ SAMPLE ++++A leambed grass forhed  red hicker and a umbrella in a park.
 		\label{fig:error_bow}}
 \end{figure}
 
+Again, the error graph for \gls{bow} initialization is on Figure \ref{fig:error_bow}. Graph has the same structure as previous ones -- alternating high and low error rates for characters at the beginning and gradually rising error as the caption continues. It is worth noting that the actual error numbers are lower than in \gls{cnn} initialization, but on the same level as with no initialization at all, although error grows more rapidly.
+
 \subsubsection{Results}
-\todo[inline]{Udelat}
+
+Experiments demonstrated partial success, as \gls{rnn} was able to generate several correct words, but proper caption fully related to the target was not generated. As \gls{bow} encoding does not have much variability, more experiments with changing size of the \gls{rnn} might further improve the performance.
+
 
 \chapter{Conclusion}\label{chp:conclusion}
 
-Image captioning is problem more difficult than simple classification of images. Nowadays, deep neural networks are dominating the field almost exclusively. In this work I explained several features of neural networks, which are necessary for creation of image captioning models, and created an overview of the state-of-the-art approaches to this problem. Deep learning is research area with a great need of sufficient datasets, therefore I also listed several biggest and most commonly used. Description part was completed by listing several popular evaluation metrics.
+Image captioning is problem more difficult than simple classification of images. Nowadays, deep neural networks are dominating the field almost exclusively. In this work I explained several features of neural networks, which are necessary for creation of image captioning models, and created an overview of the state-of-the-art approaches to this problem. Deep learning is research area with a great need of sufficient data, therefore I also listed several biggest and most commonly used datasets. Description part was completed by listing several popular evaluation metrics.
 
-I proposed an image captioning model architecture, which has encoder--decoder architecture and character based language generator. Proposed model has been implemented in Lua with Torch and Torch based libraries. After proper implementation, model was performing reasonably well in pretraining phase. Randomly initialized \gls{rnn} learnt to create random English sentences, which can be captions. Full model training was not successful at all, as no configuration of \gls{cnn}, \gls{rnn} or initialization procedure proved to be correct. Additional experiments with initialization by \gls{bow} were partially successful, as model managed to generate one or two correct words at the beginning of the caption.
+I proposed an image captioning model architecture, which has encoder--decoder architecture and character based language generator. Proposed model has been implemented in Lua with Torch and Torch based libraries. After proper implementation, model performed reasonably well in the pretraining phase. Randomly initialized \gls{rnn} learnt to create random English sentences, which can be captions. Full model training was not successful at all, as no configuration of \gls{cnn}, \gls{rnn} or the initialization procedure proved to be correct. Additional experiments with initialization by \gls{bow} vector were partially successful, as model managed to generate one or two correct words at the beginning of the caption.
 
-Further work on this task would include exploration of lower \gls{cnn} layers for initialization and learning representation of characters, instead of the one-hot encoding. However, the model is probably missing a key component, which improves the output significantly, similarly as word embeddings in other contemporary solutions.
+Further work on this task would include exploration of lower \gls{cnn} layers for initialization and learning representation of characters, instead of the one-hot encoding, and study of different \gls{rnn} sizes. However, the model is probably missing a key component, which improves the output significantly, similarly as word embeddings in other contemporary solutions.
 
 %=========================================================================
