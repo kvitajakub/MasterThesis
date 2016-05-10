@@ -643,10 +643,12 @@ High uncertainty of generation at the beginning of sequence is expected and caus
 
 \section{Language model initialization variations} \label{sec:exfullmodel}
 
-\todo[inline]{Udelat}
+Pretrained language models have been used in full model training, which introduced the \gls{cnn} and \textquotedblleft adapter\textquotedblright\ parts. As in the previous training and experiments \gls{rnn} variations showed essentially same performance, only one configuration have been used -- three-layered \gls{lstm} with 300 units in one layer, which has been trained for two epochs. \gls{cnn} part was used in two different configurations - first used output of the \emph{fc7} layer of \gls{vgg} as the output of the network. Second used \emph{pool5} layer of the same network as the output. Both options were adapted as the hidden state of one \gls{lstm} layer or all \gls{lstm} layers in the network.
+
+Unlike \gls{rnn} pretraining, full model training has not improved performance at all, at some cases performance even decreased. This applied to all four variations, which has been trained. See the examples of sampling of model using \emph{fc7} output initializing first \gls{lstm} layer:
 
 %th sampling.lua -modelName /storage/brno7-cerit/home/xkvita01/combined_model/0.7244__3x300fc7_1.torch
-\vspace{7mm}
+\vspace{5mm}
 \begin{lstlisting}[breakindent=58pt]
 ========SAMPLING=====================================================
 TARGET ++++A railing in front of the beach with surfboards leaning on it.
@@ -662,7 +664,9 @@ TARGET ++++A couple of men in a boat going through water, waving at the camera.
 SAMPLE ++++Two clocks and a man base and tracks and small hot dogs.
 =====================================================================
 \end{lstlisting}
-\vspace{7mm}
+\vspace{5mm}
+
+Samples show that the model was not able to learn even beginning of the description and sometimes start to create incorrect or nonsensical English  words, e.g. \textquotedblleft sestocars\textquotedblright.
 
 \begin{figure}[!t]
 	\centering
@@ -671,9 +675,13 @@ SAMPLE ++++Two clocks and a man base and tracks and small hot dogs.
 		\label{fig:error_cnn}}
 \end{figure}
 
+Similarly to the pretraining, negative log likelihood loss function was used to evaluate performance of the model. Figure \ref{fig:error_cnn} shows the average error of individual characters and their position in sentence. Average errors have the same form as in previous graph, with the beginning being very random or specific, depending on the exact character position, and errors gradually rising in rest of the caption.
+
+According to Figure \ref{fig:error_cnn} initializing the first \gls{lstm} layer is enough and performance is better than while initializing the full \gls{lstm} stack. Although, as the performance is worse than after pretraining, we can interpret one layer initialization as breaking the model less than with full \gls{rnn} initialization.
 
 \subsubsection{Results}
-\todo[inline]{Zavery a jak model zlepsit nebo jake experimenty dale provest.}
+
+In the end, all the initialization variations based on the \gls{cnn} output degraded performance severely. As the works described in Chapter \ref{chp:captions} use the same components and have significantly better performance, it is necessary to do more thorough research of the proposed connection to identify the best solution, if it exists. This research would include experiments with larger \gls{rnn}s and deeper \gls{cnn} layers used for initialization. Other solutions could include adding the missing key component, something like word embeddings from other works.
 
 \section{Bag of Words experiments} \label{sec:exbow}
 \todo[inline]{Udelat}
