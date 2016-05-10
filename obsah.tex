@@ -10,7 +10,7 @@ First, chapter \ref{chp:nn} introduces neural networks and several key concepts,
 
 \chapter{Neural networks} \label{chp:nn}
 
-General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
+General idea of artificial neural networks emerged after World War II. Perceptron, a single artificial neuron, was created in 1958 by Frank Rosenblatt~\cite{rosenblatt58a}, but it became popular only after combination with the backpropagation algorithm~\cite{bryson1975applied,werbos1974beyond}. At that time neural nets have not reached massive popularity, not because they do not work, but because small computing power of machines back then, and also the lack of datasets. Recently (after 2000), neural nets became popular again under the name of \textquotedblleft deep learning\textquotedblright\ to emphasize the use of several layers stacked on top of each other to create deep architectures, which are far more practical than shallow ones. During this reinvention, neural nets have been successfully applied in multiple fields like computer vision~\cite{DBLP:journals/corr/HeZRS15}, speech recognition~\cite{DBLP:journals/corr/abs-1303-5778}, and natural language modeling~\cite{DBLP:conf/interspeech/MikolovKBCK10}.
 
 Nowadays, various useful architectures, techniques and applications of neural nets are introduced almost every day. As it is not possible to through all of them, in this chapter I will describe only a handful, which are most significant and will be later used in the research. This chapter is divided into three sections, each focusing on different type of neural nets --~feed-forward, recurrent, and convolutional. However, do not see this division as strict and separating, tools introduced in one part can and will be used in different types of networks.
 
@@ -440,7 +440,7 @@ Second approach is called \emph{BeamSearch}, which iteratively considers the set
 
 \chapter{Implementation}\label{chp:implementation}
 
-With the necessary background and knowledge discussed in previous text, this chapter contains an overview of computer programming tools used for implementing neural network models (section \ref{sec:tools}). Then, in the second part of this chapter (sections \ref{sec:designimplem} and \ref{sec:hardware}), I describe a specific implementation of the image captioning model proposed in chapter \ref{chp:design}, which was created for this thesis.
+With the necessary background and knowledge discussed in previous text, this chapter contains an overview of computer programming tools used for implementing neural network models (section \ref{sec:tools}). Then, in the second part of this chapter (sections \ref{sec:coco}, \ref{sec:designimplem} and \ref{sec:bow}), I describe a specific implementation of the image captioning model proposed in chapter \ref{chp:design}, which was created for this thesis, as well as tools for experimenting with the given model.
 
 \section{Tools}\label{sec:tools}
 
@@ -493,7 +493,7 @@ As the number of community packages is enormous, I will list just a few, which a
 \end{minipage}
 \vspace{3mm}
 
-\section{Dataset \gls{coco}}
+\section{Dataset \gls{coco}}\label{sec:coco}
 
 Any proper implementation of deep learning model needs a lot of data to be implemented and trained. For the model proposed in this thesis, I chose to work with the \gls{coco} dataset. In this section I will describe how to access the dataset and what is the format of the images and captions.
 
@@ -583,7 +583,7 @@ Among others MetaVO offers clusters containing machines with 2x 8-core Intel Xeo
 
 Full model training was performed on node with two available GPUs. First was dedicated to the language model \gls{rnn}, with the same setup as before. Second contained loaded \gls{cnn}, together with adapter, and smaller resources, as there were no issues at this end. Pretraining of the \gls{rnn} took about one or two days. Full model training with \gls{cnn} was significantly slower with speed of two days per epoch.
 
-\section{Bag of Words experiments}
+\section{Bag of Words experiments}\label{sec:bow}
 
 Apart from training with the \gls{cnn}, I have done more experiments with initializing the \gls{rnn} by bag of words (\gls{bow}) created from the caption. In bag of words representation, a text is represented as the bag (multiset) of its words, disregarding grammar and even word order, but keeping multiplicity. \gls{bow} was inserted to the model as input of the \emph{adapter}, instead of the \gls{cnn} output. Images were not used in this experiment.
 
@@ -593,9 +593,9 @@ This experiment was performed to ensure that each independent part of the networ
 
 \chapter{Experiments}\label{chp:experiments}
 
-In previous chapters I made an overview of deep learning techniques for image captioning. Based on those techniques, I proposed a model architecture, which was then implemented. This chapter contains results of training the model and following discussion in Sections \ref{sec:expretrain} and \ref{sec:exfullmodel}. As the results are not very promising, nor satisfactory, experiments with \gls{bow} initialization follow in Section \ref{sec:exbow}. Each section is concluded with discussion part, which describes how well model performed, its important features and propose possible improvements.
+In previous chapters I made an overview of deep learning techniques for image captioning. Based on those techniques, I proposed a model architecture, which was then implemented. This chapter contains results of the model training in Sections \ref{sec:expretrain} and \ref{sec:exfullmodel}. As the results are not very promising, nor satisfactory, experiments with \gls{bow} initialization follow in Section \ref{sec:exbow}. Each section is concluded with discussion part, which describes how well model performed, its important features and propose possible improvements.
 
-This chapter contains multiple graphs plotting average error (negative log likelihood) of character generation relative to its position in the caption. The training dataset contains very large number of captions, however, few captions are longer than others and average errors for the end of these captions vary a lot. Refer to Figure \ref{fig:length} to length distribution of training sequences. Due to a low number of very long sequences, it can be somewhat misleading to pay too much attention to character errors after character on position 80.
+This chapter include multiple graphs plotting average error (negative log likelihood) of character generation relative to its position in the caption. The training dataset contains very large number of captions, however, few captions are longer than others and average errors for the end of these captions vary a lot. Refer to Figure \ref{fig:length} to length distribution of training sequences. Due to a low number of very long sequences, it can be somewhat misleading to pay too much attention to character errors after character on position 80.
 
 \begin{figure}[!b]
 	\centering
@@ -645,7 +645,7 @@ High uncertainty of generation at the beginning of sequence is expected and caus
 
 Pretrained language models have been used in full model training, which introduced the \gls{cnn} and \textquotedblleft adapter\textquotedblright\ parts. As in the previous training and experiments \gls{rnn} variations showed essentially same performance, only one configuration have been used -- three-layered \gls{lstm} with 300 units in one layer, which has been trained for two epochs. \gls{cnn} part was used in two different configurations - first used output of the \emph{fc7} layer of \gls{vgg} as the output of the network. Second used \emph{pool5} layer of the same network as the output. Both options were adapted as the hidden state of one \gls{lstm} layer or all \gls{lstm} layers in the network.
 
-Unlike \gls{rnn} pretraining, full model training has not improved performance at all, at some cases performance even decreased. This applied to all four variations, which has been trained. See the examples of sampling of model using \emph{fc7} output initializing first \gls{lstm} layer:
+Unlike \gls{rnn} pretraining, full model training has not improved performance at all, at some cases performance even decreased. This applied to all four variations, which has been trained. See the examples of sampling of model using \emph{fc7} output initializing the first \gls{lstm} layer:
 
 %th sampling.lua -modelName /storage/brno7-cerit/home/xkvita01/combined_model/0.7244__3x300fc7_1.torch
 \vspace{5mm}
@@ -677,7 +677,7 @@ Samples show that the model was not able to learn even beginning of the descript
 
 Similarly to the pretraining, negative log likelihood loss function was used to evaluate performance of the model. Figure \ref{fig:error_cnn} shows the average error of individual characters and their position in sentence. Average errors have the same form as in previous graph, with the beginning being very random or specific, depending on the exact character position, and errors gradually rising in rest of the caption.
 
-According to Figure \ref{fig:error_cnn} initializing the first \gls{lstm} layer is enough and performance is better than while initializing the full \gls{lstm} stack. Although, as the performance is worse than after pretraining, we can interpret one layer initialization as breaking the model less than with full \gls{rnn} initialization.
+According to Figure \ref{fig:error_cnn} initializing the first \gls{lstm} layer is enough and performance is better than while initializing the full \gls{lstm} stack. Although, as the performance is worse than after pretraining,it can be said that one layer initialization is breaking the model less than full \gls{rnn} initialization.
 
 \subsubsection{Results}
 
@@ -685,7 +685,7 @@ In the end, all the initialization variations based on the \gls{cnn} output degr
 
 \section{Bag of Words experiments} \label{sec:exbow}
 
-Full model training failure caused me to investigate, whether the initialized \gls{rnn} can produce right captions at all. This evaluation should have been done preferably without the interference of \gls{cnn}, therefore the experiment with initialization by \gls{bow} created from the target caption has been created.
+Full model training failure caused me to investigate, whether the initialized \gls{rnn} can produce right captions at all. This evaluation should have been done preferably without the interference of \gls{cnn}, therefore the experiment with initialization by \gls{bow} created from the target caption has been designed.
 
 Two variations of \gls{bow} models have been trained, with adapted \gls{bow} code initializing either all \gls{lstm} layers or only the first one. Sampling examples of the one layer initialization variation:
 
@@ -721,7 +721,7 @@ Again, the error graph for \gls{bow} initialization is on Figure \ref{fig:error_
 
 \subsubsection{Results}
 
-Experiments demonstrated partial success, as \gls{rnn} was able to generate several correct words, but proper caption fully related to the target was not generated. As \gls{bow} encoding does not have much variability, more experiments with changing size of the \gls{rnn} might further improve the performance.
+Experiments demonstrated partial success, as \gls{rnn} was able to generate several correct words, but proper caption fully relating to the target was not generated. As the \gls{bow} encoding does not have much variability, more experiments with changing size of the \gls{rnn} might further improve the performance.
 
 
 \chapter{Conclusion}\label{chp:conclusion}
